@@ -1,0 +1,2 @@
+# dżwig kratownicowy
+
