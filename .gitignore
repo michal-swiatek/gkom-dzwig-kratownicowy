@@ -1,2 +1,6 @@
 # Project build files
 /cmake-build-debug/
+/bin/
+
+# Visual studio project files
+/.vs/
