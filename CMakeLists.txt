@@ -3,4 +3,10 @@ project(dzwig-kratownicowy)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(hello-world main.cpp)
+include(external-libraries/setup_libraries.cmake)
+
+add_executable(main main.cpp)
+target_link_libraries(main ${OPENGL_LIBS})
+
+# Include tests
+add_subdirectory(tests)
