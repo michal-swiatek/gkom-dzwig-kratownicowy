@@ -13,8 +13,8 @@ message(STATUS "GLFW3 include found at ${GLFW3_INCLUDE_DIR}")
 #
 
 # GLAD
-set(GLAD_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-dependencies/include")
-set(GLAD_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external-dependencies/src")
+set(GLAD_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/include")
+set(GLAD_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/src")
 add_library(GLAD "${GLAD_SOURCE_DIR}/glad.c")
 
 # Include libraries
