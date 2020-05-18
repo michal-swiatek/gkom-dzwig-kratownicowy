@@ -7,15 +7,15 @@
 #include "Core.h"
 
 int main() {
+    Core app("Dzwig kratownicowy");
     try {
-        Core app("Dzwig kratownicowy");
         app.initApp();
-
-        app.run();
     }
     catch (std::runtime_error& e) {
         std::cout << e.what();
     }
+
+    app.run();
 
     return 0;
 }
