@@ -82,6 +82,11 @@ GLFWwindow* createWindow(const WindowSettings &settings)
     if (!window)
         throw std::runtime_error("Failed to create GLFWWindow!\n");
 
+    if (settings.fullscreen)
+        glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, settings.width, settings.height, 60);
+    if (!settings.showCursor)
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     return window;
 }
 
