@@ -23,7 +23,7 @@ public:
 
 public:
     explicit Core(std::string&& name, uint32_t appVersionMajor = 1, uint32_t appVersionMinor = 0);
-    virtual ~Core();
+    ~Core();
 
     //  Start application
     void initApp(uint32_t width = 1280, uint32_t height = 720, bool fullscreen = false, bool showCursor = true);
@@ -31,12 +31,12 @@ public:
 
 protected:
     //  User Interface
-    virtual void updateInput();
-    virtual void updateLogic();
-    virtual void draw();
+    void updateInput();
+    void updateLogic();
+    void draw();
 
-    virtual void init();
-    virtual void quit();
+    void init();
+    void quit();
 
     //  TODO: implement ConfigFile
     //virtual void loadConfig(const char* path);

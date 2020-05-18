@@ -85,7 +85,8 @@ void Core::run()
 
 void Core::updateInput()
 {
-
+    if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        mainWindow->close();
 }
 
 void Core::updateLogic()
