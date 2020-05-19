@@ -9,15 +9,21 @@
 #include "Core.h"
 
 int main() {
-    Core app("Dzwig kratownicowy", int(PROJECT_VERSION_MAJOR), int(PROJECT_VERSION_MINOR), int(PROJECT_VERSION_PATCH));
-
     try {
-        initOpenGL();   //  Create context and window
-        app.initApp();  //  Initialize subsystems and resources
+        initOpenGL();
     }
     catch (std::runtime_error& e) {
         std::cout << e.what();
         return -1;
+    }
+
+    Core app("Dzwig kratownicowy", int(PROJECT_VERSION_MAJOR), int(PROJECT_VERSION_MINOR), int(PROJECT_VERSION_PATCH));
+    try {
+        app.initApp();  //  Initialize subsystems and resources
+    }
+    catch (std::exception& e) {
+        std::cout << e.what();
+        return -2;
     }
 
     app.run();
