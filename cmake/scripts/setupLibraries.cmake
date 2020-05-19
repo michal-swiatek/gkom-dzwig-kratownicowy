@@ -8,6 +8,10 @@ find_package(OpenGL REQUIRED)
 find_package(GLFW3 REQUIRED)
 message(STATUS "GLFW3 include found at ${GLFW3_INCLUDE_DIR}")
 
+# GLM
+find_package(GLM REQUIRED)
+message(STATUS "GLM include found at ${GLM_INCLUDE_DIRS}")
+
 #
 # Build libraries from source files
 #
@@ -18,7 +22,7 @@ set(GLAD_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/src")
 add_library(GLAD "${GLAD_SOURCE_DIR}/glad.c")
 
 # Include libraries
-include_directories("${GLFW3_INCLUDE_DIR}" "${GLAD_INCLUDE_DIR}")
+include_directories("${GLFW3_INCLUDE_DIR}" "${GLAD_INCLUDE_DIR}" "${GLM_INCLUDE_DIRS}")
 
 # Linking
 set(OPENGL_LIBS "${GLFW3_LIBRARY}" opengl32 GLAD)
