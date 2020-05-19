@@ -7,6 +7,21 @@
 
 #include <stdexcept>
 
+std::unique_ptr<Window> Core::mainWindow = nullptr;
+
+//
+//  Initialize OpenGL before the application starts
+//
+void initOpenGL()
+{
+    //  Initialize GLAD and GLFW, initApp has to be called before any OpenGL call as GLAD must be initialized
+    if (glfwInit() == GLFW_FALSE)
+        throw std::runtime_error("Failed to initialize GLFW!\n");
+
+    Core::mainWindow = std::make_unique<Window>(WindowSettings());
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+        throw std::runtime_error("Failed to initialize GLAD!\n");
+}
 
 Core::Core(std::string&& name, uint32_t appVersionMajor, uint32_t appVersionMinor, uint32_t appVersionPatch)
 {
@@ -28,13 +43,13 @@ Core::~Core()
 
 void Core::initApp(uint32_t width, uint32_t height, bool fullscreen, bool showCursor)
 {
-    //  Initialize GLAD and GLFW, initApp has to be called before any OpenGL call as GLAD must be initialized
-    if (glfwInit() == GLFW_FALSE)
-        throw std::runtime_error("Failed to initialize GLFW!\n");
-
-    mainWindow = std::make_unique<Window>(WindowSettings(width, height, windowTitle.c_str(), fullscreen, showCursor));
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-        throw std::runtime_error("Failed to initialize GLAD!\n");
+    //  Customize window
+    glfwSetWindowTitle(mainWindow->getWindow(), windowTitle.c_str());
+    glfwSetWindowSize(mainWindow->getWindow(), width, height);
+    if (fullscreen)
+        glfwSetWindowMonitor(mainWindow->getWindow(), glfwGetPrimaryMonitor(), 0, 0, width, height, 60);
+    if (!showCursor)
+        glfwSetInputMode(mainWindow->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.1, 0.1, 0.2, 1.0);
@@ -76,6 +91,16 @@ void Core::run()
     quit();
 }
 
+void Core::init()
+{
+
+}
+
+void Core::quit()
+{
+
+}
+
 void Core::updateInput()
 {
     if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -88,16 +113,6 @@ void Core::updateLogic()
 }
 
 void Core::draw()
-{
-
-}
-
-void Core::init()
-{
-
-}
-
-void Core::quit()
 {
 
 }
