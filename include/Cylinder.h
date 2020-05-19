@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 class Cylinder
 {
@@ -21,7 +22,7 @@ private:
 	int stacksNum;
 
 	const float PI = (float)acos(-1);
-	unsigned int paramNum = 3;
+	const unsigned int paramNum = 8;
 
 public:
 

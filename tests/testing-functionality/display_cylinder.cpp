@@ -24,7 +24,7 @@ private:
 public:
     DisplayCylinder() : Core("Display cylinder")
     {
-        cylinder = std::make_unique<Cylinder>(0.5f, 0.5f, 4, 3);
+        cylinder = std::make_unique<Cylinder>(0.5f, 0.0f, 0.5, 4, 3);
         shader = std::make_unique<Shader>("shaders/flat.vs.glsl", "shaders/flat.fs.glsl");
     }
 
