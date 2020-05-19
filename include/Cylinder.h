@@ -6,6 +6,7 @@
 #ifndef CYLINDER_H_UZAROWICZ
 #define CYLINDER_H_UZAROWICZ
 
+#include <cmath>
 #include <vector>
 #include <iostream>
 
