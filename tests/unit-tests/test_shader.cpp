@@ -1,5 +1,5 @@
 /*
- *   Created by michal-swiatek on 11.05.2020.
+ *   Created by michal-swiatek on 19.05.2020.
  *   Gitlab: http://gitlab.ii.pw.edu.pl/gkom.20l/dzwig-kratownicowy
  *
  *  TODO: integrate unit test library
