@@ -18,7 +18,7 @@ public:
     Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
     Shader(Shader&& other) noexcept;
 
-    void use(); // Activate shader program
+    void use() const; // Activate shader program
     void destroyProgram();
 
     [[nodiscard]] GLuint getProgramID() const;

@@ -48,7 +48,7 @@ Shader::Shader(Shader &&other) noexcept
  *  Public
  */
 
-void Shader::use()
+void Shader::use() const
 {
     if (destroyed)
         throw std::exception(); // TODO: implement exception
