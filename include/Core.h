@@ -15,8 +15,12 @@
 
 #include "Window.h"
 
+void initOpenGL();
+
 class Core
 {
+    friend void initOpenGL();   //  Creates graphic context and initializes Window
+
 public:
     using uint = uint32_t;
     using uchar = uint8_t;
@@ -31,18 +35,20 @@ public:
 
 protected:
     //  User Interface
-    void updateInput();
-    void updateLogic();
-    void draw();
+    virtual void updateInput();
+    virtual void updateLogic();
+    virtual void draw();
 
-    void init();
-    void quit();
+    virtual void init();
+    virtual void quit();
 
     //  TODO: implement ConfigFile
     //virtual void loadConfig(const char* path);
     //virtual void saveConfig(const char* path);
 
-    std::unique_ptr<Window> mainWindow;
+    //  OpenGL context has to be created before app start for proper exception handling
+    //  so window is actually created before the Core instance and stored as static object
+    static std::unique_ptr<Window> mainWindow;
 
     double deltaTime;
     double lastTime;
