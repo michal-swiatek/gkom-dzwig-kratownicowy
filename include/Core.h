@@ -22,7 +22,7 @@ public:
     using uchar = uint8_t;
 
 public:
-    explicit Core(std::string&& name, uint32_t appVersionMajor = 1, uint32_t appVersionMinor = 0);
+    explicit Core(std::string&& name, uint32_t appVersionMajor = 1, uint32_t appVersionMinor = 0, uint32_t appVersionPatch = 0);
     ~Core();
 
     //  Start application
@@ -52,6 +52,7 @@ protected:
 private:
     uint32_t appVersionMajor;
     uint32_t appVersionMinor;
+    uint32_t appVersionPatch;
 
     std::string name;
     std::string windowTitle;

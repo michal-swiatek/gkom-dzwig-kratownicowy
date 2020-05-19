@@ -8,12 +8,13 @@
 #include <stdexcept>
 
 
-Core::Core(std::string&& name, uint32_t appVersionMajor, uint32_t appVersionMinor)
+Core::Core(std::string&& name, uint32_t appVersionMajor, uint32_t appVersionMinor, uint32_t appVersionPatch)
 {
     this->appVersionMajor = appVersionMajor;
     this->appVersionMinor = appVersionMinor;
+    this->appVersionPatch = appVersionPatch;
     this->name = name;
-    this->windowTitle = name + ", version: " + std::to_string(appVersionMajor) + '.' + std::to_string(appVersionMinor);
+    this->windowTitle = name + ", version: " + std::to_string(appVersionMajor) + '.' + std::to_string(appVersionMinor) + '.' + std::to_string(appVersionPatch);
 
     lastTime = deltaTime = 0.0;
     framesCounter = 0;
