@@ -9,7 +9,7 @@
 #include "Core.h"
 
 int main() {
-    Core app("Dzwig kratownicowy", int(PROJECT_VERSION_MAJOR), int(PROJECT_VERSION_MINOR));
+    Core app("Dzwig kratownicowy", int(PROJECT_VERSION_MAJOR), int(PROJECT_VERSION_MINOR), int(PROJECT_VERSION_PATCH));
     try {
         app.initApp();
     }
