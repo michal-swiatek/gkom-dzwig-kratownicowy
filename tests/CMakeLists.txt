@@ -26,3 +26,4 @@ set(CURRENT_SRC_FILES ${PROJECT_SRC_FILES})
 # Test external libraries
 add_subdirectory(external-libraries)
 add_subdirectory(unit-tests)
+add_subdirectory(testing-functionality)

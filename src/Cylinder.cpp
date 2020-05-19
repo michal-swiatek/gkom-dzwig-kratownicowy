@@ -5,7 +5,7 @@
  *  github: https://github.com/RafalUzarowicz
  */
 
-Cylinder::Cylinder(float bR = 1.0f, float tR = 1.0f, float h = 2.0f, int secNum = 4, int staNum = 3) {
+Cylinder::Cylinder(float bR, float tR, float h, int secNum, int staNum) {
 	this->setParams(bR, tR, h, secNum, staNum);
 }
 
