@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 class Cylinder
 {
@@ -21,11 +22,17 @@ private:
 	int stacksNum;
 
 	const float PI = (float)acos(-1);
-	unsigned int paramNum = 3;
+	const unsigned int paramNum = 8;
 
 public:
 
 	Cylinder(float bR = 1.0f, float tR = 1.0f, float h = 2.0f, int secNum = 4, int staNum = 3);
+
+	Cylinder(const Cylinder& other) = default;
+
+	Cylinder& operator=(const Cylinder& rhs) = default;
+
+	Cylinder(Cylinder&& other) = default;
 
 	void setParams(float bR, float tR, float h, int secNum, int staNum);
 
@@ -37,6 +44,8 @@ public:
 
 	void generateCylinder();
 
+	float vectorLength(std::vector<float> vec);
+
 	std::vector<float> generateBaseCircleVertices();
 
 	std::vector<float> generateTopCircleVertices();
@@ -44,7 +53,7 @@ public:
 	void generateVertices();
 
 	void generateIndices();
-	
+
 };
 
 #endif //CYLINDER_H_UZAROWICZ
