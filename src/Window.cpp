@@ -13,7 +13,7 @@ GLFWwindow* createWindow(const WindowSettings& settings);
 //  Default callbacks
 void window_framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-WindowSettings::WindowSettings() : width(0), height(0), title(""), fullscreen(false), showCursor(true) { }
+WindowSettings::WindowSettings() : width(1), height(1), title(""), fullscreen(false), showCursor(true) { }
 WindowSettings::WindowSettings(int32_t width,
                                int32_t height,
                                const char *title,
