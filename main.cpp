@@ -3,11 +3,13 @@
  *  Gitlab: http://gitlab.ii.pw.edu.pl/gkom.20l/dzwig-kratownicowy/
  */
 
+#include <Configure.h>
 #include <iostream>
+
 #include "Core.h"
 
 int main() {
-    Core app("Dzwig kratownicowy");
+    Core app("Dzwig kratownicowy", int(PROJECT_VERSION_MAJOR), int(PROJECT_VERSION_MINOR));
     try {
         app.initApp();
     }
