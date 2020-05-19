@@ -6,7 +6,6 @@
 #ifndef CYLINDER_H_UZAROWICZ
 #define CYLINDER_H_UZAROWICZ
 
-#include <cmath>
 #include <vector>
 #include <iostream>
 
@@ -28,6 +27,12 @@ public:
 
 	Cylinder(float bR = 1.0f, float tR = 1.0f, float h = 2.0f, int secNum = 4, int staNum = 3);
 
+	Cylinder(const Cylinder& other) = default;
+
+	Cylinder& operator=(const Cylinder& rhs) = default;
+
+	Cylinder(Cylinder&& other) = default;
+
 	void setParams(float bR, float tR, float h, int secNum, int staNum);
 
 	std::vector<float> getVertices();
@@ -38,6 +43,8 @@ public:
 
 	void generateCylinder();
 
+	float vectorLength(std::vector<float> vec);
+
 	std::vector<float> generateBaseCircleVertices();
 
 	std::vector<float> generateTopCircleVertices();
@@ -45,7 +52,7 @@ public:
 	void generateVertices();
 
 	void generateIndices();
-	
+
 };
 
 #endif //CYLINDER_H_UZAROWICZ
