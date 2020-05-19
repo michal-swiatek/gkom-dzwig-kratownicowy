@@ -10,6 +10,7 @@
 #include <string>
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 class Shader
 {
@@ -31,6 +32,16 @@ public:
     void setBool(const std::string& name, bool value) const;
     void setInt(const std::string& name, int value) const;
     void setFloat(const std::string& name, float value) const;
+
+    //  Vectors
+    void setVector2f(const std::string& name, const glm::vec2& vector) const;
+    void setVector3f(const std::string& name, const glm::vec3& vector) const;
+    void setVector4f(const std::string& name, const glm::vec4& vector) const;
+
+    //  Matrices
+    void setMatrix2f(const std::string& name, const glm::mat2& matrix) const;
+    void setMatrix3f(const std::string& name, const glm::mat3& matrix) const;
+    void setMatrix4f(const std::string& name, const glm::mat4& matrix) const;
 
 private:
     GLuint programID;
