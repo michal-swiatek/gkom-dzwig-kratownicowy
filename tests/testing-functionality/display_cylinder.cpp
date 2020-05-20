@@ -13,12 +13,6 @@
 
 #include "Cylinder.h"
 
-cam::Camera camera;
-
-//  Camera callbacks
-void scroll_callback(GLFWwindow* window, double xpos, double ypos);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-
 class DisplayCylinder : public Core
 {
     using uint = unsigned int;
@@ -38,9 +32,7 @@ public:
 
     void init() override
     {
-        glfwSetScrollCallback(mainWindow->getWindow(), scroll_callback);
-        glfwSetCursorPosCallback(mainWindow->getWindow(), mouse_callback);
-        camera.getSettings().movementSpeed /= 2;
+        mainCamera->getSettings().movementSpeed /= 2;
 
         glGenBuffers(1, &VBO);
         glGenVertexArrays(1, &VAO);
@@ -63,37 +55,9 @@ public:
         glUniform4fv(glGetUniformLocation(shader->getProgramID(), "color"), 1, color);
     }
 
-    void updateInput() override
-    {
-        Core::updateInput();
-
-        //  Camera control
-
-        //  Speed
-        cam::Speed cameraSpeed = cam::Speed::NORMAL;
-        if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-            cameraSpeed = cam::Speed::FAST;
-        else if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
-            cameraSpeed = cam::Speed::SLOW;
-
-        //  Movement direction
-        if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_W) == GLFW_PRESS)
-            camera.move(cam::Direction::FORWARD, cameraSpeed, deltaTime);
-        if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_S) == GLFW_PRESS)
-            camera.move(cam::Direction::BACKWARD, cameraSpeed, deltaTime);
-        if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_D) == GLFW_PRESS)
-            camera.move(cam::Direction::RIGHT, cameraSpeed, deltaTime);
-        if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_A) == GLFW_PRESS)
-            camera.move(cam::Direction::LEFT, cameraSpeed, deltaTime);
-        if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
-            camera.move(cam::Direction::UP, cameraSpeed, deltaTime);
-        if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-            camera.move(cam::Direction::DOWN, cameraSpeed, deltaTime);
-    }
-
     void draw() override
     {
-        shader->setMatrix4f("mvp", camera.getViewProjectionMatrix());
+        shader->setMatrix4f("mvp", mainCamera->getViewProjectionMatrix());
 
         auto width = mainWindow->getWindowSettings().width;
         auto height = mainWindow->getWindowSettings().height;
@@ -128,37 +92,4 @@ int main() {
     app.run();
 
     return 0;
-}
-
-//
-//  Callbacks
-//
-
-void scroll_callback(GLFWwindow* window, double xpos, double ypos)
-{
-    camera.zoom(ypos);
-}
-
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-    static bool firstMouse = true;
-
-    static double lastX = 1280 / 2;
-    static double lastY = 720 / 2;
-
-    if (firstMouse)
-    {
-        lastX = xpos;
-        lastY = ypos;
-
-        firstMouse = false;
-    }
-
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos;   //  Reversed because y-coordinates range from bottom to top
-
-    lastX = xpos;
-    lastY = ypos;
-
-    camera.rotate(xoffset, yoffset, 0.0);
 }
