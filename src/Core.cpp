@@ -44,12 +44,7 @@ Core::~Core()
 void Core::initApp(uint32_t width, uint32_t height, bool fullscreen, bool showCursor)
 {
     //  Customize window
-    glfwSetWindowTitle(mainWindow->getWindow(), windowTitle.c_str());
-    glfwSetWindowSize(mainWindow->getWindow(), width, height);
-    if (fullscreen)
-        glfwSetWindowMonitor(mainWindow->getWindow(), glfwGetPrimaryMonitor(), 0, 0, width, height, 60);
-    if (!showCursor)
-        glfwSetInputMode(mainWindow->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    mainWindow->updateWindowSettings(WindowSettings(width, height, windowTitle.c_str(), fullscreen, showCursor));
 
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.1, 0.1, 0.2, 1.0);

@@ -62,8 +62,14 @@ const WindowSettings& Window::getWindowSettings() const
 
 void Window::updateWindowSettings(const WindowSettings &newSettings)
 {
-    glfwDestroyWindow(getWindow());
-    window.reset(createWindow(newSettings));
+    settings = newSettings;
+
+    glfwSetWindowTitle(window.get(), settings.title.c_str());
+    glfwSetWindowSize(window.get(), settings.width, settings.height);
+    if (settings.fullscreen)
+        glfwSetWindowMonitor(window.get(), glfwGetPrimaryMonitor(), 0, 0, settings.width, settings.height, 60);
+    if (!settings.showCursor)
+        glfwSetInputMode(window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     setDefaultCallbacks();
 }
