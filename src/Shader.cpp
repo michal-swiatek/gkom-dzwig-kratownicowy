@@ -11,6 +11,8 @@
 #include <iostream>
 #include <exception>
 
+#include <glm/gtc/type_ptr.hpp>
+
 Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath) : destroyed(false)
 {
     //  Read shaders code
@@ -93,6 +95,42 @@ void Shader::setInt(const std::string& name, int value) const
 void Shader::setFloat(const std::string& name, float value) const
 {
     glUniform1f(glGetUniformLocation(programID, name.c_str()), value);
+}
+
+//
+//  Vectors
+//
+void Shader::setVector2f(const std::string& name, const glm::vec2& vector) const
+{
+    glUniform2fv(glGetUniformLocation(programID, name.c_str()), 1, glm::value_ptr(vector));
+}
+
+void Shader::setVector3f(const std::string& name, const glm::vec3& vector) const
+{
+    glUniform3fv(glGetUniformLocation(programID, name.c_str()), 1, glm::value_ptr(vector));
+}
+
+void Shader::setVector4f(const std::string& name, const glm::vec4& vector) const
+{
+    glUniform4fv(glGetUniformLocation(programID, name.c_str()), 1, glm::value_ptr(vector));
+}
+
+//
+//  Matrices
+//
+void Shader::setMatrix2f(const std::string &name, const glm::mat2 &matrix) const
+{
+    glUniformMatrix2fv(glGetUniformLocation(programID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void Shader::setMatrix3f(const std::string &name, const glm::mat3 &matrix) const
+{
+    glUniformMatrix3fv(glGetUniformLocation(programID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void Shader::setMatrix4f(const std::string &name, const glm::mat4 &matrix) const
+{
+    glUniformMatrix4fv(glGetUniformLocation(programID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 /*

@@ -14,12 +14,18 @@
 #include <GLFW/glfw3.h>
 
 #include "Window.h"
+#include "Camera.h"
+#include "Shader.h"
 
 void initOpenGL();
 
 class Core
 {
     friend void initOpenGL();   //  Creates graphic context and initializes Window
+
+    //  Default main camera callbacks
+    friend void scroll_callback(GLFWwindow* window, double xpos, double ypos);
+    friend void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 public:
     using uint = uint32_t;
@@ -49,6 +55,7 @@ protected:
     //  OpenGL context has to be created before app start for proper exception handling
     //  so window is actually created before the Core instance and stored as static object
     static std::unique_ptr<Window> mainWindow;
+    static std::unique_ptr<cam::Camera> mainCamera;
 
     double deltaTime;
     double lastTime;
