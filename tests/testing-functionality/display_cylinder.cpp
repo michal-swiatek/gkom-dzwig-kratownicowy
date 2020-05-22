@@ -1,6 +1,8 @@
 /*
  *  Created by michal-swiatek on 19.05.2020.
  *  Gitlab: http://gitlab.ii.pw.edu.pl/gkom.20l/dzwig-kratownicowy/
+ *
+ *  TODO: fix strange specular highlights in phong_model shader
  */
 
 #include "Core.h"
@@ -10,6 +12,7 @@
 
 #include "Shader.h"
 #include "Camera.h"
+#include "PhongMaterial.h"
 
 #include "Cylinder.h"
 
@@ -20,6 +23,7 @@ class DisplayCylinder : public Core
 private:
     std::unique_ptr<Shader> shader;
     std::unique_ptr<Cylinder> cylinder;
+    std::unique_ptr<PhongMaterial> material;
 
     uint VBO, VAO, EBO;
 
@@ -27,7 +31,8 @@ public:
     DisplayCylinder() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
     {
         cylinder = std::make_unique<Cylinder>(1.0f, 0.5f, 2.0, 25, 2);
-        shader = std::make_unique<Shader>("shaders/flat.vs.glsl", "shaders/flat.fs.glsl");
+        shader = std::make_unique<Shader>("shaders/phong_model.vs.glsl", "shaders/phong_model.fs.glsl");
+        material = std::make_unique<PhongMaterial>(glm::vec4(1.0f, 0.5f, 0.3f, 1.0f), glm::vec4(0.5f, 0.5, 0.5, 1.0f));
     }
 
     void init() override
@@ -49,14 +54,31 @@ public:
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(0));
         glEnableVertexAttribArray(0);
 
-        shader->use();
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
 
-        float color[4] = {1.0f, 0.0f, 0.0f, 1.0f};
-        glUniform4fv(glGetUniformLocation(shader->getProgramID(), "color"), 1, color);
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glEnableVertexAttribArray(2);
+
+        shader->use();
+        shader->setVector4f("light.position", glm::vec4(3.0f, 5.0f, 5.0f, 1.0f));
+        shader->setVector3f("light.ambient", glm::vec3(0.1f));
+        shader->setVector3f("light.diffuse", glm::vec3(1.0f));
+        shader->setVector3f("light.specular", glm::vec3(0.5f));
+
+        shader->setMatrix4f("model", glm::mat4(1.0f));
+        shader->setMatrix3f("modelInvTrans", glm::mat3(glm::transpose(glm::inverse(glm::mat4(1.0f)))));
+
+
+        material->applyMaterial(*shader);
+
+//        float color[4] = {1.0f, 0.0f, 0.0f, 1.0f};
+//        glUniform4fv(glGetUniformLocation(shader->getProgramID(), "color"), 1, color);
     }
 
     void draw() override
     {
+        shader->setVector3f("eyePos", mainCamera->getTransform().position);
         shader->setMatrix4f("mvp", mainCamera->getViewProjectionMatrix());
 
         auto width = mainWindow->getWindowSettings().width;

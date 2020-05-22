@@ -21,8 +21,18 @@ set(GLAD_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/include")
 set(GLAD_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/src")
 add_library(GLAD "${GLAD_SOURCE_DIR}/glad.c")
 
+
+# STB_IMAGE
+set(STB_IMAGE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/include")
+set(STB_IMAGE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/src")
+add_library(STB_IMAGE "${STB_IMAGE_SOURCE_DIR}/stb_image.cpp")
+
+#
+#   Include and link libraries
+#
+
 # Include libraries
-include_directories("${GLFW3_INCLUDE_DIR}" "${GLAD_INCLUDE_DIR}" "${GLM_INCLUDE_DIRS}")
+include_directories("${GLFW3_INCLUDE_DIR}" "${GLAD_INCLUDE_DIR}" "${GLM_INCLUDE_DIRS}" "${STB_IMAGE_INCLUDE_DIR}")
 
 # Linking
-set(OPENGL_LIBS "${GLFW3_LIBRARY}" opengl32 GLAD)
+set(OPENGL_LIBS "${GLFW3_LIBRARY}" opengl32 GLAD STB_IMAGE)
