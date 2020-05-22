@@ -8,6 +8,11 @@
 #include <stdexcept>
 
 std::unique_ptr<Window> Core::mainWindow = nullptr;
+std::unique_ptr<cam::Camera> Core::mainCamera = nullptr;
+
+//  Default main camera callbacks
+void scroll_callback(GLFWwindow* window, double xpos, double ypos);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 //
 //  Initialize OpenGL before the application starts
@@ -44,12 +49,12 @@ Core::~Core()
 void Core::initApp(uint32_t width, uint32_t height, bool fullscreen, bool showCursor)
 {
     //  Customize window
-    glfwSetWindowTitle(mainWindow->getWindow(), windowTitle.c_str());
-    glfwSetWindowSize(mainWindow->getWindow(), width, height);
-    if (fullscreen)
-        glfwSetWindowMonitor(mainWindow->getWindow(), glfwGetPrimaryMonitor(), 0, 0, width, height, 60);
-    if (!showCursor)
-        glfwSetInputMode(mainWindow->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    mainWindow->updateWindowSettings(WindowSettings(width, height, windowTitle.c_str(), fullscreen, showCursor));
+
+    //  Initialize main camera
+    mainCamera = std::make_unique<cam::Camera>();
+    glfwSetScrollCallback(mainWindow->getWindow(), scroll_callback);
+    glfwSetCursorPosCallback(mainWindow->getWindow(), mouse_callback);
 
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.1, 0.1, 0.2, 1.0);
@@ -105,6 +110,29 @@ void Core::updateInput()
 {
     if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
         mainWindow->close();
+
+    //  Camera control
+
+    //  Speed
+    cam::Speed cameraSpeed = cam::Speed::NORMAL;
+    if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        cameraSpeed = cam::Speed::FAST;
+    else if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
+        cameraSpeed = cam::Speed::SLOW;
+
+    //  Movement direction
+    if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_W) == GLFW_PRESS)
+        mainCamera->move(cam::Direction::FORWARD, cameraSpeed, deltaTime);
+    if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_S) == GLFW_PRESS)
+        mainCamera->move(cam::Direction::BACKWARD, cameraSpeed, deltaTime);
+    if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_D) == GLFW_PRESS)
+        mainCamera->move(cam::Direction::RIGHT, cameraSpeed, deltaTime);
+    if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_A) == GLFW_PRESS)
+        mainCamera->move(cam::Direction::LEFT, cameraSpeed, deltaTime);
+    if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
+        mainCamera->move(cam::Direction::UP, cameraSpeed, deltaTime);
+    if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        mainCamera->move(cam::Direction::DOWN, cameraSpeed, deltaTime);
 }
 
 void Core::updateLogic()
@@ -115,4 +143,37 @@ void Core::updateLogic()
 void Core::draw()
 {
 
+}
+
+//
+//  Default main camera callbacks
+//
+
+void scroll_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    Core::mainCamera->zoom(ypos);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    static bool firstMouse = true;
+
+    static double lastX = 1280 / 2;
+    static double lastY = 720 / 2;
+
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos;   //  Reversed because y-coordinates range from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    Core::mainCamera->rotate(xoffset, yoffset, 0.0);
 }

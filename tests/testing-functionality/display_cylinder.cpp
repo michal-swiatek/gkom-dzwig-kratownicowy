@@ -9,6 +9,8 @@
 #include <iostream>
 
 #include "Shader.h"
+#include "Camera.h"
+
 #include "Cylinder.h"
 
 class DisplayCylinder : public Core
@@ -22,14 +24,16 @@ private:
     uint VBO, VAO, EBO;
 
 public:
-    DisplayCylinder() : Core("Display cylinder")
+    DisplayCylinder() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
     {
-        cylinder = std::make_unique<Cylinder>(0.5f, 0.0f, 0.5, 4, 3);
+        cylinder = std::make_unique<Cylinder>(1.0f, 0.5f, 2.0, 25, 2);
         shader = std::make_unique<Shader>("shaders/flat.vs.glsl", "shaders/flat.fs.glsl");
     }
 
     void init() override
     {
+        mainCamera->getSettings().movementSpeed /= 2;
+
         glGenBuffers(1, &VBO);
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &EBO);
@@ -53,6 +57,17 @@ public:
 
     void draw() override
     {
+        shader->setMatrix4f("mvp", mainCamera->getViewProjectionMatrix());
+
+        auto width = mainWindow->getWindowSettings().width;
+        auto height = mainWindow->getWindowSettings().height;
+
+        glViewport(0, 0, width / 2, height);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glDrawElements(GL_TRIANGLES, cylinder->getIndices().size(), GL_UNSIGNED_INT, 0);
+
+        glViewport(width / 2, 0, width / 2, height);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glDrawElements(GL_TRIANGLES, cylinder->getIndices().size(), GL_UNSIGNED_INT, 0);
     }
 };
@@ -68,7 +83,7 @@ int main() {
 
     DisplayCylinder app;
     try {
-        app.initApp();
+        app.initApp(1280, 720, false, false);
     }
     catch (std::exception& e) {
         std::cout << e.what();
