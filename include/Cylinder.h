@@ -1,6 +1,7 @@
 /*
  *  Created by Rafal Uzarowicz
  *  github: https://github.com/RafalUzarowicz
+ *  modified 27.05.20 BM
  */
 
 #ifndef CYLINDER_H_UZAROWICZ
@@ -10,11 +11,11 @@
 #include <iostream>
 #include <cmath>
 
-class Cylinder
+#include "Object.h"
+
+class Cylinder : public Object
 {
 private:
-	std::vector<float> vertices;
-	std::vector<unsigned int> indices;
 	float baseRadius;
 	float topRadius;
 	float height;
@@ -25,6 +26,7 @@ private:
 	const unsigned int paramNum = 8;
 
 public:
+	void initShader() override;
 
 	Cylinder(float bR = 1.0f, float tR = 1.0f, float h = 2.0f, int secNum = 4, int staNum = 3);
 

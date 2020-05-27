@@ -3,10 +3,24 @@
 /*
  *  Created by Rafal Uzarowicz
  *  github: https://github.com/RafalUzarowicz
+ *  modified 27.05.20 BM
  */
+
+
+void Cylinder::initShader()
+{
+	shader = std::make_unique<Shader>("../shaders/phong_view.vs.glsl", "../shaders/phong_view.fs.glsl");
+
+	shader->use();
+	shader->setVector3f("lightColor", glm::vec3(1.0f));
+	shader->setVector3f("ambientColor", glm::vec3(0.5f));
+	shader->setVector3f("diffuseColor", glm::vec3(1.0f));
+	shader->setVector3f("specularColor", glm::vec3(0.6f));
+}
 
 Cylinder::Cylinder(float bR, float tR, float h, int secNum, int staNum) {
 	this->setParams(bR, tR, h, secNum, staNum);
+	init();
 }
 
 void Cylinder::setParams(float bR, float tR, float h, int secNum, int staNum) {

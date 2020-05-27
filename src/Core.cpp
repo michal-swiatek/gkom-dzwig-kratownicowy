@@ -6,6 +6,7 @@
 #include "Core.h"
 
 #include <stdexcept>
+#include "Cylinder.h"
 
 std::unique_ptr<Window> Core::mainWindow = nullptr;
 std::unique_ptr<cam::Camera> Core::mainCamera = nullptr;
@@ -142,6 +143,10 @@ void Core::updateLogic()
 
 void Core::draw()
 {
+    Cylinder c(1.0f, 0.5f, 2.0, 25, 2);
+    c.draw(mainCamera, mainWindow->getWindowSettings());
+    Cylinder c2(1.2f, 0.3f, 1.0, 5, 1);
+    c2.draw(mainCamera, mainWindow->getWindowSettings());
 
 }
 
