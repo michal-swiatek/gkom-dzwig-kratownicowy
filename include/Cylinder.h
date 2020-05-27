@@ -38,10 +38,6 @@ public:
 
 	void setParams(float bR, float tR, float h, int secNum, int staNum);
 
-	std::vector<float> getVertices();
-
-	std::vector<unsigned int> getIndices();
-
 	void clearVectors();
 
 	void generateCylinder();

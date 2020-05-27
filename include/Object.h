@@ -23,7 +23,9 @@ public:
 
     GLuint VBO, VAO, EBO;
 
+	std::vector<float> getVertices();
 
+	std::vector<unsigned int> getIndices();
 
     void init();
 

@@ -49,14 +49,6 @@ void Cylinder::setParams(float bR, float tR, float h, int secNum, int staNum) {
 	}
 }
 
-std::vector<float> Cylinder::getVertices() {
-	return this->vertices;
-}
-
-std::vector<unsigned int> Cylinder::getIndices() {
-	return this->indices;
-}
-
 void Cylinder::clearVectors() {
 	this->vertices.clear();
 	this->indices.clear();

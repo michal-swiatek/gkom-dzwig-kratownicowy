@@ -54,7 +54,6 @@ public:
         float color[4] = {1.0f, 0.0f, 0.0f, 1.0f};
         glUniform4fv(glGetUniformLocation(shader->getProgramID(), "color"), 1, color);
     }
-
     void draw() override
     {
         shader->setMatrix4f("mvp", mainCamera->getViewProjectionMatrix());

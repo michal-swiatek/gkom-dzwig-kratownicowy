@@ -61,5 +61,11 @@ void  Object::draw(std::unique_ptr<cam::Camera>& camera, WindowSettings windowSe
         
 }
 
+std::vector<float> Object::getVertices() {
+	return this->vertices;
+}
 
+std::vector<unsigned int> Object::getIndices() {
+	return this->indices;
+}
 
