@@ -20,6 +20,8 @@ private:
 	int sectorsNum;
 	int stacksNum;
 
+	const unsigned int paramNum = 8;
+
 	const float PI = (float)acos(-1);
 
 public:
@@ -32,6 +34,7 @@ public:
 	Cylinder& operator=(const Cylinder& rhs) = default;
 
 	Cylinder(Cylinder&& other) = default;
+private:
 
 	void setParams(float bR, float tR, float h, int secNum, int staNum);
 

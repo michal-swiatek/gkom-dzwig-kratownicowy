@@ -7,6 +7,7 @@
 
 #include <stdexcept>
 #include "Cylinder.h"
+#include "Compound.h"
 
 std::unique_ptr<Window> Core::mainWindow = nullptr;
 std::unique_ptr<cam::Camera> Core::mainCamera = nullptr;
@@ -143,19 +144,32 @@ void Core::updateLogic()
 
 void Core::draw()
 {
-    Cylinder c(1.0f, 0.5f, 2.0, 25, 2);
-    c.draw(mainCamera, mainWindow->getWindowSettings(), false);
-
-    Cylinder c2(1.2f, 0.3f, 1.0, 5, 1);
- //   c2.translate(glm::vec3(0.0f, 0.0f, 1.0f));
-    c2.translate(glm::vec3(0.0f, 1.0f, 0.0f));
- //   c2.translate(glm::vec3(4.0f, 0.0f, 1.0f));
-
-    c2.rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
-    c2.scale(glm::vec3(3.0, 3.0, 3.0));
+    auto c = std::unique_ptr<Cylinder>(new Cylinder(1.0f, 0.5f, 2.0, 25, 2));
 
 
-    c2.draw(mainCamera, mainWindow->getWindowSettings(), false);
+    auto c2 = std::unique_ptr<Cylinder>(new Cylinder(1.2f, 0.3f, 1.0, 5, 1));
+    /*
+    c2->translate(glm::vec3(0.0f, 1.0f, 0.0f));
+    c2->rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
+    c2->scale(glm::vec3(3.0, 3.0, 3.0));
+    */
+    c2->setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+    c2->setRotation(90.0f, glm::vec3(1.0, 0.0, 0.0));
+    c2->setScale(glm::vec3(1.5, 1.5, 1.5));
+
+    c->draw(mainCamera, mainWindow->getWindowSettings(), true);
+    c2->draw(mainCamera, mainWindow->getWindowSettings(), false);
+
+
+    
+    auto comp = std::unique_ptr<Compound>(new Compound());
+    comp->addObject(std::move(c));
+    comp->addObject(std::move(c2));
+
+    comp->translate(glm::vec3(0.0f, 5.0f, 0.0f));
+    comp->draw(mainCamera, mainWindow->getWindowSettings(), false);
+    
+
 
 }
 

@@ -15,6 +15,7 @@ created by BM Wzorowane na Box.cpp z learnopengl by Micha³ Œwi¹tek
 */
 
 
+
 void Object::init()
 {
     initShader();

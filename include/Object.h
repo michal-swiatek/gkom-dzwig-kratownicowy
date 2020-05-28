@@ -17,34 +17,26 @@ class Object
 created by BM Wzorowane na Box.cpp z learnopengl by Micha³ Œwi¹tek
 */
 
-public:
+protected:
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
 
-	Object() = default;
-
-	const unsigned int paramNum = 8;
-
     std::unique_ptr<Shader>  shader;
-
     GLuint VBO, VAO, EBO;
-
-	std::vector<float> getVertices();
-
-	std::vector<unsigned int> getIndices();
-
-
 
     Transform transform;
     glm::mat4 modelMatrix;
-
     glm::mat4 projectionMatrix;
-
     glm::vec4 color;
+
     using OptionalMat4 = std::optional<glm::mat4>;
 
+public:
     explicit Object(const Transform& transform, const glm::vec4& color = glm::vec4(1.0f));
     explicit Object(const glm::vec3& position = glm::vec3(0.0f), const glm::vec4& color = glm::vec4(1.0f));
+
+    std::vector<float> getVertices();
+    std::vector<unsigned int> getIndices();
 
     void updateMatrices(const OptionalMat4& projection = {});
 
