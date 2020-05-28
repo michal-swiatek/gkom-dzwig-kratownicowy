@@ -144,9 +144,18 @@ void Core::updateLogic()
 void Core::draw()
 {
     Cylinder c(1.0f, 0.5f, 2.0, 25, 2);
-    c.draw(mainCamera, mainWindow->getWindowSettings());
+    c.draw(mainCamera, mainWindow->getWindowSettings(), false);
+
     Cylinder c2(1.2f, 0.3f, 1.0, 5, 1);
-    c2.draw(mainCamera, mainWindow->getWindowSettings());
+ //   c2.translate(glm::vec3(0.0f, 0.0f, 1.0f));
+    c2.translate(glm::vec3(0.0f, 1.0f, 0.0f));
+ //   c2.translate(glm::vec3(4.0f, 0.0f, 1.0f));
+
+    c2.rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
+    c2.scale(glm::vec3(3.0, 3.0, 3.0));
+
+
+    c2.draw(mainCamera, mainWindow->getWindowSettings(), false);
 
 }
 
