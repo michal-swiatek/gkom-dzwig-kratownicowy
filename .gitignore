@@ -3,6 +3,7 @@
 /bin/
 
 # Visual studio project files
+build/
 /.vs/
 /GKOM_OpenGL/
 /build/ZERO_CHECK.vcxproj.filters
