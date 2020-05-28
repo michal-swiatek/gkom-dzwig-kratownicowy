@@ -19,6 +19,10 @@ public:
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
 
+	Object() = default;
+
+	const unsigned int paramNum = 8;
+
     std::unique_ptr<Shader>  shader;
 
     GLuint VBO, VAO, EBO;
@@ -26,6 +30,8 @@ public:
 	std::vector<float> getVertices();
 
 	std::vector<unsigned int> getIndices();
+
+	void clearVectors();
 
     void init();
 

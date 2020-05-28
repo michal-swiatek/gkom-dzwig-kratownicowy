@@ -69,3 +69,7 @@ std::vector<unsigned int> Object::getIndices() {
 	return this->indices;
 }
 
+void Object::clearVectors() {
+	this->vertices.clear();
+	this->indices.clear();
+}

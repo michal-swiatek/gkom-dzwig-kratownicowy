@@ -3,7 +3,6 @@
 /*
  *  Created by Rafal Uzarowicz
  *  github: https://github.com/RafalUzarowicz
- *  modified 27.05.20 BM
  */
 
 
@@ -47,11 +46,6 @@ void Cylinder::setParams(float bR, float tR, float h, int secNum, int staNum) {
 
 		this->generateCylinder();
 	}
-}
-
-void Cylinder::clearVectors() {
-	this->vertices.clear();
-	this->indices.clear();
 }
 
 void Cylinder::generateCylinder() {

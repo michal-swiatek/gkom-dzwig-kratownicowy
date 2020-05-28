@@ -1,13 +1,11 @@
 /*
  *  Created by Rafal Uzarowicz
  *  github: https://github.com/RafalUzarowicz
- *  modified 27.05.20 BM
  */
 
 #ifndef CYLINDER_H_UZAROWICZ
 #define CYLINDER_H_UZAROWICZ
 
-#include <vector>
 #include <iostream>
 #include <cmath>
 
@@ -23,7 +21,6 @@ private:
 	int stacksNum;
 
 	const float PI = (float)acos(-1);
-	const unsigned int paramNum = 8;
 
 public:
 	void initShader() override;
@@ -37,8 +34,6 @@ public:
 	Cylinder(Cylinder&& other) = default;
 
 	void setParams(float bR, float tR, float h, int secNum, int staNum);
-
-	void clearVectors();
 
 	void generateCylinder();
 
