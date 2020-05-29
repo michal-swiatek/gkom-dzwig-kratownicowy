@@ -10,7 +10,7 @@
 
 class Object : public Model
 {/*
-created by BM Wzorowane na Box.cpp z learnopengl by Micha³ Œwi¹tek
+created by BM Wzorowane na Box.cpp z learnopengl by Michaï¿½ ï¿½wiï¿½tek
 */
 
 protected:
@@ -29,6 +29,8 @@ protected:
 
     glm::mat4 projectionMatrix;
     glm::vec4 color;
+
+    const unsigned int paramNum = 8;
 
     using OptionalMat4 = std::optional<glm::mat4>;
 

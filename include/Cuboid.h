@@ -1,3 +1,8 @@
+/*
+ *  Created by Rafal Uzarowicz
+ *  github: https://github.com/RafalUzarowicz
+ */
+
 #ifndef CUBOID_H
 #define CUBOID_H
 
@@ -9,21 +14,21 @@
 class Cuboid : public Object {
 private:
 
-	void generateIndicies();
+    void generateIndicies();
 
 public:
 
-	void initShader() override;
+    void initShader() override;
 
-	Cuboid(float width = 1.0f, float length = 1.0f, float height = 1.0f);
-	
-	void generateCuboid(float width = 1.0f, float length = 1.0f, float height = 1.0f);
+    Cuboid(float width = 1.0f, float length = 1.0f, float height = 1.0f);
 
-	Cuboid(const Cuboid& other) = default;
+    void generateCuboid(float width = 1.0f, float length = 1.0f, float height = 1.0f);
 
-	Cuboid& operator=(const Cuboid& rhs) = default;
+    Cuboid(const Cuboid& other) = default;
 
-	Cuboid(Cuboid&& other) = default;
+    Cuboid& operator=(const Cuboid& rhs) = default;
+
+    Cuboid(Cuboid&& other) = default;
 
 };
 

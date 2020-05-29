@@ -14,41 +14,39 @@
 class Cylinder : public Object
 {
 private:
-	float baseRadius;
-	float topRadius;
-	float height;
-	int sectorsNum;
-	int stacksNum;
+    float baseRadius;
+    float topRadius;
+    float height;
+    int sectorsNum;
+    int stacksNum;
 
-	const unsigned int paramNum = 8;
-
-	const float PI = (float)acos(-1);
+    const float PI = (float)acos(-1);
 
 public:
-	void initShader() override;
+    void initShader() override;
 
-	Cylinder(float bR = 1.0f, float tR = 1.0f, float h = 2.0f, int secNum = 4, int staNum = 3);
+    Cylinder(float bR = 1.0f, float tR = 1.0f, float h = 2.0f, int secNum = 4, int staNum = 3);
 
-	Cylinder(const Cylinder& other) = default;
+    Cylinder(const Cylinder& other) = default;
 
-	Cylinder& operator=(const Cylinder& rhs) = default;
+    Cylinder& operator=(const Cylinder& rhs) = default;
 
-	Cylinder(Cylinder&& other) = default;
+    Cylinder(Cylinder&& other) = default;
 private:
 
-	void setParams(float bR, float tR, float h, int secNum, int staNum);
+    void setParams(float bR, float tR, float h, int secNum, int staNum);
 
-	void generateCylinder();
+    void generateCylinder();
 
-	float vectorLength(std::vector<float> vec);
+    float vectorLength(std::vector<float> vec);
 
-	std::vector<float> generateBaseCircleVertices();
+    std::vector<float> generateBaseCircleVertices();
 
-	std::vector<float> generateTopCircleVertices();
+    std::vector<float> generateTopCircleVertices();
 
-	void generateVertices();
+    void generateVertices();
 
-	void generateIndices();
+    void generateIndices();
 
 };
 
