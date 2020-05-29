@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include "Cylinder.h"
 #include "Compound.h"
+#include "Model.h"
 
 std::unique_ptr<Window> Core::mainWindow = nullptr;
 std::unique_ptr<cam::Camera> Core::mainCamera = nullptr;
@@ -161,13 +162,13 @@ void Core::draw()
 
 
     auto comp = std::unique_ptr<Compound>(new Compound());
-    comp->addObject(std::move(c));
-    comp->addObject(std::move(c2));
-    comp->rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
+    comp->addModel(std::move(c));
+    comp->addModel(std::move(c2));
+  //  comp->rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
 
     auto comp2 = std::unique_ptr<Compound>(new Compound());
-    comp2->addObject(std::move(c3));
-    comp2->addObject(std::move(c4));
+    comp2->addModel(std::move(c3));
+    comp2->addModel(std::move(c4));
     comp2->rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
 
     float a, b;

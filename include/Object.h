@@ -3,16 +3,12 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <memory>
 
-#include "Camera.h"
-#include "Shader.h"
-#include "window.h"
 
-class Object
+
+#include "Model.h"
+
+class Object : public Model
 {/*
 created by BM Wzorowane na Box.cpp z learnopengl by Micha³ Œwi¹tek
 */
@@ -45,9 +41,9 @@ public:
 
     void updateMatrices(const OptionalMat4& projection = {});
 
-    void translate(const glm::vec3& offset);
-    void rotate(float angle, const std::optional<glm::vec3>& axis);
-    void scale(const glm::vec3& value);
+    void translate(const glm::vec3& offset) override;
+    void rotate(float angle, const std::optional<glm::vec3>& axis) override;
+    void scale(const glm::vec3& value) override;
 
     void rotate2( const std::optional<glm::vec3>& axis);
 

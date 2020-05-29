@@ -1,27 +1,27 @@
 #ifndef COMPOUND_H
 #define COMPOUND_H
 
-#include "Object.h"
-#include <vector>
+#include "Model.h"
 
-class Compound{
+class Compound : public Model
+{
 protected:
-	std::vector<std::unique_ptr<Object>> objects;
+	std::vector<std::unique_ptr<Model>> models;
 
 public:
-	void addObject(std::unique_ptr<Object> object);
+	void addModel(std::unique_ptr<Model> models);
 
-    void translate(const glm::vec3& offset);
-    void rotate(float angle, const std::optional<glm::vec3>& axis);
-    void scale(const glm::vec3& value);
+    void translate(const glm::vec3& offset) override;
+    void rotate(float angle, const std::optional<glm::vec3>& axis) override;
+    void scale(const glm::vec3& value) override;
 
-
+    Compound();
 
 
     void rotate2(const std::optional<glm::vec3>& axis);
 
 
-    void draw(std::unique_ptr<cam::Camera>& camera, WindowSettings windowSettings, bool use_color) const;
+    void draw(std::unique_ptr<cam::Camera>& camera, WindowSettings windowSettings, bool use_color) const override;
 
 
 };
