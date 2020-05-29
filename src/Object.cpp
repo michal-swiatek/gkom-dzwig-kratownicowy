@@ -52,11 +52,11 @@ void  Object::draw(std::unique_ptr<cam::Camera>& camera, WindowSettings windowSe
     glm::mat4 view = camera->getViewMatrix();
 
     shader->use();
-    glm::mat4 mv = view * modelMatrix;
+    glm::mat4 mv = view * translationMatrix * scaleMatrix  * rotationMatrix ;
     shader->setVector3f("lightPos", glm::vec3(mv * glm::vec4(glm::vec3(10.0f), 1.0f)));
     shader->setMatrix4f("mv", mv);
     shader->setMatrix4f("mvp", projection * mv);
-    shader->setMatrix3f("mvInvTrans", glm::mat3(glm::transpose(glm::inverse(view * modelMatrix))));
+    shader->setMatrix3f("mvInvTrans", glm::mat3(glm::transpose(glm::inverse(mv))));
 
     glBindVertexArray(VAO);
 
@@ -79,16 +79,20 @@ std::vector<unsigned int> Object::getIndices() {
 
 Object::Object(const Transform& transform, const glm::vec4& color) : transform(transform), color(color)
 {
-    modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, transform.position);
-    modelMatrix = glm::scale(modelMatrix, transform.scale);
+    rotationMatrix = glm::mat4(1.0f);
+    translationMatrix = glm::mat4(1.0f);
+    scaleMatrix = glm::mat4(1.0f);
+ //   modelMatrix = glm::translate(modelMatrix, transform.position);
+  //  modelMatrix = glm::scale(modelMatrix, transform.scale);
 }
 
 Object::Object(const glm::vec3& position, const glm::vec4& color) : transform(Transform(position)), color(color)
 {
-    modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, transform.position);
-    modelMatrix = glm::scale(modelMatrix, transform.scale);
+    rotationMatrix = glm::mat4(1.0f);
+    translationMatrix = glm::mat4(1.0f);
+    scaleMatrix = glm::mat4(1.0f);
+  // modelMatrix = glm::translate(modelMatrix, position);
+   // modelMatrix = glm::scale(modelMatrix, transform.scale);
 }
 
 void Object::updateMatrices(const OptionalMat4& projection)
@@ -101,9 +105,9 @@ void Object::updateMatrices(const OptionalMat4& projection)
 
 void Object::translate(const glm::vec3& offset)
 {
-    transform.position += offset;
+    transform.position = offset;
 
-    modelMatrix = glm::translate(modelMatrix, offset);
+    translationMatrix = glm::translate(glm::mat4(1.0f), offset)*translationMatrix;
 }
 
 void Object::rotate(float angle, const std::optional<glm::vec3>& axis)
@@ -111,74 +115,35 @@ void Object::rotate(float angle, const std::optional<glm::vec3>& axis)
     if (axis)
         transform.rotation = *axis;
 
-    modelMatrix = glm::translate(modelMatrix, transform.position);
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), transform.rotation);
-    modelMatrix = glm::translate(modelMatrix, -transform.position);
+    rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), transform.rotation)*rotationMatrix;
+}
+
+void Object::rotate2( const std::optional<glm::vec3>& axis)
+{
+    if (axis)
+        transform.rotation = *axis;
+
+    rotationMatrix = glm::rotate(glm::mat4(1.0f), (float)glfwGetTime(), transform.rotation)*rotationMatrix;
 }
 
 void Object::scale(const glm::vec3& value)
 {
-    transform.scale *= value;
+    transform.scale = value;
 
-    modelMatrix = glm::translate(modelMatrix, transform.position);
-    modelMatrix = glm::scale(modelMatrix, value);
-    modelMatrix = glm::translate(modelMatrix, -transform.position);
+    scaleMatrix = glm::scale(glm::mat4(1.0f), value)*  scaleMatrix ;
 }
 
-void Object::setPosition(const glm::vec3& position)
-{
-    modelMatrix = glm::translate(modelMatrix, -transform.position);
-    transform.position = position;
-    modelMatrix = glm::translate(modelMatrix, transform.position);
-}
 
-void Object::setRotation(float angle, const glm::vec3& axis)
-{
-    transform.rotation = axis;
 
-    modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, transform.position);
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), transform.rotation);
-    modelMatrix = glm::scale(modelMatrix, transform.scale);
-}
 
-void Object::setScale(const glm::vec3& scale)
-{
-    modelMatrix = glm::translate(modelMatrix, transform.position);
-    modelMatrix = glm::scale(modelMatrix, scale);
-    modelMatrix = glm::translate(modelMatrix, -transform.position);
 
-    transform.scale = scale;
 
-    modelMatrix = glm::translate(modelMatrix, transform.position);
-    modelMatrix = glm::scale(modelMatrix, scale);
-    modelMatrix = glm::translate(modelMatrix, -transform.position);
-}
 
-//  Transform
-const Transform& Object::getTransform() const
-{
-    return transform;
-}
 
-void Object::setTransform(const Transform& newTransform)
-{
-    transform = newTransform;
 
-    modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, transform.position);
-    modelMatrix = glm::scale(modelMatrix, transform.scale);
-}
 
-const glm::mat4& Object::getModelMatrix() const
-{
-    return modelMatrix;
-}
 
-void Object::setModelMatrix(const glm::mat4& newModelMatrix)
-{
-    modelMatrix = newModelMatrix;
-}
+
 
 //  Color
 const glm::vec4& Object::getColor() const

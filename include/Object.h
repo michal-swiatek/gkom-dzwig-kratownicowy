@@ -25,7 +25,12 @@ protected:
     GLuint VBO, VAO, EBO;
 
     Transform transform;
-    glm::mat4 modelMatrix;
+
+    glm::mat4 rotationMatrix;
+    glm::mat4 translationMatrix;
+    glm::mat4 scaleMatrix;
+
+
     glm::mat4 projectionMatrix;
     glm::vec4 color;
 
@@ -44,16 +49,7 @@ public:
     void rotate(float angle, const std::optional<glm::vec3>& axis);
     void scale(const glm::vec3& value);
 
-    void setPosition(const glm::vec3& position);
-    void setRotation(float angle, const glm::vec3& axis);
-    void setScale(const glm::vec3& scale);
-
-    //  Transform
-    [[nodiscard]] const Transform& getTransform() const;
-    void setTransform(const Transform& newTransform);
-
-    [[nodiscard]] const glm::mat4& getModelMatrix() const;
-    void setModelMatrix(const glm::mat4& newModelMatrix);
+    void rotate2( const std::optional<glm::vec3>& axis);
 
     //  Color
     [[nodiscard]] const glm::vec4& getColor() const;
