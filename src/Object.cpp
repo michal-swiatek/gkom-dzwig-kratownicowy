@@ -52,8 +52,8 @@ void  Object::draw(std::unique_ptr<cam::Camera>& camera, WindowSettings windowSe
     glm::mat4 view = camera->getViewMatrix();
 
     shader->use();
-    glm::mat4 mv = view * translationMatrix * scaleMatrix  * rotationMatrix ;
-    shader->setVector3f("lightPos", glm::vec3(mv * glm::vec4(glm::vec3(10.0f), 1.0f)));
+    glm::mat4 mv = view * translationMatrix * scaleMatrix * rotationMatrix;
+    shader->setVector3f("lightPos", glm::vec3(view * glm::vec4(glm::vec3(10.0f), 1.0f)));
     shader->setMatrix4f("mv", mv);
     shader->setMatrix4f("mvp", projection * mv);
     shader->setMatrix3f("mvInvTrans", glm::mat3(glm::transpose(glm::inverse(mv))));
