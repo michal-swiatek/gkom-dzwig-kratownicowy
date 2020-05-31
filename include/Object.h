@@ -1,71 +1,62 @@
-
+/*
+ *  Created by Boguslaw Malewski, Rafal Uzarowicz
+ */
 
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <memory>
 
-
-
+#include "Camera.h"
+#include "Shader.h"
+#include "window.h"
+#include "IObject.h"
 #include "Model.h"
 
-class Object : public Model
-{/*
-created by BM Wzorowane na Box.cpp z learnopengl by Micha� �wi�tek
-*/
-
+class Object : IObject
+{
 protected:
-    std::vector<float> vertices;
-    std::vector<unsigned int> indices;
 
-    std::unique_ptr<Shader>  shader;
-    GLuint VBO, VAO, EBO;
+	std::shared_ptr<Model>  model;
 
-    Transform transform;
+	unsigned int textureID;
 
-    glm::mat4 rotationMatrix;
-    glm::mat4 translationMatrix;
-    glm::mat4 scaleMatrix;
+	Transform transform;
 
+	glm::mat4 rotationMatrix;
+	glm::mat4 translationMatrix;
+	glm::mat4 scaleMatrix;
 
-    glm::mat4 projectionMatrix;
-    glm::vec4 color;
+	glm::mat4 projectionMatrix;
+	glm::vec4 color;
 
-    const unsigned int paramNum = 8;
+	using OptionalMat4 = std::optional<glm::mat4>;
 
-    using OptionalMat4 = std::optional<glm::mat4>;
 
 public:
-    explicit Object(const Transform& transform, const glm::vec4& color = glm::vec4(1.0f));
-    explicit Object(const glm::vec3& position = glm::vec3(0.0f), const glm::vec4& color = glm::vec4(1.0f));
 
-    std::vector<float> getVertices();
-    std::vector<unsigned int> getIndices();
+	Object(unsigned int textureID);
 
-    void updateMatrices(const OptionalMat4& projection = {});
+	void setModel(std::shared_ptr<Model> model);
 
-    void translate(const glm::vec3& offset) override;
-    void rotate(float angle, const std::optional<glm::vec3>& axis) override;
-    void scale(const glm::vec3& value) override;
+	void updateMatrices(const OptionalMat4& projection = {});
 
-    void rotate2( const std::optional<glm::vec3>& axis);
+	void translate(const glm::vec3& offset) override;
+	void rotate(float angle, const std::optional<glm::vec3>& axis) override;
+	void scale(const glm::vec3& value) override;
 
-    //  Color
-    [[nodiscard]] const glm::vec4& getColor() const;
-    void setColor(const glm::vec4& newColor);
+	void rotate2(const std::optional<glm::vec3>& axis) override;
 
-	void clearVectors();
+	//  Color
+	[[nodiscard]] const glm::vec4& getColor() const;
+	void setColor(const glm::vec4& newColor);
 
-    void init();
-    using OptionalMat4 = std::optional<glm::mat4>;
+	using OptionalMat4 = std::optional<glm::mat4>;
 
-   
-    void draw(std::unique_ptr<cam::Camera>& camera, WindowSettings windowSettings, bool use_color) const;
-
-    virtual void initShader() = 0;
-
-
-
-
+	void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const override;
 };
-
-#endif //OBJECT_H
+#endif // !OBJECT_H

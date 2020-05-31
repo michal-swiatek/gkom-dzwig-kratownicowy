@@ -1,21 +1,9 @@
-#include "../include/Cylinder.h"
-
 /*
  *  Created by Rafal Uzarowicz
  *  github: https://github.com/RafalUzarowicz
  */
 
-
-void Cylinder::initShader()
-{
-    shader = std::make_unique<Shader>("../shaders/phong_view.vs.glsl", "../shaders/phong_view.fs.glsl");
-
-    shader->use();
-    shader->setVector3f("lightColor", glm::vec3(1.0f));
-    shader->setVector3f("ambientColor", glm::vec3(0.5f));
-    shader->setVector3f("diffuseColor", glm::vec3(1.0f));
-    shader->setVector3f("specularColor", glm::vec3(0.6f));
-}
+#include "../include/Cylinder.h"
 
 Cylinder::Cylinder(float bR, float tR, float h, int secNum, int staNum) {
     this->setParams(bR, tR, h, secNum, staNum);
@@ -55,7 +43,7 @@ void Cylinder::generateCylinder() {
 
 float Cylinder::vectorLength(std::vector<float> vec) {
     float squaresSum = 0.0f;
-    for (int i = 0; i < vec.size(); ++i) {
+    for (unsigned int i = 0; i < vec.size(); ++i) {
         squaresSum += vec[i] * vec[i];
     }
     return sqrt(squaresSum);
@@ -64,7 +52,7 @@ float Cylinder::vectorLength(std::vector<float> vec) {
 std::vector<float> Cylinder::generateBaseCircleVertices() {
     float angleStep = 2 * PI / this->sectorsNum;
 
-    std::vector<float> circleVertices;
+    std::vector<GLfloat> circleVertices;
     // Coords
     circleVertices.push_back(0.0f);
     circleVertices.push_back(-this->height / 2.0f);
@@ -86,7 +74,7 @@ std::vector<float> Cylinder::generateBaseCircleVertices() {
             //std::vector<float> nVec = { this->baseRadius*cos(i*angleStep), 0.0f, this->baseRadius*sin(i*angleStep) };
             std::vector<float> nVec = { 0.0f, -1.0f, 0.0f };
             float nVecLen = vectorLength(nVec);
-            for (int i = 0; i < nVec.size(); ++i) {
+            for (unsigned int i = 0; i < nVec.size(); ++i) {
                 nVec[i] /= nVecLen;
             }
 
@@ -105,7 +93,7 @@ std::vector<float> Cylinder::generateBaseCircleVertices() {
         //std::vector<float> nVec = { this->baseRadius*cos(i*angleStep), 0.0f, this->baseRadius*sin(i*angleStep) };
         std::vector<float> nVec = { 0.0f, -1.0f, 0.0f };
         float nVecLen = vectorLength(nVec);
-        for (int i = 0; i < nVec.size(); ++i) {
+        for (unsigned int i = 0; i < nVec.size(); ++i) {
             nVec[i] /= nVecLen;
         }
 
@@ -122,7 +110,7 @@ std::vector<float> Cylinder::generateBaseCircleVertices() {
 std::vector<float> Cylinder::generateTopCircleVertices() {
     float angleStep = 2 * PI / this->sectorsNum;
 
-    std::vector<float> circleVertices;
+    std::vector<GLfloat> circleVertices;
     // Coords
     circleVertices.push_back(0.0f);
     circleVertices.push_back(this->height / 2.0f);
@@ -144,7 +132,7 @@ std::vector<float> Cylinder::generateTopCircleVertices() {
             //std::vector<float> nVec = { this->topRadius*cos(i*angleStep), 0.0f, this->topRadius*sin(i*angleStep) };
             std::vector<float> nVec = { 0.0f, 1.0f, 0.0f };
             float nVecLen = vectorLength(nVec);
-            for (int i = 0; i < nVec.size(); ++i) {
+            for (unsigned int i = 0; i < nVec.size(); ++i) {
                 nVec[i] /= nVecLen;
             }
             circleVertices.push_back(nVec[0]);
@@ -162,7 +150,7 @@ std::vector<float> Cylinder::generateTopCircleVertices() {
         //std::vector<float> nVec = { this->topRadius*cos(i*angleStep), 0.0f, this->topRadius*sin(i*angleStep) };
         std::vector<float> nVec = { 0.0f, 1.0f, 0.0f };
         float nVecLen = vectorLength(nVec);
-        for (int i = 0; i < nVec.size(); ++i) {
+        for (unsigned int i = 0; i < nVec.size(); ++i) {
             nVec[i] /= nVecLen;
         }
         circleVertices.push_back(nVec[0]);
@@ -222,7 +210,7 @@ void Cylinder::generateVertices() {
                 // N vec coords
                 std::vector<float> nVec = { topCircleVertices[0] + (i)*verticesStep[j][0], 0.0f, topCircleVertices[2] + (i)*verticesStep[j][2] };
                 float nVecLen = vectorLength(nVec);
-                for (int i = 0; i < nVec.size(); ++i) {
+                for (unsigned int i = 0; i < nVec.size(); ++i) {
                     nVec[i] /= nVecLen;
                 }
                 this->vertices.push_back(nVec[0]);
@@ -230,7 +218,7 @@ void Cylinder::generateVertices() {
                 this->vertices.push_back(nVec[2]);
                 // UV
                 this->vertices.push_back((float)j / this->sectorsNum / 2.0f);
-                this->vertices.push_back((float)i / this->stacksNum);
+                this->vertices.push_back(1.0f-(float)i / this->stacksNum);
             }
         }
     }
@@ -244,7 +232,7 @@ void Cylinder::generateVertices() {
                 // N vec coords
                 std::vector<float> nVec = { topCircleVertices[(j + 1) * paramNum] + (i)*verticesStep[j][0], 0.0f, topCircleVertices[(j + 1) * paramNum + 2] + (i)*verticesStep[j][2] };
                 float nVecLen = vectorLength(nVec);
-                for (int i = 0; i < nVec.size(); ++i) {
+                for (unsigned int i = 0; i < nVec.size(); ++i) {
                     nVec[i] /= nVecLen;
                 }
                 this->vertices.push_back(nVec[0]);
@@ -252,7 +240,7 @@ void Cylinder::generateVertices() {
                 this->vertices.push_back(nVec[2]);
                 // UV
                 this->vertices.push_back((float)j / this->sectorsNum / 2.0f);
-                this->vertices.push_back((float)i / this->stacksNum);
+                this->vertices.push_back(1.0f - (float)i / this->stacksNum);
             }
         }
     }
@@ -266,7 +254,7 @@ void Cylinder::generateVertices() {
                 // N vec coords
                 std::vector<float> nVec = { topCircleVertices[(j + 1) * paramNum] + (i)*verticesStep[j][0], 0.0f, topCircleVertices[(j + 1) * paramNum + 2] + (i)*verticesStep[j][2] };
                 float nVecLen = vectorLength(nVec);
-                for (int i = 0; i < nVec.size(); ++i) {
+                for (unsigned int i = 0; i < nVec.size(); ++i) {
                     nVec[i] /= nVecLen;
                 }
                 this->vertices.push_back(nVec[0]);
@@ -274,7 +262,7 @@ void Cylinder::generateVertices() {
                 this->vertices.push_back(nVec[2]);
                 // UV
                 this->vertices.push_back((float)j/this->sectorsNum/2.0f);
-                this->vertices.push_back((float)i/this->stacksNum);
+                this->vertices.push_back(1.0f - (float)i/this->stacksNum);
             }
         }
     }

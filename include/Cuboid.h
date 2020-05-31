@@ -9,20 +9,16 @@
 #include <iostream>
 #include <cmath>
 
-#include "Object.h"
+#include "Model.h"
 
-class Cuboid : public Object {
+class Cuboid : public Model {
 private:
 
     void generateIndicies();
 
 public:
 
-    void initShader() override;
-
     Cuboid(float width = 1.0f, float length = 1.0f, float height = 1.0f);
-
-    void generateCuboid(float width = 1.0f, float length = 1.0f, float height = 1.0f);
 
     Cuboid(const Cuboid& other) = default;
 

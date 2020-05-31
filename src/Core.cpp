@@ -8,8 +8,8 @@
 #include <cmath>
 #include <stdexcept>
 #include "Cylinder.h"
-#include "Compound.h"
-#include "Model.h"
+#include "OldCompound.h"
+#include "OldModel.h"
 
 std::unique_ptr<Window> Core::mainWindow = nullptr;
 std::unique_ptr<cam::Camera> Core::mainCamera = nullptr;
@@ -146,49 +146,49 @@ void Core::updateLogic()
 
 void Core::draw()
 {
-    auto c = std::unique_ptr<Cylinder>(new Cylinder(1.0f, 0.5f, 2.0, 25, 2));
-    auto c2 = std::unique_ptr<Cylinder>(new Cylinder(1.2f, 0.3f, 1.0, 5, 1));
+  //  auto c = std::unique_ptr<Cylinder>(new Cylinder(1.0f, 0.5f, 2.0, 25, 2));
+  //  auto c2 = std::unique_ptr<Cylinder>(new Cylinder(1.2f, 0.3f, 1.0, 5, 1));
 
-    auto c3 = std::unique_ptr<Cylinder>(new Cylinder(1.0f, 0.5f, 2.0, 25, 2));
-    auto c4 = std::unique_ptr<Cylinder>(new Cylinder(1.2f, 0.3f, 1.0, 5, 1));
+  //  auto c3 = std::unique_ptr<Cylinder>(new Cylinder(1.0f, 0.5f, 2.0, 25, 2));
+  //  auto c4 = std::unique_ptr<Cylinder>(new Cylinder(1.2f, 0.3f, 1.0, 5, 1));
 
-    c2->rotate(180.0f, glm::vec3(1.0, 0.0, 0.0));
-    c4->rotate(180.0f, glm::vec3(1.0, 0.0, 0.0));
-
-
-    c->draw(mainCamera, mainWindow->getWindowSettings(), true);
-    c2->draw(mainCamera, mainWindow->getWindowSettings(), false);
+  //  c2->rotate(180.0f, glm::vec3(1.0, 0.0, 0.0));
+  //  c4->rotate(180.0f, glm::vec3(1.0, 0.0, 0.0));
 
 
+  //  c->draw(mainCamera, mainWindow->getWindowSettings(), true);
+  //  c2->draw(mainCamera, mainWindow->getWindowSettings(), false);
 
-    auto comp = std::unique_ptr<Compound>(new Compound());
-    comp->addModel(std::move(c));
-    comp->addModel(std::move(c2));
-  //  comp->rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
 
-    auto comp2 = std::unique_ptr<Compound>(new Compound());
-    comp2->addModel(std::move(c3));
-    comp2->addModel(std::move(c4));
-    comp2->rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
 
-    float a, b;
-    a = (float)cos(glfwGetTime()) * 2;
-    if (a == 0) {
-        a = 0.0001;
-    }
-    b = (float)sin(glfwGetTime()) * 2;
-    if (b == 0) {
-        b = 0.0001;
-    }
+  //  auto comp = std::unique_ptr<OldCompound>(new OldCompound());
+  //  comp->addModel(std::move(c));
+  //  comp->addModel(std::move(c2));
+  ////  comp->rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
 
-    comp->rotate((float)atan2(b, a) * (180.0 / 3.141592653589793238463), glm::vec3(0.0, 0.0, 1.0));
-    comp->translate(glm::vec3(a, 5.0f + b, 0.0f));
+  //  auto comp2 = std::unique_ptr<OldCompound>(new OldCompound());
+  //  comp2->addModel(std::move(c3));
+  //  comp2->addModel(std::move(c4));
+  //  comp2->rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
 
-    comp->draw(mainCamera, mainWindow->getWindowSettings(), false);
+  //  float a, b;
+  //  a = (float)cos(glfwGetTime()) * 2;
+  //  if (a == 0) {
+  //      a = 0.0001;
+  //  }
+  //  b = (float)sin(glfwGetTime()) * 2;
+  //  if (b == 0) {
+  //      b = 0.0001;
+  //  }
 
-    comp2->translate(glm::vec3(0.0f, 5.0f, 0.0f));
+  //  comp->rotate((float)atan2(b, a) * (180.0 / 3.141592653589793238463), glm::vec3(0.0, 0.0, 1.0));
+  //  comp->translate(glm::vec3(a, 5.0f + b, 0.0f));
 
-    comp2->draw(mainCamera, mainWindow->getWindowSettings(), false);
+  //  comp->draw(mainCamera, mainWindow->getWindowSettings(), false);
+
+  //  comp2->translate(glm::vec3(0.0f, 5.0f, 0.0f));
+
+  //  comp2->draw(mainCamera, mainWindow->getWindowSettings(), false);
 
 }
 

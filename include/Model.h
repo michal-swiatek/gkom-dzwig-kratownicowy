@@ -1,6 +1,6 @@
 /*
-Stworzone przez BM
-*/
+ *  Created by Boguslaw Malewski, Rafal Uzarowicz
+ */
 
 #ifndef MODEL_H
 #define MODEL_H
@@ -9,21 +9,46 @@ Stworzone przez BM
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <memory>
+#include <iostream>
 
 #include "Camera.h"
 #include "Shader.h"
 #include "window.h"
 
-
-
 class Model
 {
-public:
-    virtual void draw(std::unique_ptr<cam::Camera>& camera, WindowSettings windowSettings, bool use_color) const = 0;
-    virtual void translate(const glm::vec3& offset) = 0;
-    virtual void rotate(float angle, const std::optional<glm::vec3>& axis) = 0;
-    virtual void scale(const glm::vec3& value) = 0;
-    virtual void rotate2(const std::optional<glm::vec3>& axis) = 0;//to jest tu chwilowo
-};
+protected:
+	std::vector<GLfloat> vertices;
+	std::vector<GLuint> indices;
 
-#endif // MODEL_H
+	GLuint VBO, VAO, EBO;
+
+	Transform transform;
+
+	static const unsigned int paramNum = 8;
+
+	void init();
+
+	void del();
+
+	void clearVectors();
+
+public:
+	Model() : VBO(0), VAO(0), EBO(0) {
+		this->init();
+	}
+	~Model() {
+		this->del();
+	}
+
+	void use();
+
+	std::vector<float> getVertices();
+	std::vector<unsigned int> getIndices();
+
+	GLuint getVBO() { return this->VBO; }
+	GLuint getVAO() { return this->VAO; }
+	GLuint getEBO() { return this->EBO; }
+
+};
+#endif // !MODEL_H

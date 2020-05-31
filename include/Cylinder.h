@@ -9,9 +9,9 @@
 #include <iostream>
 #include <cmath>
 
-#include "Object.h"
+#include "Model.h"
 
-class Cylinder : public Object
+class Cylinder : public Model
 {
 private:
     float baseRadius;
@@ -23,8 +23,6 @@ private:
     const float PI = (float)acos(-1);
 
 public:
-    void initShader() override;
-
     Cylinder(float bR = 1.0f, float tR = 1.0f, float h = 2.0f, int secNum = 4, int staNum = 3);
 
     Cylinder(const Cylinder& other) = default;
