@@ -10,7 +10,7 @@ include(cmake/scripts/includeResources.cmake)
 
 configure_file("${CMAKE_SOURCE_DIR}/Configure.h.in" Configure.h)
 
-add_executable(main main.cpp ${PROJECT_INCLUDE_FILES} ${PROJECT_SRC_FILES})
+add_executable(main main.cpp ${PROJECT_INCLUDE_FILES} ${PROJECT_SRC_FILES} src/SkyBox.cpp include/SkyBox.h)
 target_link_libraries(main ${OPENGL_LIBS})
 
 target_include_directories(main PUBLIC "${CMAKE_BINARY_DIR}")   #   Include project version in main project
