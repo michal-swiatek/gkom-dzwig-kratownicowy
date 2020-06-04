@@ -3,8 +3,9 @@
  *  Github: https://github.com/michal-swiatek/learning-opengl
  */
 
-#include "Core.h"
+#include <GL/glew.h>
 
+#include "Core.h"
 #include <stdexcept>
 
 std::unique_ptr<Window> Core::mainWindow = nullptr;
@@ -24,6 +25,9 @@ void initOpenGL()
         throw std::runtime_error("Failed to initialize GLFW!\n");
 
     Core::mainWindow = std::make_unique<Window>(WindowSettings());
+    if (glewInit() != GLEW_OK)
+        throw std::runtime_error("Failed to initialize GLEW!");
+
 }
 
 Core::Core(std::string&& name, uint32_t appVersionMajor, uint32_t appVersionMinor, uint32_t appVersionPatch)
