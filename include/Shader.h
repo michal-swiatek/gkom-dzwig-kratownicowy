@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string>
 
-#include <glad/glad.h>
+#include <glfw3.h>
 #include <glm/glm.hpp>
 
 class Shader

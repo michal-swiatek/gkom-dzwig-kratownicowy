@@ -5,13 +5,14 @@
  *  TODO: fix strange specular highlights in phong_model shader
  */
 
-#include "Core.h"
+#include <GL/glew.h>
 
+#include "Core.h"
 #include <memory>
 #include <iostream>
+#include <glfw3.h>
 
 #include "Shader.h"
-#include "Camera.h"
 
 #include "Cylinder.h"
 #include "SkyBox.h"

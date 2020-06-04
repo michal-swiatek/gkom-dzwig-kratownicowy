@@ -2,9 +2,8 @@
 // Created by seamel on 30.05.2020.
 //
 
+#include <GL/glew.h>
 #include <stdexcept>
-#include <iostream>
-#include <glad/glad.h>
 #include <SOIL/SOIL.h>
 #include <SkyBox.h>
 #include <Camera.h>

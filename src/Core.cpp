@@ -24,8 +24,6 @@ void initOpenGL()
         throw std::runtime_error("Failed to initialize GLFW!\n");
 
     Core::mainWindow = std::make_unique<Window>(WindowSettings());
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-        throw std::runtime_error("Failed to initialize GLAD!\n");
 }
 
 Core::Core(std::string&& name, uint32_t appVersionMajor, uint32_t appVersionMinor, uint32_t appVersionPatch)
