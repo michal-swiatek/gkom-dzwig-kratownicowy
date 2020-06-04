@@ -12,7 +12,7 @@
 #include <Camera.h>
 #include <Shader.h>
 
-class CubeMap {
+class SkyBox {
 private:
     GLuint VAO, VBO;
     glm::vec3 color;
@@ -27,7 +27,7 @@ private:
 public:
     void init();
     void draw(std::unique_ptr<cam::Camera>& camera);
-    explicit CubeMap(glm::vec3 color = glm::vec3(0.0,0.0,0.0));
+    explicit SkyBox(glm::vec3 color = glm::vec3(0.0,0.0,0.0));
 
-    ~CubeMap() = default;
+    ~SkyBox() = default;
 };

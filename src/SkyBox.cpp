@@ -2,14 +2,14 @@
 // Created by seamel on 30.05.2020.
 //
 
-#include <CubeMap.h>
 #include <stdexcept>
-#include <SOIL/SOIL.h>
-#include <glad/glad.h>
 #include <iostream>
+#include <glad/glad.h>
+#include <SOIL/SOIL.h>
+#include <SkyBox.h>
 #include <Camera.h>
 
-GLuint CubeMap::loadCubeMapTexture() {
+GLuint SkyBox::loadCubeMapTexture() {
     if(faces.size() != 6)
         throw std::runtime_error("Wrong number of CubeMap faces.");
     GLuint textureID = generateCubeMapTexture();
@@ -34,7 +34,7 @@ GLuint CubeMap::loadCubeMapTexture() {
 }
 
 
-GLuint CubeMap::generateCubeMapTexture() const {
+GLuint SkyBox::generateCubeMapTexture() const {
     GLuint texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
@@ -48,7 +48,7 @@ GLuint CubeMap::generateCubeMapTexture() const {
     return texture;
 }
 
-void CubeMap::init() {
+void SkyBox::init() {
     initShader();
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -64,7 +64,7 @@ void CubeMap::init() {
     texture = generateColorTexture(color);
 }
 
-void CubeMap::draw(std::unique_ptr<cam::Camera>& camera) {
+void SkyBox::draw(std::unique_ptr<cam::Camera>& camera) {
 
     glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
     shader->use();
@@ -80,7 +80,7 @@ void CubeMap::draw(std::unique_ptr<cam::Camera>& camera) {
     glDepthFunc(GL_LESS); // set depth function back to default
 }
 
-CubeMap::CubeMap(glm::vec3 color): color(color) {
+SkyBox::SkyBox(glm::vec3 color): color(color) {
 //    faces = {
 //            "textures/skyboxposx.jpg",
 //            "textures/skyboxnegx.jpg",
@@ -135,11 +135,11 @@ CubeMap::CubeMap(glm::vec3 color): color(color) {
     };
 }
 
-void CubeMap::initShader() {
+void SkyBox::initShader() {
     shader = std::make_unique<Shader>("shaders/skybox.vs.glsl", "shaders/skybox.fs.glsl");
 }
 
-uint32_t CubeMap::generateColorTexture(const glm::vec3 &color) const
+uint32_t SkyBox::generateColorTexture(const glm::vec3 &color) const
 {
     using uchar = unsigned char;
 
