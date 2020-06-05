@@ -28,7 +28,7 @@ class DisplayCylinder : public Core
 
 private:
 	std::unique_ptr<Shader> shader;
-	std::unique_ptr<Cylinder> cylinder;
+	std::shared_ptr<Cylinder> cylinder;
 	std::shared_ptr<Cuboid> cuboid;
 	std::unique_ptr<Object> object;
 	std::unique_ptr<Object> object2;
@@ -36,16 +36,16 @@ private:
 	std::unique_ptr<Object> object4;
 	std::unique_ptr<Collection> collection;
 	std::unique_ptr<Collection> collection2;
-	std::unique_ptr<Compound> compound;
+	std::unique_ptr<Collection> wszystko;
 
 	TexturesHandler textH;
 
 	uint VBO, VAO, EBO;
-	float angle = 0;
+
 public:
 	DisplayCylinder() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
 	{
-		cylinder = std::make_unique<Cylinder>(1.0f, 1.0f, 1.0f, 3, 1);
+		cylinder = std::make_shared<Cylinder>(1.0f, 1.0f, 1.0f, 3, 1);
 		cuboid = std::make_shared<Cuboid>();
 		shader = std::make_unique<Shader>("../shaders/texture.fs.glsl", "../shaders/texture.vs.glsl");
 	}
@@ -59,38 +59,39 @@ public:
 		textH.addTexture(texture);
 		textH.addTexture(texture2);
 
-		collection = std::unique_ptr<Collection>(new Collection(std::move(cuboid)));
-		collection2 = std::unique_ptr<Collection>(new Collection(std::move(cylinder)));
+		collection = std::unique_ptr<Collection>(new Collection());
+		collection2 = std::unique_ptr<Collection>(new Collection());
+		wszystko = std::unique_ptr<Collection>(new Collection());
 
-		object = std::unique_ptr<Object>(new Object(textH.useTexture(texture)));
-		object2 = std::unique_ptr<Object>(new Object(textH.useTexture(texture2)));
+		object = std::unique_ptr<Object>(new Object(cylinder ,textH.useTexture(texture)));
+		object2 = std::unique_ptr<Object>(new Object(cuboid,textH.useTexture(texture2)));
 
 	//	object2->translate(glm::vec3(0.0f, 5.0f, 0.0f));
 		object2->translateTo(glm::vec3(0.0f, 5.0f, 0.0f));
 	//	object2->rotate(20.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
-		object3 = std::unique_ptr<Object>(new Object(textH.useTexture(texture)));
+		object3 = std::unique_ptr<Object>(new Object(cuboid, textH.useTexture(texture)));
 		
 		object3->translateTo(glm::vec3(0.0f, 2.0f, 0.0f));
 	//	object3->rotate(45.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 
-		object4 = std::unique_ptr<Object>(new Object(textH.useTexture(texture2)));
+		object4 = std::unique_ptr<Object>(new Object(cuboid, textH.useTexture(texture2)));
 
 		object4->translateTo(glm::vec3(0.0f, -3.0f, 1.0f));
 		object4->scaleTo(glm::vec3(2.0f, 5.0f, 2.0f));
 
-		collection2->addObject(std::move(object3));
-		collection2->addObject(std::move(object4));
+		collection2->addObject(move(object3));
+		collection2->addObject(move(object4));
 
-		collection->addObject(std::move(object));
-		collection->addObject(std::move(object2));
+		collection->addObject(move(object));
+		collection->addObject(move(object2));
+
+		wszystko->addObject(move(collection));
+		wszystko->addObject(move(collection2));
+
 
 	//	collection->rotate(45.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 
-		compound = std::make_unique<Compound>();
-
-		compound->addCollection(std::move(collection));
-		compound->addCollection(std::move(collection2));
 
 		mainCamera->getSettings().movementSpeed /= 2;
 
@@ -118,8 +119,8 @@ public:
 
 
 		//compound->rotate(sin(glfwGetTime()), glm::vec3(0.0f, 0.0f, 1.0f));
-		std::cout << "ajidfiajfiaw\n";
-
+//		std::cout << "ajidfiajfiaw\n";
+		
 
 
 //		compound->rotateBy(1 , glm::vec3(0.0f, 0.0f, 1.0f));
@@ -127,10 +128,10 @@ public:
 		
 
 //		angle += 1;
-
-		compound->rotateAroundCW(1, glm::vec3(0.0f, 0.0f, 2.0f));
-		compound->draw(mainCamera, shader->getProgramID());
-
+		wszystko->translateBy(glm::vec3(cos(glfwGetTime()) * 0.01f, sin(glfwGetTime())*0.01f, 0.0f));
+		wszystko->scaleBy(glm::vec3(1.0002f, 1.0002f, 1.0002f));
+		wszystko->draw(mainCamera, shader->getProgramID());
+	//	collection2->draw(mainCamera, shader->getProgramID());
 	}
 };
 

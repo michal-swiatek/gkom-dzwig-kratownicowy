@@ -17,7 +17,7 @@
 #include "IObject.h"
 #include "Model.h"
 
-class Object : IObject
+class Object :public IObject
 {
 protected:
 
@@ -39,7 +39,7 @@ protected:
 
 public:
 
-	Object(unsigned int textureID);
+	Object(std::shared_ptr<Model> mod, unsigned int textureID);
 
 	void setModel(std::shared_ptr<Model> model);
 	Transform getTransform();

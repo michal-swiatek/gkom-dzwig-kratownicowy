@@ -6,7 +6,6 @@
 #include "Collection.h"
 
 void Collection::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const {
-	model->use();
 	for (auto& object : objects) {
 		object->draw(camera, shaderID);
 	}
@@ -43,7 +42,6 @@ void Collection::rotateAroundCW(float angle, const std::optional<glm::vec3>& axi
 	for (auto& object : objects) {
 		object->rotateAroundCW(angle, axis);
 	}
-
 }
 
 void Collection::rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis)

@@ -12,17 +12,15 @@
 
 #include <vector>
 
-class Collection : IObject
+class Collection : public IObject
 {
-	std::shared_ptr<Model> model;
-	std::vector<std::unique_ptr<Object>> objects;
+	std::vector<std::unique_ptr<IObject>> objects;
 public:
-	Collection(std::shared_ptr<Model> model) {
-		this->model = model;
-	}
-	void addObject(std::unique_ptr<Object> object) {
-		object->setModel(this->model);
+
+	void addObject(std::unique_ptr<IObject> object) 
+	{
 		objects.push_back(std::move(object));
+
 	}
 
 	void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const override;

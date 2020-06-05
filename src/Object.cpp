@@ -6,7 +6,7 @@
 
 void  Object::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const
 {
-
+	model->use();
 	glm::mat4 projection = camera->getProjectionMatrix();
 
 	glm::mat4 view = camera->getViewMatrix();
@@ -24,8 +24,9 @@ void  Object::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const
 
 
 
-Object::Object(unsigned int textureID) : transform(Transform(glm::vec3(0.0f))), color(glm::vec4(1.0f))
+Object::Object(std::shared_ptr<Model> mod,unsigned int textureID) : transform(Transform(glm::vec3(0.0f))), color(glm::vec4(1.0f))
 {
+	model = mod;
 	rotationMatrix = glm::mat4(1.0f);
 	translationMatrix = glm::mat4(1.0f);
 	scaleMatrix = glm::mat4(1.0f);
@@ -100,29 +101,9 @@ void Object::rotateBy(float angle, const std::optional<glm::vec3>& axis)
 void Object::rotateAroundCW(float angle, const std::optional<glm::vec3>& axis)
 {
 
-	float s = sin(angle); // angle is in radians
-	float c = cos(angle); // angle is in radians
-
-	float xnew = axis->x * c + axis->y * s;
-	float ynew = -axis->x * s + axis->y * c;
-//	translateBy(glm::vec3(transform.position.x - xnew, transform.position.y - ynew, 0.0f));
 
 }
-/*
-float a, b, c, d;
-d = glfwGetTime();
-a = (float)cos(d) * 3;
 
-b = (float)sin(d) * 3;
-
-c = ((float)atan2(b, a) * (180.0 / 3.141592653589793238463));
-std::cout << c << std::endl;
-//	compound->rotateBy(c, glm::vec3(0.0, 0.0, 1.0));
-compound->rotateBy(c, glm::vec3(0.0, 0.0, 1.0));
-//	compound->translateBy(glm::vec3(a, 5.0f + b, 0.0f));
-//	compound->translateBy(glm::vec3(a, b, 0.0f));
-compound->translateBy(glm::vec3(a, b, 0.0));
-*/
 void Object::rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis)
 {
 
