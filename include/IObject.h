@@ -27,8 +27,11 @@ public:
 	virtual void rotateBy(float angle, const std::optional<glm::vec3>& axis) = 0;
 	virtual void scaleBy(const glm::vec3& value) = 0;
 
-	virtual void rotateAroundCW(float angle, const std::optional<glm::vec3>& axis) = 0;
-	virtual void rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis) = 0;
+	virtual void rotateBySpecial(float angle, const std::optional<glm::vec3>& axis) = 0;
+	virtual void translateBySpecial(const glm::vec3& offset) = 0;
+	virtual void translateBySpecial2(const glm::vec3& offset) = 0;
+
+
 };
 
 #endif // IOBJECT_H

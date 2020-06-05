@@ -80,6 +80,11 @@ public:
 		object4->translateTo(glm::vec3(0.0f, -3.0f, 1.0f));
 		object4->scaleTo(glm::vec3(2.0f, 5.0f, 2.0f));
 
+
+		object->updateModel();
+		object2->updateModel();
+		object3->updateModel();
+		object4->updateModel();
 		collection2->addObject(move(object3));
 		collection2->addObject(move(object4));
 
@@ -128,10 +133,12 @@ public:
 		
 
 //		angle += 1;
-		wszystko->translateBy(glm::vec3(cos(glfwGetTime()) * 0.01f, sin(glfwGetTime())*0.01f, 0.0f));
-		wszystko->scaleBy(glm::vec3(1.0002f, 1.0002f, 1.0002f));
+
+		wszystko->translateBySpecial(glm::vec3(0.5, 0.0, 0.0));
 		wszystko->draw(mainCamera, shader->getProgramID());
-	//	collection2->draw(mainCamera, shader->getProgramID());
+		wszystko->translateBySpecial(glm::vec3(-0.5, 0.0, 0.0));
+		wszystko->rotateBySpecial((float)glfwGetTime() * 0.1, glm::vec3(0.0, 0.0, 1.0));
+//		collection2->draw(mainCamera, shader->getProgramID());
 	}
 };
 

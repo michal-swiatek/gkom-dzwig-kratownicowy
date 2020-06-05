@@ -27,6 +27,7 @@ protected:
 
 	Transform transform;
 
+	glm::mat4 modelMatrix;
 	glm::mat4 rotationMatrix;
 	glm::mat4 translationMatrix;
 	glm::mat4 scaleMatrix;
@@ -41,6 +42,8 @@ public:
 
 	Object(std::shared_ptr<Model> mod, unsigned int textureID);
 
+	void updateModel();
+
 	void setModel(std::shared_ptr<Model> model);
 	Transform getTransform();
 
@@ -54,8 +57,9 @@ public:
 	void rotateBy(float angle, const std::optional<glm::vec3>& axis) override;
 	void scaleBy(const glm::vec3& value) override;
 
-	void rotateAroundCW(float angle, const std::optional<glm::vec3>& axis);
-	void rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis);
+	void rotateBySpecial(float angle, const std::optional<glm::vec3>& axis);
+	void translateBySpecial(const glm::vec3& offset);
+	void translateBySpecial2(const glm::vec3& offset);
 
 	//  Color
 	[[nodiscard]] const glm::vec4& getColor() const;

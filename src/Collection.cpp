@@ -37,14 +37,25 @@ void Collection::scaleBy(const glm::vec3& value) {
 	}
 }
 
-void Collection::rotateAroundCW(float angle, const std::optional<glm::vec3>& axis)
+
+
+void Collection::rotateBySpecial(float angle, const std::optional<glm::vec3>& axis)
 {
 	for (auto& object : objects) {
-		object->rotateAroundCW(angle, axis);
+		object->rotateBySpecial( angle, *axis);
 	}
 }
-
-void Collection::rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis)
+void Collection::translateBySpecial(const glm::vec3& offset)
 {
+	for (auto& object : objects) {
+		object->translateBySpecial(offset);
+	}
+
+}
+void Collection::translateBySpecial2(const glm::vec3& offset)
+{
+	for (auto& object : objects) {
+		object->translateBySpecial2(offset);
+	}
 
 }

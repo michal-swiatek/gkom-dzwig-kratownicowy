@@ -33,7 +33,8 @@ public:
 	void rotateBy(float angle, const std::optional<glm::vec3>& axis) override;
 	void scaleBy(const glm::vec3& value) override;
 
-	void rotateAroundCW(float angle, const std::optional<glm::vec3>& axis) override;
-	void rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis) override;
+	void rotateBySpecial(float angle, const std::optional<glm::vec3>& axis) override;
+	void translateBySpecial(const glm::vec3& offset) override;
+	void translateBySpecial2(const glm::vec3& offset)override;
 };
 #endif // !COLLECTION_H

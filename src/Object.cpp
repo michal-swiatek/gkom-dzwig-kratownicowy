@@ -11,7 +11,7 @@ void  Object::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const
 
 	glm::mat4 view = camera->getViewMatrix();
 
-	glm::mat4 mv = view * translationMatrix * scaleMatrix * rotationMatrix;
+	glm::mat4 mv = view * modelMatrix;
 	glm::mat4 matrix = projection * mv;
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderID, "mvp"), 1, GL_FALSE, glm::value_ptr(matrix));
@@ -22,11 +22,14 @@ void  Object::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const
 	glDrawElements(GL_TRIANGLES, model->getIndices().size(), GL_UNSIGNED_INT, 0);
 }
 
-
+void Object::updateModel() {
+	modelMatrix = rotationMatrix * translationMatrix * scaleMatrix;
+}
 
 Object::Object(std::shared_ptr<Model> mod,unsigned int textureID) : transform(Transform(glm::vec3(0.0f))), color(glm::vec4(1.0f))
 {
 	model = mod;
+	modelMatrix = glm::mat4(1.0f);
 	rotationMatrix = glm::mat4(1.0f);
 	translationMatrix = glm::mat4(1.0f);
 	scaleMatrix = glm::mat4(1.0f);
@@ -85,27 +88,36 @@ void Object::translateBy(const glm::vec3& offset)
 
 }
 
+
 void Object::rotateBy(float angle, const std::optional<glm::vec3>& axis)
 {
 	if (axis)
 		transform.rotation += *axis;
 
 	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(angle), *axis);
-//	rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), *axis);
-
 }
 
 
-
-
-void Object::rotateAroundCW(float angle, const std::optional<glm::vec3>& axis)
+void Object::rotateBySpecial(float angle, const std::optional<glm::vec3>& axis)
 {
+//	if (axis)
+//		transform.rotation += *axis;
 
-
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), *axis);
 }
 
-void Object::rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis)
+void Object::translateBySpecial(const glm::vec3& offset)
 {
+//	transform.position += offset;
+
+	modelMatrix = glm::translate(modelMatrix,  offset);
+
+}
+void Object::translateBySpecial2(const glm::vec3& offset)
+{
+	//	transform.position += offset;
+
+	modelMatrix = glm::translate(modelMatrix, offset);
 
 }
 
