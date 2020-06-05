@@ -42,37 +42,90 @@ void Object::updateMatrices(const OptionalMat4& projection)
 	if (projection)
 		projectionMatrix = *projection;
 }
+Transform Object::getTransform() {
+	return transform;
+}
 
 
-
-void Object::translate(const glm::vec3& offset)
+void Object::translateTo(const glm::vec3& offset)
 {
 	transform.position = offset;
 
-	translationMatrix = glm::translate(glm::mat4(1.0f), offset)*translationMatrix;
+	translationMatrix = glm::translate(glm::mat4(1.0f), offset);
 }
 
-void Object::rotate(float angle, const std::optional<glm::vec3>& axis)
+void Object::rotateTo(float angle, const std::optional<glm::vec3>& axis)
 {
 	if (axis)
 		transform.rotation = *axis;
 
-	rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), transform.rotation)*rotationMatrix;
+	rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), transform.rotation);
 }
 
-void Object::rotate2(const std::optional<glm::vec3>& axis)
-{
-	if (axis)
-		transform.rotation = *axis;
-
-	rotationMatrix = glm::rotate(glm::mat4(1.0f), (float)glfwGetTime(), transform.rotation)*rotationMatrix;
-}
-
-void Object::scale(const glm::vec3& value)
+void Object::scaleTo(const glm::vec3& value)
 {
 	transform.scale = value;
 
-	scaleMatrix = glm::scale(glm::mat4(1.0f), value)*  scaleMatrix;
+	scaleMatrix = glm::scale(glm::mat4(1.0f), value);
+}
+
+void Object::scaleBy(const glm::vec3& value)
+{
+	transform.scale *= value;
+
+	scaleMatrix = glm::scale(scaleMatrix, value);
+}
+
+void Object::translateBy(const glm::vec3& offset)
+{
+	transform.position += offset;
+
+	translationMatrix = glm::translate(translationMatrix,  offset);
+
+}
+
+void Object::rotateBy(float angle, const std::optional<glm::vec3>& axis)
+{
+	if (axis)
+		transform.rotation += *axis;
+
+	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(angle), *axis);
+//	rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), *axis);
+
+}
+
+
+
+
+void Object::rotateAroundCW(float angle, const std::optional<glm::vec3>& axis)
+{
+
+	float s = sin(angle); // angle is in radians
+	float c = cos(angle); // angle is in radians
+
+	float xnew = axis->x * c + axis->y * s;
+	float ynew = -axis->x * s + axis->y * c;
+//	translateBy(glm::vec3(transform.position.x - xnew, transform.position.y - ynew, 0.0f));
+
+}
+/*
+float a, b, c, d;
+d = glfwGetTime();
+a = (float)cos(d) * 3;
+
+b = (float)sin(d) * 3;
+
+c = ((float)atan2(b, a) * (180.0 / 3.141592653589793238463));
+std::cout << c << std::endl;
+//	compound->rotateBy(c, glm::vec3(0.0, 0.0, 1.0));
+compound->rotateBy(c, glm::vec3(0.0, 0.0, 1.0));
+//	compound->translateBy(glm::vec3(a, 5.0f + b, 0.0f));
+//	compound->translateBy(glm::vec3(a, b, 0.0f));
+compound->translateBy(glm::vec3(a, b, 0.0));
+*/
+void Object::rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis)
+{
+
 }
 
 

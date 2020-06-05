@@ -11,23 +11,42 @@ void Collection::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const 
 		object->draw(camera, shaderID);
 	}
 }
-void Collection::translate(const glm::vec3& offset) {
+
+void Collection::translateTo(const glm::vec3& offset) {
+
+}
+void Collection::rotateTo(float angle, const std::optional<glm::vec3>& axis) {
+
+}
+void Collection::scaleTo(const glm::vec3& value) {
+
+}
+
+void Collection::translateBy(const glm::vec3& offset) {
 	for (auto& object : objects) {
-		object->translate(offset);
+		object->translateBy(offset);
 	}
 }
-void Collection::rotate(float angle, const std::optional<glm::vec3>& axis) {
+void Collection::rotateBy(float angle, const std::optional<glm::vec3>& axis) {
 	for (auto& object : objects) {
-		object->rotate(angle, axis);
+		object->rotateBy(angle, axis);
 	}
 }
-void Collection::scale(const glm::vec3& value) {
+void Collection::scaleBy(const glm::vec3& value) {
 	for (auto& object : objects) {
-		object->scale(value);
+		object->scaleBy(value);
 	}
 }
-void Collection::rotate2(const std::optional<glm::vec3>& axis) {
+
+void Collection::rotateAroundCW(float angle, const std::optional<glm::vec3>& axis)
+{
 	for (auto& object : objects) {
-		object->rotate2(axis);
+		object->rotateAroundCW(angle, axis);
 	}
+
+}
+
+void Collection::rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis)
+{
+
 }

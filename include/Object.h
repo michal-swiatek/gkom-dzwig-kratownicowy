@@ -42,14 +42,20 @@ public:
 	Object(unsigned int textureID);
 
 	void setModel(std::shared_ptr<Model> model);
+	Transform getTransform();
 
 	void updateMatrices(const OptionalMat4& projection = {});
 
-	void translate(const glm::vec3& offset) override;
-	void rotate(float angle, const std::optional<glm::vec3>& axis) override;
-	void scale(const glm::vec3& value) override;
+	void translateTo(const glm::vec3& offset) override;
+	void rotateTo(float angle, const std::optional<glm::vec3>& axis) override;
+	void scaleTo(const glm::vec3& value) override;
 
-	void rotate2(const std::optional<glm::vec3>& axis) override;
+	void translateBy(const glm::vec3& offset) override;
+	void rotateBy(float angle, const std::optional<glm::vec3>& axis) override;
+	void scaleBy(const glm::vec3& value) override;
+
+	void rotateAroundCW(float angle, const std::optional<glm::vec3>& axis);
+	void rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis);
 
 	//  Color
 	[[nodiscard]] const glm::vec4& getColor() const;

@@ -24,10 +24,18 @@ public:
 		object->setModel(this->model);
 		objects.push_back(std::move(object));
 	}
+
 	void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const override;
-	void translate(const glm::vec3& offset) override;
-	void rotate(float angle, const std::optional<glm::vec3>& axis) override;
-	void scale(const glm::vec3& value) override;
-	void rotate2(const std::optional<glm::vec3>& axis) override;
+
+	void translateTo(const glm::vec3& offset) override;
+	void rotateTo(float angle, const std::optional<glm::vec3>& axis) override;
+	void scaleTo(const glm::vec3& value) override;
+
+	void translateBy(const glm::vec3& offset) override;
+	void rotateBy(float angle, const std::optional<glm::vec3>& axis) override;
+	void scaleBy(const glm::vec3& value) override;
+
+	void rotateAroundCW(float angle, const std::optional<glm::vec3>& axis) override;
+	void rotateAroundCCW(float angle, const std::optional<glm::vec3>& axis) override;
 };
 #endif // !COLLECTION_H
