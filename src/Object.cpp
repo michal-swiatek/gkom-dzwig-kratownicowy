@@ -26,7 +26,7 @@ void Object::updateModel() {
 	modelMatrix = rotationMatrix * translationMatrix * scaleMatrix;
 }
 
-Object::Object(std::shared_ptr<Model> mod,unsigned int textureID) : transform(Transform(glm::vec3(0.0f))), color(glm::vec4(1.0f))
+Object::Object(std::shared_ptr<Model> mod,unsigned int textureID) : transform(Transform(glm::vec3(0.0f)))
 {
 	model = mod;
 	modelMatrix = glm::mat4(1.0f);
@@ -36,19 +36,9 @@ Object::Object(std::shared_ptr<Model> mod,unsigned int textureID) : transform(Tr
 	this->textureID = textureID;
 }
 
-void Object::setModel(std::shared_ptr<Model> model) {
-	this->model = model;
-}
 
 
-void Object::updateMatrices(const OptionalMat4& projection)
-{
-	if (projection)
-		projectionMatrix = *projection;
-}
-Transform Object::getTransform() {
-	return transform;
-}
+
 
 
 void Object::translateTo(const glm::vec3& offset)
@@ -57,15 +47,10 @@ void Object::translateTo(const glm::vec3& offset)
 
 	translationMatrix = glm::translate(glm::mat4(1.0f), offset);
 }
-
 void Object::rotateTo(float angle, const std::optional<glm::vec3>& axis)
 {
-	if (axis)
-		transform.rotation = *axis;
-
 	rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), transform.rotation);
 }
-
 void Object::scaleTo(const glm::vec3& value)
 {
 	transform.scale = value;
@@ -73,62 +58,57 @@ void Object::scaleTo(const glm::vec3& value)
 	scaleMatrix = glm::scale(glm::mat4(1.0f), value);
 }
 
-void Object::scaleBy(const glm::vec3& value)
-{
-	transform.scale *= value;
-
-	scaleMatrix = glm::scale(scaleMatrix, value);
-}
 
 void Object::translateBy(const glm::vec3& offset)
 {
-	transform.position += offset;
-
 	translationMatrix = glm::translate(translationMatrix,  offset);
-
 }
-
-
 void Object::rotateBy(float angle, const std::optional<glm::vec3>& axis)
 {
-	if (axis)
-		transform.rotation += *axis;
-
 	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(angle), *axis);
 }
-
-
-void Object::rotateBySpecial(float angle, const std::optional<glm::vec3>& axis)
+void Object::scaleBy(const glm::vec3& value)
 {
-//	if (axis)
-//		transform.rotation += *axis;
-
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), *axis);
+	scaleMatrix = glm::scale(scaleMatrix, value);
 }
+
+
+void Object::translateBy2(const glm::vec3& offset)
+{
+	translationMatrix = glm::translate(glm::mat4(1.0f), offset) * translationMatrix;
+}
+void Object::rotateBy2(float angle, const std::optional<glm::vec3>& axis)
+{
+	rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), *axis) * rotationMatrix;
+}
+void Object::scaleBy2(const glm::vec3& value)
+{
+	scaleMatrix = glm::scale(glm::mat4(1.0f), value) * scaleMatrix;
+}
+
 
 void Object::translateBySpecial(const glm::vec3& offset)
 {
-//	transform.position += offset;
-
-	modelMatrix = glm::translate(modelMatrix,  offset);
-
+	modelMatrix = glm::translate(modelMatrix, offset);
 }
+void Object::rotateBySpecial(float angle, const std::optional<glm::vec3>& axis)
+{
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), *axis);
+}
+void Object::scaleBySpecial(const glm::vec3& offset)
+{
+	modelMatrix = glm::scale(modelMatrix, offset);
+}
+
 void Object::translateBySpecial2(const glm::vec3& offset)
 {
-	//	transform.position += offset;
-
-	modelMatrix = glm::translate(modelMatrix, offset);
-
+	modelMatrix = glm::translate(glm::mat4(1.0f), offset) * modelMatrix;
 }
-
-
-//  Color
-const glm::vec4& Object::getColor() const
+void Object::rotateBySpecial2(float angle, const std::optional<glm::vec3>& axis)
 {
-	return color;
+	modelMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), *axis) * modelMatrix;
 }
-
-void Object::setColor(const glm::vec4& newColor)
+void Object::scaleBySpecial2(const glm::vec3& offset)
 {
-	color = newColor;
+	modelMatrix = glm::scale(glm::mat4(1.0f), offset) * modelMatrix;
 }

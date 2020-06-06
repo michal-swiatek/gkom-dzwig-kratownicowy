@@ -34,9 +34,11 @@ private:
 	std::unique_ptr<Object> object2;
 	std::unique_ptr<Object> object3;
 	std::unique_ptr<Object> object4;
-	std::unique_ptr<Collection> collection;
-	std::unique_ptr<Collection> collection2;
-	std::unique_ptr<Collection> wszystko;
+	std::unique_ptr<Object> object5;
+	std::unique_ptr<Collection> duzaWskazowka;
+	std::unique_ptr<Collection> malaWskazowka;
+	std::unique_ptr<Collection> zegar;
+	std::unique_ptr<Collection> podloga;
 
 	TexturesHandler textH;
 
@@ -45,56 +47,68 @@ private:
 public:
 	DisplayCylinder() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
 	{
-		cylinder = std::make_shared<Cylinder>(1.0f, 1.0f, 1.0f, 3, 1);
+		cylinder = std::make_shared<Cylinder>(1.0f, 1.0f, 1.0f, 8, 1);
 		cuboid = std::make_shared<Cuboid>();
 		shader = std::make_unique<Shader>("../shaders/texture.fs.glsl", "../shaders/texture.vs.glsl");
 	}
 
 	void init() override
 	{
-		
 		std::string texture = "../textures/grass2.png";
 		std::string texture2 = "../textures/awesomeface.png";
 
 		textH.addTexture(texture);
 		textH.addTexture(texture2);
 
-		collection = std::unique_ptr<Collection>(new Collection());
-		collection2 = std::unique_ptr<Collection>(new Collection());
-		wszystko = std::unique_ptr<Collection>(new Collection());
+		duzaWskazowka = std::unique_ptr<Collection>(new Collection());
+		malaWskazowka = std::unique_ptr<Collection>(new Collection());
+		podloga = std::unique_ptr<Collection>(new Collection());
+		zegar = std::unique_ptr<Collection>(new Collection());
 
-		object = std::unique_ptr<Object>(new Object(cylinder ,textH.useTexture(texture)));
+		object = std::unique_ptr<Object>(new Object(cylinder ,textH.useTexture(texture2)));
 		object2 = std::unique_ptr<Object>(new Object(cuboid,textH.useTexture(texture2)));
 
-	//	object2->translate(glm::vec3(0.0f, 5.0f, 0.0f));
-		object2->translateTo(glm::vec3(0.0f, 5.0f, 0.0f));
-	//	object2->rotate(20.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		object3 = std::unique_ptr<Object>(new Object(cylinder, textH.useTexture(texture)));
+		object4 = std::unique_ptr<Object>(new Object(cuboid, textH.useTexture(texture)));
 
-		object3 = std::unique_ptr<Object>(new Object(cuboid, textH.useTexture(texture)));
-		
-		object3->translateTo(glm::vec3(0.0f, 2.0f, 0.0f));
-	//	object3->rotate(45.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+		object5 = std::unique_ptr<Object>(new Object(cylinder, textH.useTexture(texture2)));
 
-		object4 = std::unique_ptr<Object>(new Object(cuboid, textH.useTexture(texture2)));
-
-		object4->translateTo(glm::vec3(0.0f, -3.0f, 1.0f));
-		object4->scaleTo(glm::vec3(2.0f, 5.0f, 2.0f));
-
-
-		object->updateModel();
-		object2->updateModel();
-		object3->updateModel();
-		object4->updateModel();
-		collection2->addObject(move(object3));
-		collection2->addObject(move(object4));
-
-		collection->addObject(move(object));
-		collection->addObject(move(object2));
-
-		wszystko->addObject(move(collection));
-		wszystko->addObject(move(collection2));
+//		object->translateTo(glm::vec3(0.0f, 5.0f, 0.0f));
+//		object2->translateTo(glm::vec3(0.0f, 2.0f, 0.0f));
+//		object3->translateBySpecial(glm::vec3(0.0f, 3.0f, 0.0f));
+//		object3->rotateBySpecial(glm::vec3(0.0f, 3.0f, 0.0f));
+//		object3->scaleTo(glm::vec3(1.0f, 5.0f, 1.0f));
+//		object->updateModel();
+//		object2->updateModel();
+//		object3->updateModel();
+//		object4->updateModel();
 
 
+
+
+
+		duzaWskazowka->addObject(move(object));
+		duzaWskazowka->addObject(move(object2));
+
+		duzaWskazowka->objects[0]->scaleBy(glm::vec3(0.3f, 8.0f, 0.3f));
+		duzaWskazowka->objects[0]->translateBy(glm::vec3(0.0f, 4.0f, 0.0f));
+		duzaWskazowka->objects[1]->translateBy(glm::vec3(0.0f, 8.0f, 0.0f));
+
+		malaWskazowka->addObject(move(object3));
+		malaWskazowka->addObject(move(object4));
+
+		malaWskazowka->objects[0]->scaleBy(glm::vec3(0.3f, 4.0f, 0.3f));
+		malaWskazowka->objects[0]->translateBy(glm::vec3(0.0f, 2.0f, 0.0f));
+		malaWskazowka->objects[1]->translateBy(glm::vec3(0.0f, 4.0f, 0.0f));
+
+		zegar->addObject(move(duzaWskazowka));
+		zegar->addObject(move(malaWskazowka));
+
+		zegar->updateModel();
+
+
+		podloga->addObject(move(object5));
+		podloga->objects[0]->scaleBy(glm::vec3(20.5f, 4.0f, 20.5f));
 	//	collection->rotate(45.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 
 
@@ -107,38 +121,20 @@ public:
 	}
 	void draw() override
 	{
-		//shader->setMatrix4f("mvp", mainCamera->getViewProjectionMatrix());
+		zegar->objects[0]->rotateBySpecial2((float)glfwGetTime() * 0.1, glm::vec3(0.0, 0.0, 1.0));
+		zegar->objects[1]->rotateBySpecial2((float)glfwGetTime() * 0.01, glm::vec3(0.0, 0.0, 1.0));
 
-		//auto width = mainWindow->getWindowSettings().width;
-		//auto height = mainWindow->getWindowSettings().height;
+		zegar->translateBySpecial2(glm::vec3(0.0f, 3.0f, 0.0f));
+;
 
-		//glViewport(0, 0, width / 2, height);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		////glDrawElements(GL_TRIANGLES, cylinder->getIndices().size(), GL_UNSIGNED_INT, 0);
-		//glDrawElements(GL_TRIANGLES, cuboid->getIndices().size(), GL_UNSIGNED_INT, 0);
+		zegar->draw(mainCamera, shader->getProgramID());
 
-		//glViewport(width / 2, 0, width / 2, height);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		////glDrawElements(GL_TRIANGLES, cylinder->getIndices().size(), GL_UNSIGNED_INT, 0);
-		//glDrawElements(GL_TRIANGLES, cuboid->getIndices().size(), GL_UNSIGNED_INT, 0);
+		zegar->translateBySpecial2(glm::vec3(0.0f, -3.0f, 0.0f));
 
 
-		//compound->rotate(sin(glfwGetTime()), glm::vec3(0.0f, 0.0f, 1.0f));
-//		std::cout << "ajidfiajfiaw\n";
-		
+		podloga->draw(mainCamera, shader->getProgramID());
 
 
-//		compound->rotateBy(1 , glm::vec3(0.0f, 0.0f, 1.0f));
-//		compound->translateBy(glm::vec3(cos(glfwGetTime()) * 0.01, sin(glfwGetTime())*0.01, 0.0f));
-		
-
-//		angle += 1;
-
-		wszystko->translateBySpecial(glm::vec3(0.5, 0.0, 0.0));
-		wszystko->draw(mainCamera, shader->getProgramID());
-		wszystko->translateBySpecial(glm::vec3(-0.5, 0.0, 0.0));
-		wszystko->rotateBySpecial((float)glfwGetTime() * 0.1, glm::vec3(0.0, 0.0, 1.0));
-//		collection2->draw(mainCamera, shader->getProgramID());
 	}
 };
 

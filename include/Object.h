@@ -17,7 +17,7 @@
 #include "IObject.h"
 #include "Model.h"
 
-class Object :public IObject
+class Object : public IObject
 {
 protected:
 
@@ -32,22 +32,13 @@ protected:
 	glm::mat4 translationMatrix;
 	glm::mat4 scaleMatrix;
 
-	glm::mat4 projectionMatrix;
-	glm::vec4 color;
-
-	using OptionalMat4 = std::optional<glm::mat4>;
-
-
 public:
 
 	Object(std::shared_ptr<Model> mod, unsigned int textureID);
 
 	void updateModel();
 
-	void setModel(std::shared_ptr<Model> model);
-	Transform getTransform();
 
-	void updateMatrices(const OptionalMat4& projection = {});
 
 	void translateTo(const glm::vec3& offset) override;
 	void rotateTo(float angle, const std::optional<glm::vec3>& axis) override;
@@ -57,15 +48,18 @@ public:
 	void rotateBy(float angle, const std::optional<glm::vec3>& axis) override;
 	void scaleBy(const glm::vec3& value) override;
 
+	void translateBy2(const glm::vec3& offset) override;
+	void rotateBy2(float angle, const std::optional<glm::vec3>& axis) override;
+	void scaleBy2(const glm::vec3& value) override;
+
 	void rotateBySpecial(float angle, const std::optional<glm::vec3>& axis);
 	void translateBySpecial(const glm::vec3& offset);
+	void scaleBySpecial(const glm::vec3& offset);
+
+	void rotateBySpecial2(float angle, const std::optional<glm::vec3>& axis);
 	void translateBySpecial2(const glm::vec3& offset);
+	void scaleBySpecial2(const glm::vec3& offset);
 
-	//  Color
-	[[nodiscard]] const glm::vec4& getColor() const;
-	void setColor(const glm::vec4& newColor);
-
-	using OptionalMat4 = std::optional<glm::mat4>;
 
 	void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const override;
 };

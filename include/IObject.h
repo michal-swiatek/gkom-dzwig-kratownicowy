@@ -27,9 +27,19 @@ public:
 	virtual void rotateBy(float angle, const std::optional<glm::vec3>& axis) = 0;
 	virtual void scaleBy(const glm::vec3& value) = 0;
 
+	virtual void translateBy2(const glm::vec3& offset) = 0;
+	virtual void rotateBy2(float angle, const std::optional<glm::vec3>& axis) = 0;
+	virtual void scaleBy2(const glm::vec3& value) = 0;
+
 	virtual void rotateBySpecial(float angle, const std::optional<glm::vec3>& axis) = 0;
 	virtual void translateBySpecial(const glm::vec3& offset) = 0;
+	virtual void scaleBySpecial(const glm::vec3& offset) = 0;
+
+	virtual void rotateBySpecial2(float angle, const std::optional<glm::vec3>& axis) = 0;
 	virtual void translateBySpecial2(const glm::vec3& offset) = 0;
+	virtual void scaleBySpecial2(const glm::vec3& offset) = 0;
+
+	virtual void updateModel() = 0;
 
 
 };
