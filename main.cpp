@@ -19,7 +19,6 @@
 #include "include/TexturesHandler.h"
 #include "Object.h"
 #include "include/Collection.h"
-#include "include/Compound.h"
 #include<iostream>
 
 class DisplayCylinder : public Core
@@ -35,10 +34,10 @@ private:
 	std::unique_ptr<Object> object3;
 	std::unique_ptr<Object> object4;
 	std::unique_ptr<Object> object5;
-	std::unique_ptr<Collection> duzaWskazowka;
-	std::unique_ptr<Collection> malaWskazowka;
-	std::unique_ptr<Collection> zegar;
-	std::unique_ptr<Collection> podloga;
+	std::unique_ptr<Collection> goraDzwigu;
+	std::unique_ptr<Collection> lina;
+	std::unique_ptr<Collection> dzwig;
+
 
 	TexturesHandler textH;
 
@@ -60,56 +59,50 @@ public:
 		textH.addTexture(texture);
 		textH.addTexture(texture2);
 
-		duzaWskazowka = std::unique_ptr<Collection>(new Collection());
-		malaWskazowka = std::unique_ptr<Collection>(new Collection());
-		podloga = std::unique_ptr<Collection>(new Collection());
-		zegar = std::unique_ptr<Collection>(new Collection());
+		dzwig = std::unique_ptr<Collection>(new Collection());
 
-		object = std::unique_ptr<Object>(new Object(cylinder ,textH.useTexture(texture2)));
-		object2 = std::unique_ptr<Object>(new Object(cuboid,textH.useTexture(texture2)));
+		object = std::unique_ptr<Object>(new Object(cuboid, textH.useTexture(texture2)));
+		object2 = std::unique_ptr<Object>(new Object(cuboid, textH.useTexture(texture2)));
 
-		object3 = std::unique_ptr<Object>(new Object(cylinder, textH.useTexture(texture)));
-		object4 = std::unique_ptr<Object>(new Object(cuboid, textH.useTexture(texture)));
+		object3 = std::unique_ptr<Object>(new Object(cuboid, textH.useTexture(texture)));
+		object4 = std::unique_ptr<Object>(new Object(cylinder, textH.useTexture(texture)));
 
 		object5 = std::unique_ptr<Object>(new Object(cylinder, textH.useTexture(texture2)));
 
-//		object->translateTo(glm::vec3(0.0f, 5.0f, 0.0f));
-//		object2->translateTo(glm::vec3(0.0f, 2.0f, 0.0f));
-//		object3->translateBySpecial(glm::vec3(0.0f, 3.0f, 0.0f));
-//		object3->rotateBySpecial(glm::vec3(0.0f, 3.0f, 0.0f));
-//		object3->scaleTo(glm::vec3(1.0f, 5.0f, 1.0f));
-//		object->updateModel();
-//		object2->updateModel();
-//		object3->updateModel();
-//		object4->updateModel();
+		//		object->translateTo(glm::vec3(0.0f, 5.0f, 0.0f));
+		//		object2->translateTo(glm::vec3(0.0f, 2.0f, 0.0f));
+		//		object3->translateLocal(glm::vec3(0.0f, 3.0f, 0.0f));
+		//		object3->rotateLocal(glm::vec3(0.0f, 3.0f, 0.0f));
+		//		object3->scaleTo(glm::vec3(1.0f, 5.0f, 1.0f));
+		//		object->updateModel();
+		//		object2->updateModel();
+		//		object3->updateModel();
+		//		object4->updateModel();
 
 
 
 
 
-		duzaWskazowka->addObject(move(object));
-		duzaWskazowka->addObject(move(object2));
+		dzwig->addObject(move(object));
+		dzwig->addObject(move(object2));
 
-		duzaWskazowka->objects[0]->scaleBy(glm::vec3(0.3f, 8.0f, 0.3f));
-		duzaWskazowka->objects[0]->translateBy(glm::vec3(0.0f, 4.0f, 0.0f));
-		duzaWskazowka->objects[1]->translateBy(glm::vec3(0.0f, 8.0f, 0.0f));
+		dzwig->objects[0]->scaleWorld(glm::vec3(2.0f, 2.0f, 15.0f));
+		dzwig->objects[0]->translateWorld(glm::vec3(0.0f, 0.0f, 4.0f));
+		dzwig->objects[1]->scaleWorld(glm::vec3(0.0f, 0.0f, -4.0f));
+		dzwig->objects[1]->translateWorld(glm::vec3(0.0f, 0.0f, -4.0f));
 
-		malaWskazowka->addObject(move(object3));
-		malaWskazowka->addObject(move(object4));
+		dzwig->addObject(move(object3));
+		dzwig->objects[2]->scaleWorld(glm::vec3(4.0f, 4.0f, 4.0f));
+		dzwig->objects[2]->translateWorld(glm::vec3(0.0f, 0.0f, -4.0f));
+		dzwig->addObject(move(object4));
 
-		malaWskazowka->objects[0]->scaleBy(glm::vec3(0.3f, 4.0f, 0.3f));
-		malaWskazowka->objects[0]->translateBy(glm::vec3(0.0f, 2.0f, 0.0f));
-		malaWskazowka->objects[1]->translateBy(glm::vec3(0.0f, 4.0f, 0.0f));
-
-		zegar->addObject(move(duzaWskazowka));
-		zegar->addObject(move(malaWskazowka));
-
-		zegar->updateModel();
+		dzwig->objects[3]->scaleWorld(glm::vec3(0.3f, 0.3f, 0.3f));
+		dzwig->objects[3]->translateWorld(glm::vec3(0.0f, 0.0f, 14.0f));
 
 
-		podloga->addObject(move(object5));
-		podloga->objects[0]->scaleBy(glm::vec3(20.5f, 4.0f, 20.5f));
-	//	collection->rotate(45.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+
+
+
 
 
 		mainCamera->getSettings().movementSpeed /= 2;
@@ -117,48 +110,47 @@ public:
 		shader->use();
 
 		glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
-		
+
 	}
 	void draw() override
 	{
-		zegar->objects[0]->rotateBySpecial2((float)glfwGetTime() * 0.1, glm::vec3(0.0, 0.0, 1.0));
-		zegar->objects[1]->rotateBySpecial2((float)glfwGetTime() * 0.01, glm::vec3(0.0, 0.0, 1.0));
+		dzwig->rotateWorld((float)glfwGetTime() * 0.1, glm::vec3(0.0, 1.0, 0.0));
+		dzwig->objects[3]->scaleWorld(glm::vec3(1.0, 1.01, 1.0));
 
-		zegar->translateBySpecial2(glm::vec3(0.0f, 3.0f, 0.0f));
-;
+		dzwig->translateWorld(glm::vec3(0.0f, 3.0f, 0.0f));
 
-		zegar->draw(mainCamera, shader->getProgramID());
+		dzwig->draw(mainCamera, shader->getProgramID());
 
-		zegar->translateBySpecial2(glm::vec3(0.0f, -3.0f, 0.0f));
+		dzwig->translateWorld(glm::vec3(0.0f, -3.0f, 0.0f));
 
 
-		podloga->draw(mainCamera, shader->getProgramID());
+
 
 
 	}
 };
 
 int main() {
-    try {
-        initOpenGL();
-    }
-    catch (std::runtime_error& e) {
-        std::cout << e.what();
-        return -1;
-    }
+	try {
+		initOpenGL();
+	}
+	catch (std::runtime_error& e) {
+		std::cout << e.what();
+		return -1;
+	}
 
 	//Core app("Dzwig kratownicowy", int(PROJECT_VERSION_MAJOR), int(PROJECT_VERSION_MINOR), int(PROJECT_VERSION_PATCH));
 	DisplayCylinder app;
-    try {
-        app.initApp();  //  Initialize subsystems and resources
-    }
-    catch (std::exception& e) {
-        std::cout << e.what();
-        return -2;
-    }
+	try {
+		app.initApp();  //  Initialize subsystems and resources
+	}
+	catch (std::exception& e) {
+		std::cout << e.what();
+		return -2;
+	}
 
-    app.run();
+	app.run();
 
-    return 0;
+	return 0;
 }
 

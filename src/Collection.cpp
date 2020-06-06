@@ -11,97 +11,43 @@ void Collection::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const 
 	}
 }
 
-void Collection::translateTo(const glm::vec3& offset) {
-
-}
-void Collection::rotateTo(float angle, const std::optional<glm::vec3>& axis) {
-
-}
-void Collection::scaleTo(const glm::vec3& value) {
-	for (auto& object : objects) {
-		object->scaleTo(value);
-	}
-}
-
-void Collection::translateBy(const glm::vec3& offset) {
-	for (auto& object : objects) {
-		object->translateBy(offset);
-	}
-}
-void Collection::rotateBy(float angle, const std::optional<glm::vec3>& axis) {
-	for (auto& object : objects) {
-		object->rotateBy(angle, axis);
-	}
-}
-void Collection::scaleBy(const glm::vec3& value) {
-	for (auto& object : objects) {
-		object->scaleBy(value);
-	}
-}
 
 
-void Collection::translateBy2(const glm::vec3& offset) {
-	for (auto& object : objects) {
-		object->translateBy2(offset);
-	}
-}
-void Collection::rotateBy2(float angle, const std::optional<glm::vec3>& axis) {
-	for (auto& object : objects) {
-		object->rotateBy2(angle, axis);
-	}
-}
-void Collection::scaleBy2(const glm::vec3& value) {
-	for (auto& object : objects) {
-		object->scaleBy2(value);
-	}
-}
-
-
-
-void Collection::rotateBySpecial(float angle, const std::optional<glm::vec3>& axis)
+void Collection::rotateLocal(float angle, const std::optional<glm::vec3>& axis)
 {
 	for (auto& object : objects) {
-		object->rotateBySpecial( angle, *axis);
+		object->rotateLocal( angle, *axis);
 	}
 }
-void Collection::translateBySpecial(const glm::vec3& offset)
+void Collection::translateLocal(const glm::vec3& offset)
 {
 	for (auto& object : objects) {
-		object->translateBySpecial(offset);
+		object->translateLocal(offset);
 	}
 }
-void Collection::scaleBySpecial(const glm::vec3& offset)
+void Collection::scaleLocal(const glm::vec3& offset)
 {
 	for (auto& object : objects) {
-		object->scaleBySpecial(offset);
-	}
-}
-
-
-void Collection::rotateBySpecial2(float angle, const std::optional<glm::vec3>& axis)
-{
-	for (auto& object : objects) {
-		object->rotateBySpecial2(angle, *axis);
-	}
-}
-void Collection::translateBySpecial2(const glm::vec3& offset)
-{
-	for (auto& object : objects) {
-		object->translateBySpecial2(offset);
-	}
-}
-void Collection::scaleBySpecial2(const glm::vec3& offset)
-{
-	for (auto& object : objects) {
-		object->scaleBySpecial2(offset);
+		object->scaleLocal(offset);
 	}
 }
 
 
-
-void Collection::updateModel()
+void Collection::rotateWorld(float angle, const std::optional<glm::vec3>& axis)
 {
 	for (auto& object : objects) {
-		object->updateModel();
+		object->rotateWorld(angle, *axis);
+	}
+}
+void Collection::translateWorld(const glm::vec3& offset)
+{
+	for (auto& object : objects) {
+		object->translateWorld(offset);
+	}
+}
+void Collection::scaleWorld(const glm::vec3& offset)
+{
+	for (auto& object : objects) {
+		object->scaleWorld(offset);
 	}
 }
