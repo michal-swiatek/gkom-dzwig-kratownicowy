@@ -4,14 +4,14 @@
  *  LearnOpenGL tutorial: https://learnopengl.com/Introduction
  */
 
-#include "PhongMaterial.h"
-
-#include <string>
-#include <stdexcept>
-
 #include <GL/glew.h>
+
+#include "PhongMaterial.h"
+#include <string>
+
+#include <stdexcept>
 #include <SOIL/SOIL.h>
-#include <glfw3.h>
+
 
 bool has_suffix(const std::string &str, const std::string &suffix);     // Helper function
 
