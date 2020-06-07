@@ -41,6 +41,7 @@ public:
 
     void init() override
     {
+        int a = 23343453455724;
         skyBox->init();
         mainCamera->getSettings().movementSpeed /= 2;
         glGenBuffers(1, &VBO);
@@ -67,10 +68,18 @@ public:
 
         shader->use();
 
-        shader->setVector4f("light.position", glm::vec4(3.0f, 5.0f, 5.0f, 1.0f));
-        shader->setVector3f("light.ambient", glm::vec3(0.1f));
-        shader->setVector3f("light.diffuse", glm::vec3(1.0f));
-        shader->setVector3f("light.specular", glm::vec3(0.5f));
+        shader->setVector3f("dirLight.direction", glm::vec3(5.0f, 5.0f, 5.0f));
+        shader->setVector3f("dirLight.ambient", glm::vec3(0.1f));
+        shader->setVector3f("dirLight.diffuse", glm::vec3(1.0f));
+        shader->setVector3f("dirLight.specular", glm::vec3(0.5f));
+
+        shader->setVector3f("pointLights[0].direction", glm::vec3(7.0f, 5.0f, 5.0f));
+        shader->setVector3f("pointLights[0].ambient", glm::vec3(0.1f));
+        shader->setVector3f("pointLights[0].diffuse", glm::vec3(1.0f));
+        shader->setVector3f("pointLights[0].specular", glm::vec3(0.5f));
+        shader->setFloat("pointLights[0].constant", 1.0);
+        shader->setFloat("pointLights[0].linear", 0.14);
+        shader->setFloat("pointLights[0].quadratic", 0.07);
 
         shader->setMatrix4f("model", glm::mat4(1.0f));
         shader->setMatrix3f("modelInvTrans", glm::mat3(glm::transpose(glm::inverse(glm::mat4(1.0f)))));
@@ -79,8 +88,8 @@ public:
         material->applyMaterial(*shader);
 
 
-        float color[4] = {1.0f, 0.0f, 0.0f, 1.0f};
-        glUniform4fv(glGetUniformLocation(shader->getProgramID(), "color"), 1, color);
+//        float color[4] = {1.0f, 0.0f, 0.0f, 1.0f};
+//        glUniform4fv(glGetUniformLocation(shader->getProgramID(), "color"), 1, color);
     }
 
     void draw() override
@@ -89,7 +98,6 @@ public:
         shader->use();
 
         shader->setVector3f("eyePos", mainCamera->getTransform().position);
-        shader->setMatrix4f("mv",mainCamera->getViewMatrix());
         shader->setMatrix4f("mvp", mainCamera->getViewProjectionMatrix());
 
         auto width = mainWindow->getWindowSettings().width;
