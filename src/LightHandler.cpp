@@ -38,18 +38,21 @@ void LightHandler::applyLightToShader(std::shared_ptr<Shader> shader) {
 
 }
 
-void LightHandler::setDirLight(glm::vec3 direction, glm::vec3 ambient,
-        glm::vec3 diffuse,glm::vec3 specular) {
-    dirLight->direction = direction;
-    dirLight->ambient = ambient;
-    dirLight->diffuse = diffuse;
-    dirLight->specular = specular;
-}
-
 void LightHandler::addPointLight(std::shared_ptr<PointLight> pointLight) {
     if(pointLights.size() >= MAX_POINT_LIGHTS)
         throw std::runtime_error("Próba przekroczenia maksymalnej liczby świateł punktowych");
     pointLights.push_back(pointLight);
+}
+
+void LightHandler::setDirLight(DirectionalLight directionalLight) {
+    dirLight->direction = directionalLight.direction;
+    dirLight->ambient = directionalLight.ambient;
+    dirLight->diffuse = directionalLight.diffuse;
+    dirLight->specular = directionalLight.specular;
+}
+
+void LightHandler::setPointLightInfo(PointLightInfo info, uint8_t target) {
+    pointLights[target]->setPointLightInfo(info);
 }
 
 void PointLight::move(const glm::vec3 &displacement) {

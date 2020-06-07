@@ -39,7 +39,7 @@ public:
     void move(const glm::vec3& displacement);
     void drawLightSource();
 
-    const PointLightInfo &getPointLightInfo() const;
+    [[nodiscard]] const PointLightInfo &getPointLightInfo() const;
 
     void setPointLightInfo(const PointLightInfo &pointLightInfo);
 };
@@ -56,9 +56,9 @@ private:
 public:
     explicit LightHandler(const cam::Camera& camera);
     void movePointLight(glm::vec3 displacement, uint8_t target);
+    void setPointLightInfo(PointLightInfo info, uint8_t target);
     void applyLightToShader(std::shared_ptr<Shader> shader);
-    void setDirLight(glm::vec3 direction, glm::vec3 ambient,
-                     glm::vec3 diffuse,glm::vec3 specular);
+    void setDirLight(DirectionalLight directionalLight);
     void addPointLight(std::shared_ptr<PointLight> pointLight);
 };
 
