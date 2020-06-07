@@ -46,7 +46,7 @@ struct SpotLight {
 };
 
 //  Lighting is specified in view space
-#define NR_POINT_LIGHTS 1
+#define NR_POINT_LIGHTS 10
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform DirLight dirLight;
 uniform Material material;

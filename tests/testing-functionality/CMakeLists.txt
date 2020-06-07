@@ -1,4 +1,4 @@
-add_executable(display_cylinder display_cylinder.cpp ${CURRENT_INCLUDE_FILES} ${CURRENT_SRC_FILES} ../../src/SkyBox.cpp ../../include/SkyBox.h)
+add_executable(display_cylinder display_cylinder.cpp ${CURRENT_INCLUDE_FILES} ${CURRENT_SRC_FILES})
 target_link_libraries(display_cylinder ${OPENGL_LIBS})
 
 # Adding shaders to build and executable directory
