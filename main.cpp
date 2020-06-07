@@ -35,7 +35,7 @@ private:
 public:
 	DisplayScene() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
 	{
-		shader = std::make_unique<Shader>("shaders/texture.vs.glsl", "shaders/texture.fs.glsl");
+		shader = std::make_unique<Shader>("../shaders/texture.vs.glsl", "../shaders/texture.fs.glsl");
 		scene = std::make_unique<Scene>();
 	}
 

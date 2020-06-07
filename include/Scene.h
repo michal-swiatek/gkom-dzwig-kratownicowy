@@ -7,13 +7,21 @@
 #define SCENE_H
 
 // Textures ID
-#define CRANE_PART 0
-#define CONCRETE 1
-
-
-
-
-
+#define BRUSHED_METAL 0
+#define DIRTY_BLUE_METAL 1
+#define CONCRETE 2
+#define DIRT 3
+#define OLD_YELLOW_METAL 4
+#define CONCRETE_2 5
+#define DIRTY_BLUE_METAL_2 6
+#define DIRTY_GREEN_METAL 7
+#define CONCRETE_3 8
+#define CONCRETE_4 9
+#define CONCRETE_5 10
+#define DIRT2 11
+#define STEEL_ROPE 12
+#define BLACK_METAL 13
+#define OLD_YELLOW_METAL_2 14
 
 
 
@@ -95,15 +103,29 @@ public:
 
 		//this->moveCraneHoist(1.0f);
 
-		this->moveCraneHook(0.1f);
+		//this->moveCraneHook(0.1f);
 
-		//this->rotateCraneTop(0.1f);
+		this->rotateCraneTop(0.1f);
 	}
 private:
 	void addTextures() {
 
-		textures.push_back("./textures/awesomeface.png");
-		textures.push_back("./textures/grass2.png");
+		textures.push_back("../textures/brushedMetal.png");
+		textures.push_back("../textures/dirtyBlueMetal.png");
+		textures.push_back("../textures/concrete.png");
+		textures.push_back("../textures/dirt.png");
+		textures.push_back("../textures/oldYellowMetal.png");
+		textures.push_back("../textures/concrete2.png");
+		textures.push_back("../textures/dirtyBlueMetal2.png");
+		textures.push_back("../textures/dirtyGreenMetal.png");
+		textures.push_back("../textures/concrete3.png");
+		textures.push_back("../textures/concrete4.png");
+		textures.push_back("../textures/concrete5.png");
+		textures.push_back("../textures/dirt2.png");
+		textures.push_back("../textures/steelRope.png");
+		textures.push_back("../textures/blackMetal.png");
+		textures.push_back("../textures/oldYellowMetal2.png");
+
 
 		for (auto texture : textures) {
 			texturesHandler.addTexture(texture);
@@ -175,7 +197,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[OLD_YELLOW_METAL];
 
 		// Vertical and horizontal 
 		//1
@@ -212,7 +234,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[BRUSHED_METAL];
 
 		// Net :(
 		//1
@@ -321,7 +343,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[CONCRETE_4];
 
 		// Floors
 		//1
@@ -406,7 +428,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[CONCRETE_2];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
@@ -442,7 +464,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[CONCRETE_2];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
@@ -478,7 +500,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[CONCRETE_4];
 
 		// Floors
 		//1
@@ -562,7 +584,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[CONCRETE_2];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
@@ -598,7 +620,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[CONCRETE_2];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
@@ -635,7 +657,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[CONCRETE_4];
 
 		// Floors
 		//1
@@ -682,7 +704,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[CONCRETE_2];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
@@ -716,7 +738,7 @@ private:
 	void createGround() {
 		std::shared_ptr<Collection> tiles = std::make_shared<Collection>();
 
-		std::string tileTexture = textures[CRANE_PART];
+		std::string tileTexture = textures[DIRT];
 		// 0 0
 		tiles->addObject(createTile(-25.0f, -25.0f, tileTexture));
 		// 1 0
@@ -792,7 +814,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[DIRTY_BLUE_METAL];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[1], texturesHandler.useTexture(partTexture)));
@@ -835,7 +857,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[DIRTY_BLUE_METAL];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[1], texturesHandler.useTexture(partTexture)));
@@ -924,7 +946,7 @@ private:
 
 		std::shared_ptr<Object> cube;
 
-		std::string weightsTexture = textures[CRANE_PART];
+		std::string weightsTexture = textures[CONCRETE_3];
 
 		// Add weights
 		//1
@@ -965,7 +987,7 @@ private:
 	std::shared_ptr<Collection> createCraneBaseBottomStand() {
 		std::shared_ptr<Collection> stand = std::make_shared<Collection>();
 
-		std::string standTexture = textures[CRANE_PART];
+		std::string standTexture = textures[DIRTY_BLUE_METAL];
 
 		std::shared_ptr<Object> cube;
 
@@ -1038,7 +1060,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[DIRTY_BLUE_METAL];
 
 		std::shared_ptr<Collection> wall = std::make_shared<Collection>();
 
@@ -1132,7 +1154,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[DIRTY_BLUE_METAL];
 
 		part = std::shared_ptr<Object>(new Object(models[1], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(0.25f, 2.5f, 0.25f));
@@ -1161,7 +1183,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[DIRTY_BLUE_METAL];
 
 		part = std::shared_ptr<Object>(new Object(models[1], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(0.1f, 2.5f, 0.1f));
@@ -1213,7 +1235,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[CONCRETE_2];
 
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(1.0f, 4.8f, 2.3f));
@@ -1238,7 +1260,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[DIRTY_BLUE_METAL_2];
 
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(2.0f, 4.0f, 2.5f));
@@ -1309,7 +1331,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[DIRTY_GREEN_METAL];
 
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(3.0f, 0.5, 2.0f));
@@ -1324,7 +1346,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[BLACK_METAL];
 
 		part = std::shared_ptr<Object>(new Object(models[1], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(0.25f, 0.25f, 0.25f));
@@ -1340,7 +1362,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[STEEL_ROPE];
 
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(0.09f, 20.0f, 0.09f));
@@ -1357,7 +1379,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[CRANE_PART];
+		std::string partTexture = textures[OLD_YELLOW_METAL_2];
 
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(0.3f, 1.0f, 0.3f));

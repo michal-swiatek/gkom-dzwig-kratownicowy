@@ -1,14 +1,16 @@
 #version 330 core
+layout (location = 0) in vec3 vPos;
+layout (location = 1) in vec3 vNormal;
+layout (location = 2) in vec2 aTexCoord;
 
-out vec4 fColor;
-  
-in vec3 ourColor;
-in vec2 TexCoord;
+uniform mat4 mvp;
 
-uniform sampler2D ourTexture;
-uniform vec4 color;
+out vec3 vectorNormal;
+out vec2 TexCoord;
 
 void main()
 {
-    fColor = texture(ourTexture, TexCoord);
+    gl_Position = mvp * vec4(vPos, 1.0f);
+    vectorNormal = vNormal;
+    TexCoord = aTexCoord;
 }
