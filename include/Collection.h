@@ -15,13 +15,14 @@
 class Collection : public IObject
 {
 public:
-	std::vector<std::unique_ptr<IObject>> objects;
+	Collection(){}
+
+	std::vector<std::shared_ptr<IObject>> objects;
 
 
-	void addObject(std::unique_ptr<IObject> object) 
+	void addObject(std::shared_ptr<IObject> object)
 	{
-		objects.push_back(std::move(object));
-
+		objects.push_back(object);
 	}
 
 	void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const override;

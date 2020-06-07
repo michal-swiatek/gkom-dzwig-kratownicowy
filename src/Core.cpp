@@ -8,8 +8,6 @@
 #include <cmath>
 #include <stdexcept>
 #include "Cylinder.h"
-#include "OldCompound.h"
-#include "OldModel.h"
 
 std::unique_ptr<Window> Core::mainWindow = nullptr;
 std::unique_ptr<cam::Camera> Core::mainCamera = nullptr;
