@@ -28,27 +28,13 @@ class DisplayScene : public Core
 
 private:
 	std::unique_ptr<Shader> shader;
-	std::shared_ptr<Cylinder> cylinder;
-	std::shared_ptr<Cuboid> cuboid;
-	std::unique_ptr<Object> object;
-	std::unique_ptr<Object> object2;
-	std::unique_ptr<Object> object3;
-	std::unique_ptr<Object> object4;
-	std::unique_ptr<Object> object5;
-	std::unique_ptr<Collection> goraDzwigu;
-	std::unique_ptr<Collection> lina;
-	std::unique_ptr<Collection> dzwig;
 	std::unique_ptr<Scene> scene;
-
-	TexturesHandler textH;
 
 	uint VBO, VAO, EBO;
 
 public:
 	DisplayScene() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
 	{
-		cylinder = std::make_unique<Cylinder>(1.0f, 1.0f, 1.0f, 3, 1);
-		cuboid = std::make_shared<Cuboid>();
 		shader = std::make_unique<Shader>("shaders/texture.vs.glsl", "shaders/texture.fs.glsl");
 		scene = std::make_unique<Scene>();
 	}
@@ -86,7 +72,6 @@ int main() {
         return -1;
     }
 
-	//Core app("Dzwig kratownicowy", int(PROJECT_VERSION_MAJOR), int(PROJECT_VERSION_MINOR), int(PROJECT_VERSION_PATCH));
 	DisplayScene app;
     try {
         app.initApp();  //  Initialize subsystems and resources
