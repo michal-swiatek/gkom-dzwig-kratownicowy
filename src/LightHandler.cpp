@@ -3,6 +3,7 @@
 //
 
 #include "LightHandler.h"
+#include <stdexcept>
 
 const glm::vec3 &DirectionalLight::getDirection() const {
     return direction;
@@ -36,9 +37,17 @@ void DirectionalLight::setSpecular(const glm::vec3 &specular) {
     DirectionalLight::specular = specular;
 }
 
+DirectionalLight::DirectionalLight() {
+    direction = glm::vec3(0.5);
+    ambient = glm::vec3(0.5);
+    diffuse = glm::vec3(0.5);
+    specular = glm::vec3(0.5);
+}
+
 LightHandler::LightHandler(const cam::Camera &camera) {
     this->camera = camera;
     dirLight = std::make_unique<DirectionalLight>(DirectionalLight());
+    lightSourceShader = std::make_unique<Shader>("shaders/light_source.vs.glsl", "shaders/light_source.fs.glsl");
 }
 
 void LightHandler::movePointLight(glm::vec3 displacement, uint8_t target) {
@@ -74,6 +83,12 @@ void LightHandler::setDirLight(glm::vec3 direction, glm::vec3 ambient,
     dirLight->setAmbient(ambient);
     dirLight->setDiffuse(diffuse);
     dirLight->setSpecular(specular);
+}
+
+void LightHandler::addPointLight(std::shared_ptr<PointLight> pointLight) {
+    if(pointLights.size() >= MAX_POINT_LIGHTS)
+        throw std::runtime_error("Próba przekroczenia maksymalnej liczby świateł punktowych");
+    pointLights.push_back(pointLight);
 }
 
 const glm::vec3 &PointLight::getPosition() const {
@@ -130,4 +145,12 @@ GLfloat PointLight::getQuadratic() const {
 
 void PointLight::setQuadratic(GLfloat quadratic) {
     PointLight::quadratic = quadratic;
+}
+
+void PointLight::move(const glm::vec3 &displacement) {
+    lightSource->translateWorld(displacement);
+}
+
+void PointLight::drawLightSource() {
+    lightSource->draw();
 }
