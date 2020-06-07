@@ -9,8 +9,9 @@
 #include <string>
 #include <stdexcept>
 
-#include <glad/glad.h>
-#include <stb_image/stb_image.h>
+#include <GL/glew.h>
+#include <SOIL/SOIL.h>
+#include <glfw3.h>
 
 bool has_suffix(const std::string &str, const std::string &suffix);     // Helper function
 
@@ -126,10 +127,10 @@ uint32_t PhongMaterial::loadTexture(const char *path) const
     using uchar = unsigned char;
 
     //  Load texture data
-    stbi_set_flip_vertically_on_load(true);
+//    stbi_flip_vertically_on_load(true);
 
     int image_width, image_height, channels;
-    uchar* image_data = stbi_load(path, &image_width, &image_height, &channels, 0);
+    uchar* image_data = SOIL_load_image(path, &image_width, &image_height, &channels, 0);
 
     if (!image_data)
         throw std::runtime_error("Failed to load texture! Path: " + std::string(path) + "\n");
@@ -143,15 +144,17 @@ uint32_t PhongMaterial::loadTexture(const char *path) const
     else if (has_suffix(path, ".png"))
         image_format = GL_RGBA;
     else {
-        stbi_image_free(image_data);
+        SOIL_free_image_data(image_data);
         throw std::runtime_error("Unsupported image format! File: " + std::string(path) + "\n");
     }
 
     //  Send texture to GPU
     glTexImage2D(GL_TEXTURE_2D, 0, image_format, image_width, image_height, 0, image_format, GL_UNSIGNED_BYTE, image_data);
-    glGenerateMipmap(GL_TEXTURE_2D);
 
-    stbi_image_free(image_data);
+    // TO DO
+    //    glGenerateMipmap(GL_TEXTURE_2D);
+
+    SOIL_free_image_data(image_data);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     return texture;
