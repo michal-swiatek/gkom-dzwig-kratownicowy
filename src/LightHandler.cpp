@@ -5,45 +5,6 @@
 #include "LightHandler.h"
 #include <stdexcept>
 
-const glm::vec3 &DirectionalLight::getDirection() const {
-    return direction;
-}
-
-void DirectionalLight::setDirection(const glm::vec3 &direction) {
-    DirectionalLight::direction = direction;
-}
-
-const glm::vec3 &DirectionalLight::getAmbient() const {
-    return ambient;
-}
-
-void DirectionalLight::setAmbient(const glm::vec3 &ambient) {
-    DirectionalLight::ambient = ambient;
-}
-
-const glm::vec3 &DirectionalLight::getDiffuse() const {
-    return diffuse;
-}
-
-void DirectionalLight::setDiffuse(const glm::vec3 &diffuse) {
-    DirectionalLight::diffuse = diffuse;
-}
-
-const glm::vec3 &DirectionalLight::getSpecular() const {
-    return specular;
-}
-
-void DirectionalLight::setSpecular(const glm::vec3 &specular) {
-    DirectionalLight::specular = specular;
-}
-
-DirectionalLight::DirectionalLight() {
-    direction = glm::vec3(0.5);
-    ambient = glm::vec3(0.5);
-    diffuse = glm::vec3(0.5);
-    specular = glm::vec3(0.5);
-}
-
 LightHandler::LightHandler(const cam::Camera &camera) {
     this->camera = camera;
     dirLight = std::make_unique<DirectionalLight>(DirectionalLight());
@@ -57,20 +18,20 @@ void LightHandler::movePointLight(glm::vec3 displacement, uint8_t target) {
 void LightHandler::applyLightToShader(std::shared_ptr<Shader> shader) {
     shader->use();
     shader->setVector3f("eyePos", camera.getTransform().position);
-    shader->setVector3f("dirLight.direction", dirLight->getDirection());
-    shader->setVector3f("dirLight.ambient", dirLight->getAmbient() + 0.15f );
-    shader->setVector3f("dirLight.diffuse", dirLight->getDiffuse());
-    shader->setVector3f("dirLight.specular", dirLight->getSpecular());
+    shader->setVector3f("dirLight.direction", dirLight->direction);
+    shader->setVector3f("dirLight.ambient", dirLight->ambient + 0.15f );
+    shader->setVector3f("dirLight.diffuse", dirLight->diffuse);
+    shader->setVector3f("dirLight.specular", dirLight->specular);
 
     for(auto pointLight:pointLights) {
         shader->use();
-        shader->setVector3f("pointLight.position", pointLight->getPosition());
-        shader->setVector3f("pointLight.ambient", pointLight->getAmbient());
-        shader->setVector3f("pointLight.diffuse", pointLight->getDiffuse());
-        shader->setVector3f("pointLight.specular", pointLight->getSpecular());
-        shader->setFloat("pointLight.constant", pointLight->getConstant());
-        shader->setFloat("pointLight.linear", pointLight->getLinear());
-        shader->setFloat("pointLight.quadratic", pointLight->getQuadratic());
+        shader->setVector3f("pointLight.position", pointLight->getPointLightInfo().position);
+        shader->setVector3f("pointLight.ambient", pointLight->getPointLightInfo().ambient);
+        shader->setVector3f("pointLight.diffuse", pointLight->getPointLightInfo().diffuse);
+        shader->setVector3f("pointLight.specular", pointLight->getPointLightInfo().specular);
+        shader->setFloat("pointLight.constant", pointLight->getPointLightInfo().constant);
+        shader->setFloat("pointLight.linear", pointLight->getPointLightInfo().linear);
+        shader->setFloat("pointLight.quadratic", pointLight->getPointLightInfo().quadratic);
         lightSourceShader->use();
         pointLight->drawLightSource();
     }
@@ -79,10 +40,10 @@ void LightHandler::applyLightToShader(std::shared_ptr<Shader> shader) {
 
 void LightHandler::setDirLight(glm::vec3 direction, glm::vec3 ambient,
         glm::vec3 diffuse,glm::vec3 specular) {
-    dirLight->setDirection(direction);
-    dirLight->setAmbient(ambient);
-    dirLight->setDiffuse(diffuse);
-    dirLight->setSpecular(specular);
+    dirLight->direction = direction;
+    dirLight->ambient = ambient;
+    dirLight->diffuse = diffuse;
+    dirLight->specular = specular;
 }
 
 void LightHandler::addPointLight(std::shared_ptr<PointLight> pointLight) {
@@ -91,66 +52,21 @@ void LightHandler::addPointLight(std::shared_ptr<PointLight> pointLight) {
     pointLights.push_back(pointLight);
 }
 
-const glm::vec3 &PointLight::getPosition() const {
-    return position;
-}
-
-void PointLight::setPosition(const glm::vec3 &position) {
-    PointLight::position = position;
-}
-
-const glm::vec3 &PointLight::getAmbient() const {
-    return ambient;
-}
-
-void PointLight::setAmbient(const glm::vec3 &ambient) {
-    PointLight::ambient = ambient;
-}
-
-const glm::vec3 &PointLight::getDiffuse() const {
-    return diffuse;
-}
-
-void PointLight::setDiffuse(const glm::vec3 &diffuse) {
-    PointLight::diffuse = diffuse;
-}
-
-const glm::vec3 &PointLight::getSpecular() const {
-    return specular;
-}
-
-void PointLight::setSpecular(const glm::vec3 &specular) {
-    PointLight::specular = specular;
-}
-
-GLfloat PointLight::getConstant() const {
-    return constant;
-}
-
-void PointLight::setConstant(GLfloat constant) {
-    PointLight::constant = constant;
-}
-
-GLfloat PointLight::getLinear() const {
-    return linear;
-}
-
-void PointLight::setLinear(GLfloat linear) {
-    PointLight::linear = linear;
-}
-
-GLfloat PointLight::getQuadratic() const {
-    return quadratic;
-}
-
-void PointLight::setQuadratic(GLfloat quadratic) {
-    PointLight::quadratic = quadratic;
-}
-
 void PointLight::move(const glm::vec3 &displacement) {
     lightSource->translateWorld(displacement);
 }
 
 void PointLight::drawLightSource() {
     lightSource->draw();
+}
+
+PointLight::PointLight(const PointLightInfo &pointLightInfo, const std::shared_ptr<Object> &lightSource)
+        : pointLightInfo(pointLightInfo), lightSource(lightSource) {}
+
+const PointLightInfo &PointLight::getPointLightInfo() const {
+    return pointLightInfo;
+}
+
+void PointLight::setPointLightInfo(const PointLightInfo &pointLightInfo) {
+    PointLight::pointLightInfo = pointLightInfo;
 }

@@ -11,28 +11,14 @@
 #include "Camera.h"
 #include "Cylinder.h"
 
-class DirectionalLight {
-private:
-    glm::vec3 direction;
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
-public:
-    DirectionalLight();
-
-    [[nodiscard]] const glm::vec3 &getDirection() const;
-    [[nodiscard]] const glm::vec3 &getAmbient() const;
-    [[nodiscard]] const glm::vec3 &getDiffuse() const;
-    [[nodiscard]] const glm::vec3 &getSpecular() const;
-
-    void setDirection(const glm::vec3 &direction);
-    void setAmbient(const glm::vec3 &ambient);
-    void setDiffuse(const glm::vec3 &diffuse);
-    void setSpecular(const glm::vec3 &specular);
+struct DirectionalLight {
+    glm::vec3 direction = glm::vec3(0.5);
+    glm::vec3 ambient = glm::vec3(0.5);
+    glm::vec3 diffuse = glm::vec3(0.5);
+    glm::vec3 specular = glm::vec3(0.5);
 };
 
-class PointLight {
-private:
+struct PointLightInfo {
     glm::vec3 position;
     glm::vec3 ambient;
     glm::vec3 diffuse;
@@ -40,35 +26,22 @@ private:
     GLfloat constant;
     GLfloat linear;
     GLfloat quadratic;
+};
+
+class PointLight {
+private:
+    PointLightInfo pointLightInfo;
     std::shared_ptr<Object> lightSource;
 
 public:
-    PointLight(const glm::vec3& position,const glm::vec3& ambient,
-               const glm::vec3& diffuse,const glm::vec3& specular,
-               const GLfloat& constant,const GLfloat& linear,
-               const GLfloat& quadratic, std::shared_ptr<Object> lightSource):
-               position(position),ambient(ambient),diffuse(diffuse),specular(specular),
-               constant(constant),linear(linear),quadratic(quadratic),lightSource(lightSource)
-    {}
+    PointLight(const PointLightInfo &pointLightInfo, const std::shared_ptr<Object> &lightSource);
 
     void move(const glm::vec3& displacement);
     void drawLightSource();
 
-    [[nodiscard]] const glm::vec3 &getPosition() const;
-    [[nodiscard]] const glm::vec3 &getAmbient() const;
-    [[nodiscard]] const glm::vec3 &getDiffuse() const;
-    [[nodiscard]] const glm::vec3 &getSpecular() const;
-    [[nodiscard]] GLfloat getConstant() const;
-    [[nodiscard]] GLfloat getLinear() const;
-    [[nodiscard]] GLfloat getQuadratic() const;
+    const PointLightInfo &getPointLightInfo() const;
 
-    void setPosition(const glm::vec3 &position);
-    void setAmbient(const glm::vec3 &ambient);
-    void setDiffuse(const glm::vec3 &diffuse);
-    void setSpecular(const glm::vec3 &specular);
-    void setConstant(GLfloat constant);
-    void setLinear(GLfloat linear);
-    void setQuadratic(GLfloat quadratic);
+    void setPointLightInfo(const PointLightInfo &pointLightInfo);
 };
 
 class LightHandler {
