@@ -64,7 +64,7 @@ public:
 	{
 		mainCamera->getSettings().movementSpeed /= 2;
         DirectionalLight dirLight;
-        dirLight.direction = glm::vec3(0.0f, 0.9f, 0.0f);
+        dirLight.direction = glm::vec3(0.4f, 0.6f, 0.2f);
         dirLight.ambient = glm::vec3(0.0f);
         dirLight.specular = glm::vec3(0.4f);
         dirLight.diffuse = glm::vec3(0.6f);
@@ -107,9 +107,13 @@ public:
 
 	void updateLogic() override
 	{
-
+        auto dir = light->getDirection();
+        dir[0] += 0.001;
+        if(dir[0]>=1.0)
+            dir[0] = 0;
+        light->setDirection(dir);
 		scene->move();
-
+        lightSpaceMatrix = calcLightSpaceMatrix(light->getDirection());
 	}
 };
 
