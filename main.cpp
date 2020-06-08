@@ -35,7 +35,6 @@ private:
 public:
 	DisplayScene() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
 	{
-	    int  a = 0;
 		shader = std::make_unique<Shader>("../shaders/phong_model.vs.glsl", "../shaders/phong_model.fs.glsl");
 		scene = std::make_unique<Scene>();
         PointLightInfo pointLightInfo;
@@ -43,8 +42,8 @@ public:
         pointLightInfo.diffuse = glm::vec3(1.0f);
         pointLightInfo.specular = glm::vec3(1.0f);
         pointLightInfo.constant = 1.0;
-        pointLightInfo.linear = 0.14;
-        pointLightInfo.quadratic = 0.07;
+        pointLightInfo.linear = 0.1;
+        pointLightInfo.quadratic = 0.02;
         cuboid = std::make_shared<Cuboid>();
         source = std::make_shared<LightSource>(cuboid);
         source->translateWorld(glm::vec3(10.0f, 0.5f, 0.0f));
@@ -58,7 +57,11 @@ public:
 	{
 
 		mainCamera->getSettings().movementSpeed /= 2;
-        DirectionalLight dirLight = {glm::vec3(-0.2f, -1.0f, -0.3f), glm::vec3(0.5f), glm::vec3(1.0f), glm::vec3(1.0f)};
+        DirectionalLight dirLight = {
+                glm::vec3(0, -1.0f, 0),
+                glm::vec3(0.1f),
+                glm::vec3(1.0f, 0.0f, 0.0f),
+                glm::vec3(1.0f, 0.0, 0.0) };
         light = std::make_unique<LightHandler>();
         light->setDirLight(dirLight);
         light->addPointLight(pointLight);
