@@ -6,53 +6,45 @@
 #ifndef CYLINDER_H_UZAROWICZ
 #define CYLINDER_H_UZAROWICZ
 
-#include <vector>
 #include <iostream>
 #include <cmath>
 
-class Cylinder
+#include "Model.h"
+
+class Cylinder : public Model
 {
 private:
-	std::vector<float> vertices;
-	std::vector<unsigned int> indices;
-	float baseRadius;
-	float topRadius;
-	float height;
-	int sectorsNum;
-	int stacksNum;
+    float baseRadius;
+    float topRadius;
+    float height;
+    int sectorsNum;
+    int stacksNum;
 
-	const float PI = (float)acos(-1);
-	const unsigned int paramNum = 8;
+    const float PI = (float)acos(-1);
 
 public:
+    Cylinder(float bR = 1.0f, float tR = 1.0f, float h = 2.0f, int secNum = 4, int staNum = 3);
 
-	Cylinder(float bR = 1.0f, float tR = 1.0f, float h = 2.0f, int secNum = 4, int staNum = 3);
+    Cylinder(const Cylinder& other) = default;
 
-	Cylinder(const Cylinder& other) = default;
+    Cylinder& operator=(const Cylinder& rhs) = default;
 
-	Cylinder& operator=(const Cylinder& rhs) = default;
+    Cylinder(Cylinder&& other) = default;
+private:
 
-	Cylinder(Cylinder&& other) = default;
+    void setParams(float bR, float tR, float h, int secNum, int staNum);
 
-	void setParams(float bR, float tR, float h, int secNum, int staNum);
+    void generateCylinder();
 
-	std::vector<float> getVertices();
+    float vectorLength(std::vector<float> vec);
 
-	std::vector<unsigned int> getIndices();
+    std::vector<float> generateBaseCircleVertices();
 
-	void clearVectors();
+    std::vector<float> generateTopCircleVertices();
 
-	void generateCylinder();
+    void generateVertices();
 
-	float vectorLength(std::vector<float> vec);
-
-	std::vector<float> generateBaseCircleVertices();
-
-	std::vector<float> generateTopCircleVertices();
-
-	void generateVertices();
-
-	void generateIndices();
+    void generateIndices();
 
 };
 

@@ -13,7 +13,7 @@ GLFWwindow* createWindow(const WindowSettings& settings);
 //  Default callbacks
 void window_framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-WindowSettings::WindowSettings() : width(1), height(1), title(""), fullscreen(false), showCursor(true) { }
+WindowSettings::WindowSettings() : width(1), height(1), title(""), fullscreen(false), showCursor(false) { }
 WindowSettings::WindowSettings(int32_t width,
                                int32_t height,
                                const char *title,
@@ -63,14 +63,14 @@ const WindowSettings& Window::getWindowSettings() const
 void Window::updateWindowSettings(const WindowSettings &newSettings)
 {
     settings = newSettings;
-
+    
     glfwSetWindowTitle(window.get(), settings.title.c_str());
     glfwSetWindowSize(window.get(), settings.width, settings.height);
     if (settings.fullscreen)
         glfwSetWindowMonitor(window.get(), glfwGetPrimaryMonitor(), 0, 0, settings.width, settings.height, 60);
     if (!settings.showCursor)
         glfwSetInputMode(window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
+        
     setDefaultCallbacks();
 }
 
@@ -92,7 +92,7 @@ GLFWwindow* createWindow(const WindowSettings &settings)
         glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, settings.width, settings.height, 60);
     if (!settings.showCursor)
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
+        
     return window;
 }
 

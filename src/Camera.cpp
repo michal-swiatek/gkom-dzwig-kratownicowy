@@ -28,7 +28,7 @@ glm::mat4 cam::Camera::getViewMatrix() const
 
 glm::mat4 cam::Camera::getProjectionMatrix() const
 {
-    return glm::perspective(settings.fov, settings.aspectRatio, 0.1f, 100.0f);
+    return glm::perspective(settings.fov, settings.aspectRatio, 0.1f, 150.0f);
 }
 
 glm::mat4 cam::Camera::getViewProjectionMatrix() const
