@@ -8,9 +8,8 @@
 
 #include <GL/glew.h>
 
-#include "../external-libraries/include/STB/stb_image.h"
 #include <GLFW/glfw3.h>
-
+#include <SOIL/SOIL.h>
 #include "Shader.h"
 
 #include <vector>
