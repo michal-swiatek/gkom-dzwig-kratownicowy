@@ -8,7 +8,7 @@
 
 // Textures ID
 #define BRUSHED_METAL 0
-#define DIRTY_BLUE_METAL 1
+#define OLD_YELLOW_METAL_4 1
 #define CONCRETE 2
 #define DIRT 3
 #define OLD_YELLOW_METAL 4
@@ -18,10 +18,11 @@
 #define CONCRETE_3 8
 #define CONCRETE_4 9
 #define CONCRETE_5 10
-#define DIRT2 11
+#define GLASS 11
 #define STEEL_ROPE 12
 #define BLACK_METAL 13
 #define OLD_YELLOW_METAL_2 14
+#define RUST 15
 
 
 
@@ -77,17 +78,23 @@ public:
 	void moveCraneHoist(float distance) {
 		// 0 - 3 : wheels
 		for (int i = 0; i < 4; ++i) {
-			objectsToMove[i]->rotateLocal(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+//			objectsToMove[i]->rotateLocal(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+			objectsToMove[i]->translateLocal(glm::vec3(distance*4, 0.0f, 0.0f));
 		}
 
 		// 6 : Hoist
-		// TUTAJ TRZEBA ZROBIC PORUSZANIE HAKIEM
-
+		objectsToMove[6]->objects[0]->translateLocal(glm::vec3(distance/3, 0.0f, 0.0f)); // wozek
+		objectsToMove[6]->objects[5]->translateLocal(glm::vec3(distance*100/9, 0.0f, 0.0f)); //lina
+		objectsToMove[5]->objects[0]-> translateLocal(glm::vec3(distance*10/3, 0.0f, 0.0f));//czesc hak
+		objectsToMove[5]->objects[1]->translateLocal(glm::vec3(distance*10, 0.0f, 0.0f));//czesc hak
+		objectsToMove[5]->objects[2]->translateLocal(glm::vec3(distance*100/9, 0.0f, 0.0f));//czesc hak
+		objectsToMove[5]->objects[3]->translateLocal(glm::vec3(distance*10, 0.0f, 0.0f));//czesc hak
+		objectsToMove[5]->objects[4]->translateLocal(glm::vec3(distance*100/9, 0.0f, 0.0f));//czesc hak
 	}
 
 	void moveCraneHook(float distance) {
 		// 5 : Hook
-		objectsToMove[5]->translateWorld(glm::vec3(0.0f, distance, 0.0f));
+		objectsToMove[5]->translateWorld(glm::vec3(0.01f, 0.0f, 0.0f));
 		// 4 : Line
 		objectsToMove[4]->scaleWorld(glm::vec3(0.0f, 1.0f-distance/2.0f, 0.0f));
 		objectsToMove[4]->translateWorld(glm::vec3(0.0f, distance, 0.0f));
@@ -101,17 +108,17 @@ public:
 		// 6 : Hoist
 		// 7 : CraneTop
 
-		//this->moveCraneHoist(1.0f);
+		this->moveCraneHoist(0.05f);
 
-		//this->moveCraneHook(0.1f);
+		//this->moveCraneHook(0.01f);
 
-		this->rotateCraneTop(0.1f);
+//		this->rotateCraneTop(0.1f);
 	}
 private:
 	void addTextures() {
 
 		textures.push_back("../textures/brushedMetal.png");
-		textures.push_back("../textures/dirtyBlueMetal.png");
+		textures.push_back("../textures/oldYellowMetal4.png");
 		textures.push_back("../textures/concrete.png");
 		textures.push_back("../textures/dirt.png");
 		textures.push_back("../textures/oldYellowMetal.png");
@@ -121,10 +128,12 @@ private:
 		textures.push_back("../textures/concrete3.png");
 		textures.push_back("../textures/concrete4.png");
 		textures.push_back("../textures/concrete5.png");
-		textures.push_back("../textures/dirt2.png");
+		textures.push_back("../textures/glass.png");
 		textures.push_back("../textures/steelRope.png");
 		textures.push_back("../textures/blackMetal.png");
 		textures.push_back("../textures/oldYellowMetal2.png");
+		textures.push_back("../textures/rust.png");
+
 
 
 		for (auto texture : textures) {
@@ -429,6 +438,7 @@ private:
 		std::shared_ptr<Object> part;
 
 		std::string partTexture = textures[CONCRETE_2];
+		std::string partTexture2 = textures[RUST];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
@@ -436,22 +446,22 @@ private:
 		part->translateWorld(glm::vec3(0.0f, 14.0f, 0.0f));
 		pillar->addObject(part);
 		//2
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(-0.4f, 28.5f, -0.4f));
 		pillar->addObject(part);
 		//3
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(0.4f, 28.5f, -0.4f));
 		pillar->addObject(part);
 		//4
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(-0.4f, 28.5f, 0.4f));
 		pillar->addObject(part);
 		//5
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(0.4f, 28.5f, 0.4f));
 		pillar->addObject(part);
@@ -465,6 +475,7 @@ private:
 		std::shared_ptr<Object> part;
 
 		std::string partTexture = textures[CONCRETE_2];
+		std::string partTexture2 = textures[RUST];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
@@ -472,22 +483,22 @@ private:
 		part->translateWorld(glm::vec3(0.0f, 9.0f, 0.0f));
 		pillar->addObject(part);
 		//2
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(-0.4f, 18.5f, -0.4f));
 		pillar->addObject(part);
 		//3
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(0.4f, 18.5f, -0.4f));
 		pillar->addObject(part);
 		//4
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(-0.4f, 18.5f, 0.4f));
 		pillar->addObject(part);
 		//5
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(0.4f, 18.5f, 0.4f));
 		pillar->addObject(part);
@@ -501,6 +512,7 @@ private:
 		std::shared_ptr<Object> part;
 
 		std::string partTexture = textures[CONCRETE_4];
+
 
 		// Floors
 		//1
@@ -585,6 +597,7 @@ private:
 		std::shared_ptr<Object> part;
 
 		std::string partTexture = textures[CONCRETE_2];
+		std::string partTexture2 = textures[RUST];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
@@ -592,22 +605,22 @@ private:
 		part->translateWorld(glm::vec3(0.0f, 11.5f, 0.0f));
 		pillar->addObject(part);
 		//2
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(-0.4f, 23.5f, -0.4f));
 		pillar->addObject(part);
 		//3
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(0.4f, 23.5f, -0.4f));
 		pillar->addObject(part);
 		//4
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(-0.4f, 23.5f, 0.4f));
 		pillar->addObject(part);
 		//5
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(0.4f, 23.5f, 0.4f));
 		pillar->addObject(part);
@@ -621,6 +634,7 @@ private:
 		std::shared_ptr<Object> part;
 
 		std::string partTexture = textures[CONCRETE_2];
+		std::string partTexture2 = textures[RUST];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
@@ -628,22 +642,22 @@ private:
 		part->translateWorld(glm::vec3(0.0f, 9.0f, 0.0f));
 		pillar->addObject(part);
 		//2
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(-0.4f, 18.5f, -0.4f));
 		pillar->addObject(part);
 		//3
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(0.4f, 18.5f, -0.4f));
 		pillar->addObject(part);
 		//4
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(-0.4f, 18.5f, 0.4f));
 		pillar->addObject(part);
 		//5
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(0.4f, 18.5f, 0.4f));
 		pillar->addObject(part);
@@ -705,6 +719,7 @@ private:
 		std::shared_ptr<Object> part;
 
 		std::string partTexture = textures[CONCRETE_2];
+		std::string partTexture2 = textures[RUST];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
@@ -712,22 +727,22 @@ private:
 		part->translateWorld(glm::vec3(0.0f, 9.0f, 0.0f));
 		pillar->addObject(part);
 		//2
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(-0.4f, 18.5f, -0.4f));
 		pillar->addObject(part);
 		//3
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(0.4f, 18.5f, -0.4f));
 		pillar->addObject(part);
 		//4
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(-0.4f, 18.5f, 0.4f));
 		pillar->addObject(part);
 		//5
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(0.05f, 1.0f, 0.05f));
 		part->translateWorld(glm::vec3(0.4f, 18.5f, 0.4f));
 		pillar->addObject(part);
@@ -814,7 +829,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[DIRTY_BLUE_METAL];
+		std::string partTexture = textures[OLD_YELLOW_METAL_4];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[1], texturesHandler.useTexture(partTexture)));
@@ -857,7 +872,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[DIRTY_BLUE_METAL];
+		std::string partTexture = textures[OLD_YELLOW_METAL_4];
 
 		//1
 		part = std::shared_ptr<Object>(new Object(models[1], texturesHandler.useTexture(partTexture)));
@@ -987,7 +1002,7 @@ private:
 	std::shared_ptr<Collection> createCraneBaseBottomStand() {
 		std::shared_ptr<Collection> stand = std::make_shared<Collection>();
 
-		std::string standTexture = textures[DIRTY_BLUE_METAL];
+		std::string standTexture = textures[OLD_YELLOW_METAL_4];
 
 		std::shared_ptr<Object> cube;
 
@@ -1060,7 +1075,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[DIRTY_BLUE_METAL];
+		std::string partTexture = textures[OLD_YELLOW_METAL_4];
 
 		std::shared_ptr<Collection> wall = std::make_shared<Collection>();
 
@@ -1154,7 +1169,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[DIRTY_BLUE_METAL];
+		std::string partTexture = textures[OLD_YELLOW_METAL_4];
 
 		part = std::shared_ptr<Object>(new Object(models[1], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(0.25f, 2.5f, 0.25f));
@@ -1183,7 +1198,7 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[DIRTY_BLUE_METAL];
+		std::string partTexture = textures[OLD_YELLOW_METAL_4];
 
 		part = std::shared_ptr<Object>(new Object(models[1], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(0.1f, 2.5f, 0.1f));
@@ -1260,14 +1275,15 @@ private:
 
 		std::shared_ptr<Object> part;
 
-		std::string partTexture = textures[DIRTY_BLUE_METAL_2];
+		std::string partTexture = textures[OLD_YELLOW_METAL_2];
+		std::string partTexture2 = textures[GLASS];
 
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
 		part->scaleLocal(glm::vec3(2.0f, 4.0f, 2.5f));
 		part->translateWorld(glm::vec3(0.0f, 2.0f, 0.0f));
 		station->addObject(part);
 
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture2)));
 		part->scaleLocal(glm::vec3(1.0f, 3.0f, 2.5f));
 		part->translateWorld(glm::vec3(1.5f, 1.5f, 0.0f));
 		station->addObject(part);
