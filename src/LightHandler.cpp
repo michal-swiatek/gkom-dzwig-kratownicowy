@@ -47,8 +47,8 @@ void LightHandler::setPointLightInfo(PointLightInfo info, uint8_t target) {
 
 void LightHandler::drawPointLights(cam::Camera &camera) {
     lightSourceShader->use();
-    lightSourceShader->setFloat("lightIntensity",1.0);
     for(auto pointLight:pointLights) {
+        lightSourceShader->setFloat("lightIntensity",pointLight->getLightIntensity());
         pointLight->drawLightSource(camera, lightSourceShader->getProgramID());
     }
 }
@@ -83,4 +83,10 @@ void PointLight::drawLightSource(cam::Camera &camera, int shaderID) {
 
 const std::shared_ptr<LightSource> &PointLight::getLightSource() const {
     return lightSource;
+}
+
+float PointLight::getLightIntensity() {
+    auto lightIntensityVec = pointLightInfo.specular+pointLightInfo.specular+pointLightInfo.specular;
+    float lightIntensity = lightIntensityVec[0] + lightIntensityVec[1] + lightIntensityVec[2];
+    return lightIntensity/3;
 }

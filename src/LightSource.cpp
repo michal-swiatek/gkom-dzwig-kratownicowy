@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 #include "LightSource.h"
 
-void LightSource::draw(cam::Camera &camera, int shaderID, float lightIntensity) const {
+void LightSource::draw(cam::Camera &camera, int shaderID) const {
 
 model->use();
 glm::mat4 projection = camera.getProjectionMatrix();
@@ -13,9 +13,8 @@ glm::mat4 view = camera.getViewMatrix();
 
 glm::mat4 mv = view * modelMatrix;
 glm::mat4 matrix = projection * mv;
-float lightIntensity = 0.5;
 glUniformMatrix4fv(glGetUniformLocation(shaderID, "mvp"), 1, GL_FALSE, glm::value_ptr(matrix));
-glUniformMatrix4fv(glGetUniformLocation(shaderID, "lightIntensity"), 1, GL_FALSE, &lightIntensity);
+
 
 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 glDrawElements(GL_TRIANGLES, model->getIndices().size(), GL_UNSIGNED_INT, 0);

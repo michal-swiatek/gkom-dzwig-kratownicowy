@@ -43,7 +43,7 @@ public:
     [[nodiscard]] const PointLightInfo &getPointLightInfo() const;
 
     [[nodiscard]] const std::shared_ptr<LightSource> &getLightSource() const;
-
+    float getLightIntensity();
     void setPointLightInfo(const PointLightInfo &pointLightInfo);
 };
 
