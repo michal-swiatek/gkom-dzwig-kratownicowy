@@ -26,8 +26,9 @@ private:
     virtual void initShader() ;
 public:
     void init();
-    void draw(std::unique_ptr<cam::Camera>& camera);
+    void draw(cam::Camera &camera);
     explicit SkyBox(glm::vec3 color = glm::vec3(0.0,0.0,0.0));
+    SkyBox();
 
     ~SkyBox() = default;
 };

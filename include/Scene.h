@@ -53,13 +53,13 @@ class Scene
 	std::vector<std::string> textures;
 	std::vector<std::shared_ptr<Collection>> objectsToMove;
 	std::unique_ptr<Collection> scene;
+
 public:
 	Scene() {
 
 		this->addTextures();
 		this->createModels();
 		this->createScene();
-
 		scene->translateWorld(glm::vec3(-15.0f, 0.0f, -15.0f));
 
 	}
@@ -67,7 +67,7 @@ public:
 	void draw(cam::Camera &camera, int shaderID) {
 
 		scene->draw(camera, shaderID);
-
+//        skyBox->draw(camera);
 	}
 
 	void rotateCraneTop(float angle) {

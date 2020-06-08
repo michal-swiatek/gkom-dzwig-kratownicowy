@@ -12,7 +12,7 @@
 
 #include "Shader.h"
 
-
+#include "SkyBox.h"
 #include "include/Scene.h"
 
 class DisplayScene : public Core
@@ -22,6 +22,7 @@ class DisplayScene : public Core
 private:
 	std::unique_ptr<Shader> shader;
 	std::unique_ptr<Scene> scene;
+    std::unique_ptr<SkyBox> skyBox;
 
 	uint VBO, VAO, EBO;
 
@@ -37,15 +38,16 @@ public:
 
 		mainCamera->getSettings().movementSpeed /= 2;
 
-		shader->use();
+        skyBox = std::make_unique<SkyBox>(glm::vec4(1.0,0.5,0.5,1.0));
 
 		glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
 
 	}
 	void draw() override
 	{
-
+        shader->use();
 		scene->draw(*mainCamera, shader->getProgramID());
+		skyBox->draw(*mainCamera);
 
 	}
 	void updateLogic() override

@@ -60,19 +60,19 @@ void SkyBox::init() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    texture = generateColorTexture(color);
+
 }
 
-void SkyBox::draw(std::unique_ptr<cam::Camera>& camera) {
+void SkyBox::draw(cam::Camera &camera) {
 
     glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
     shader->use();
-    glm::mat4 view = glm::mat4(glm::mat3(camera->getViewMatrix())); // remove translation from the view matrix
+    glm::mat4 view = glm::mat4(glm::mat3(camera.getViewMatrix())); // remove translation from the view matrix
     shader->setMatrix4f("view", view);
-    shader->setMatrix4f("projection", camera->getProjectionMatrix());
+    shader->setMatrix4f("projection", camera.getProjectionMatrix());
     // skybox cube
     glBindVertexArray(VAO);
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE15);
     glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
@@ -80,14 +80,6 @@ void SkyBox::draw(std::unique_ptr<cam::Camera>& camera) {
 }
 
 SkyBox::SkyBox(glm::vec3 color): color(color) {
-//    faces = {
-//            "textures/skyboxposx.jpg",
-//            "textures/skyboxnegx.jpg",
-//            "textures/skyboxposy.jpg",
-//            "textures/skyboxnegy.jpg",
-//            "textures/skyboxposz.jpg",
-//            "textures/skyboxnegz.jpg"
-//    };
     vertices = {
             // positions
             -1.0f,  1.0f, -1.0f,
@@ -132,6 +124,8 @@ SkyBox::SkyBox(glm::vec3 color): color(color) {
             -1.0f, -1.0f,  1.0f,
             1.0f, -1.0f,  1.0f
     };
+    init();
+    texture = generateColorTexture(color);
 }
 
 void SkyBox::initShader() {
@@ -158,4 +152,61 @@ uint32_t SkyBox::generateColorTexture(const glm::vec3 &color) const
     glBindTexture(GL_TEXTURE_2D, 0);
 
     return texture;
+}
+
+SkyBox::SkyBox() {
+        faces = {
+            "textures/skyboxposx.jpg",
+            "textures/skyboxnegx.jpg",
+            "textures/skyboxposy.jpg",
+            "textures/skyboxnegy.jpg",
+            "textures/skyboxposz.jpg",
+            "textures/skyboxnegz.jpg"
+    };
+    vertices = {
+            // positions
+            -1.0f,  1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+
+            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+
+            -1.0f, -1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+
+            -1.0f,  1.0f, -1.0f,
+            1.0f,  1.0f, -1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f, -1.0f,
+
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f,  1.0f
+    };
+    init();
+    texture = loadCubeMapTexture();
 }
