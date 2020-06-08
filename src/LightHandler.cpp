@@ -17,7 +17,7 @@ void LightHandler::applyLightToShader(Shader &shader) {
     shader.setVector3f("dirLight.specular", dirLight->specular);
 
     for(int i=0; i<size(pointLights);i++) {
-        shader.setVector3f("pointLights["+std::to_string(i)+"].position", pointLights[i]->getPointLightInfo().position);
+        shader.setVector3f("pointLights["+std::to_string(i)+"].position", pointLights[i]->getPosition());
         shader.setVector3f("pointLights["+std::to_string(i)+"].ambient", pointLights[i]->getPointLightInfo().ambient);
         shader.setVector3f("pointLights["+std::to_string(i)+"].diffuse", pointLights[i]->getPointLightInfo().diffuse);
         shader.setVector3f("pointLights["+std::to_string(i)+"].specular", pointLights[i]->getPointLightInfo().specular);
@@ -58,6 +58,9 @@ LightHandler::LightHandler() {
     lightSourceShader = std::make_unique<Shader>("../shaders/light_source.vs.glsl", "../shaders/light_source.fs.glsl");
 }
 
+void LightHandler::addPointLights(std::vector<std::shared_ptr<PointLight>> pointLights) {
+    this->pointLights = pointLights;
+}
 
 
 void PointLight::move(const glm::vec3 &displacement) {
@@ -89,4 +92,8 @@ float PointLight::getLightIntensity() {
     auto lightIntensityVec = pointLightInfo.specular+pointLightInfo.specular+pointLightInfo.specular;
     float lightIntensity = lightIntensityVec[0] + lightIntensityVec[1] + lightIntensityVec[2];
     return lightIntensity/3;
+}
+
+glm::vec3 PointLight::getPosition() {
+    return lightSource->getPosition();
 }

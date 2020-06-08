@@ -45,7 +45,7 @@ struct SpotLight {
     vec3 specular;
 };
 // źle ustawione == czarny objekt
-#define NR_POINT_LIGHTS 1
+#define NR_POINT_LIGHTS 2
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 //  Lighting is specified in view space
 uniform DirLight dirLight;

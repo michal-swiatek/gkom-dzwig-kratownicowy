@@ -20,7 +20,6 @@ struct DirectionalLight {
 };
 
 struct PointLightInfo {
-    glm::vec3 position;
     glm::vec3 ambient;
     glm::vec3 diffuse;
     glm::vec3 specular;
@@ -44,6 +43,7 @@ public:
 
     [[nodiscard]] const std::shared_ptr<LightSource> &getLightSource() const;
     float getLightIntensity();
+    glm::vec3 getPosition();
     void setPointLightInfo(const PointLightInfo &pointLightInfo);
 };
 
@@ -62,6 +62,7 @@ public:
     void drawPointLights(cam::Camera &camera);
     void setDirLight(DirectionalLight directionalLight);
     void addPointLight(std::shared_ptr<PointLight> pointLight);
+    void addPointLights(std::vector<std::shared_ptr<PointLight>> pointLights);
 };
 
 #endif //DZWIG_KRATOWNICOWY_LIGHTHANDLER_H

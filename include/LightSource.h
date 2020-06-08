@@ -17,6 +17,7 @@ public:
     LightSource(const std::shared_ptr<Model> &mod);
 
     void draw(cam::Camera &camera, int shaderID) const override;
+    glm::vec3 getPosition();
 };
 
 #endif //DZWIG_KRATOWNICOWY_LIGHTSOURCE_H

@@ -21,3 +21,7 @@ glDrawElements(GL_TRIANGLES, model->getIndices().size(), GL_UNSIGNED_INT, 0);
 }
 
 LightSource::LightSource(const std::shared_ptr<Model> &mod) : Object(mod, 0) {}
+
+glm::vec3 LightSource::getPosition() {
+    return (glm::vec3) modelMatrix[3];
+}

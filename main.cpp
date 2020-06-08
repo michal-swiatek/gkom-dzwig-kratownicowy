@@ -25,9 +25,10 @@ private:
     std::unique_ptr<SkyBox> skyBox;
     std::unique_ptr<LightHandler> light;
     std::shared_ptr<PointLight> pointLight;
-    std::shared_ptr<Cylinder> cylinder;
+    std::shared_ptr<PointLight> pointLight2;
     std::shared_ptr<Model> cuboid;
     std::shared_ptr<LightSource> source;
+    std::shared_ptr<LightSource> source2;
 
 	uint VBO, VAO, EBO;
 
@@ -38,19 +39,19 @@ public:
 		shader = std::make_unique<Shader>("../shaders/phong_model.vs.glsl", "../shaders/phong_model.fs.glsl");
 		scene = std::make_unique<Scene>();
         PointLightInfo pointLightInfo;
-        pointLightInfo.position = glm::vec3(10.0f, 0.5f, 0.0f);
         pointLightInfo.ambient = glm::vec3(1.0f);
         pointLightInfo.diffuse = glm::vec3(1.0f);
         pointLightInfo.specular = glm::vec3(1.0f);
         pointLightInfo.constant = 1.0;
         pointLightInfo.linear = 0.14;
         pointLightInfo.quadratic = 0.07;
-        cylinder = std::make_shared<Cylinder>(1.0f, 1.0f, 1.0f, 8, 1);
         cuboid = std::make_shared<Cuboid>();
         source = std::make_shared<LightSource>(cuboid);
         source->translateWorld(glm::vec3(10.0f, 0.5f, 0.0f));
-        source->scaleLocal(glm::vec3(1,1,1));
+        source2 = std::make_shared<LightSource>(cuboid);
+        source2->translateWorld(glm::vec3(-10.0f, 0.5f, 0.0f));
         pointLight = std::make_unique<PointLight>(pointLightInfo,source);
+        pointLight2 = std::make_unique<PointLight>(pointLightInfo,source2);
 	}
 
 	void init() override
@@ -61,6 +62,7 @@ public:
         light = std::make_unique<LightHandler>();
         light->setDirLight(dirLight);
         light->addPointLight(pointLight);
+        light->addPointLight(pointLight2);
 
         skyBox = std::make_unique<SkyBox>(glm::vec4(1.0,0.5,0.2,1.0));
         shader->use();
