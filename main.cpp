@@ -14,6 +14,7 @@
 #include "LightHandler.h"
 #include "SkyBox.h"
 #include "include/Scene.h"
+#include "Shadows.h"
 
 class DisplayScene : public Core
 {
@@ -21,6 +22,7 @@ class DisplayScene : public Core
 
 private:
 	std::unique_ptr<Shader> shader;
+    std::unique_ptr<Shader> shadowShader;
 	std::unique_ptr<Scene> scene;
     std::unique_ptr<SkyBox> skyBox;
     std::unique_ptr<LightHandler> light;
@@ -29,6 +31,7 @@ private:
     std::shared_ptr<Model> cuboid;
     std::shared_ptr<LightSource> source;
     std::shared_ptr<LightSource> source2;
+    glm::mat4 lightSpaceMatrix;
 
 	uint VBO, VAO, EBO;
 
@@ -36,14 +39,16 @@ public:
 	DisplayScene() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
 	{
 		shader = std::make_unique<Shader>("../shaders/phong_model.vs.glsl", "../shaders/phong_model.fs.glsl");
+        shadowShader = std::make_unique<Shader>("../shaders/shadow_map.vs.glsl", "../shaders/shadow_map.fs.glsl");
 		scene = std::make_unique<Scene>();
+        light = std::make_unique<LightHandler>();
         PointLightInfo pointLightInfo;
         pointLightInfo.ambient = glm::vec3(1.0f);
         pointLightInfo.diffuse = glm::vec3(1.0f);
         pointLightInfo.specular = glm::vec3(1.0f);
         pointLightInfo.constant = 1.0;
-        pointLightInfo.linear = 0.1;
-        pointLightInfo.quadratic = 0.02;
+        pointLightInfo.linear = 0.03;
+        pointLightInfo.quadratic = 0.01;
         cuboid = std::make_shared<Cuboid>();
         source = std::make_shared<LightSource>(cuboid);
         source->translateWorld(glm::vec3(10.0f, 0.5f, 0.0f));
@@ -53,23 +58,23 @@ public:
         pointLight2 = std::make_unique<PointLight>(pointLightInfo,source2);
 	}
 
+
 	void init() override
 	{
 
 		mainCamera->getSettings().movementSpeed /= 2;
-        DirectionalLight dirLight = {
-                glm::vec3(0, -1.0f, 0),
-                glm::vec3(0.1f),
-                glm::vec3(1.0f, 0.0f, 0.0f),
-                glm::vec3(1.0f, 0.0, 0.0) };
-        light = std::make_unique<LightHandler>();
+        DirectionalLight dirLight;
+        dirLight.direction = glm::vec3(0.1f, 1.0f, 0.1f);
+        dirLight.ambient = glm::vec3(0.1f);
+        dirLight.specular = glm::vec3(0.6f);
+        dirLight.diffuse = glm::vec3(0.9f);
+
         light->setDirLight(dirLight);
         light->addPointLight(pointLight);
         light->addPointLight(pointLight2);
 
         skyBox = std::make_unique<SkyBox>();
         shader->use();
-        shader->setFloat("shininess", 0.5);
         glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
 
 	}

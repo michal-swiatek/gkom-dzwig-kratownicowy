@@ -54,7 +54,7 @@ void LightHandler::drawPointLights(cam::Camera &camera) {
 }
 
 LightHandler::LightHandler() {
-    dirLight = std::make_unique<DirectionalLight>(DirectionalLight());
+    dirLight = std::make_unique<DirectionalLight>();
     lightSourceShader = std::make_unique<Shader>("../shaders/light_source.vs.glsl", "../shaders/light_source.fs.glsl");
 }
 
