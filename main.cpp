@@ -11,8 +11,9 @@
 #include <iostream>
 
 #include "Shader.h"
-
+#include "LightHandler.h"
 #include "SkyBox.h"
+#include "PhongMaterial.h"
 #include "include/Scene.h"
 
 class DisplayScene : public Core
@@ -23,29 +24,49 @@ private:
 	std::unique_ptr<Shader> shader;
 	std::unique_ptr<Scene> scene;
     std::unique_ptr<SkyBox> skyBox;
+    std::unique_ptr<LightHandler> light;
+    std::shared_ptr<PointLight> pointLight;
 
 	uint VBO, VAO, EBO;
 
 public:
 	DisplayScene() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
 	{
-		shader = std::make_unique<Shader>("../shaders/texture.vs.glsl", "../shaders/texture.fs.glsl");
+		shader = std::make_unique<Shader>("../shaders/phong_model.vs.glsl", "../shaders/phong_model.fs.glsl");
 		scene = std::make_unique<Scene>();
+        PointLightInfo pointLightInfo;
+        pointLightInfo.position = glm::vec3(0);
+        pointLightInfo.ambient = glm::vec3(1.0f);
+        pointLightInfo.diffuse = glm::vec3(1.0f);
+        pointLightInfo.specular = glm::vec3(1.0f);
+        pointLightInfo.constant = 1.0;
+        pointLightInfo.linear = 1;
+        pointLightInfo.quadratic = 1;
+        std::shared_ptr<Cylinder> cylinder = std::make_shared<Cylinder>(1.0f, 1.0f, 1.0f, 8, 1);
+        std::shared_ptr<Object> source = std::make_shared<Object>(cylinder,0);
+        source->translateWorld(glm::vec3(0.0f, 2.5f, 0.0f));
+        pointLight = std::make_unique<PointLight>(pointLightInfo,source);
 	}
 
 	void init() override
 	{
 
 		mainCamera->getSettings().movementSpeed /= 2;
+        DirectionalLight dirLight = {glm::vec3(-0.2f, -1.0f, -0.3f), glm::vec3(0), glm::vec3(1.0f), glm::vec3(1.0f)};
+        light = std::make_unique<LightHandler>();
+        light->setDirLight(dirLight);
+        light->addPointLight(pointLight);
 
-        skyBox = std::make_unique<SkyBox>(glm::vec4(1.0,0.5,0.5,1.0));
-
-		glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
+        skyBox = std::make_unique<SkyBox>(glm::vec4(1.0,0.5,0.2,1.0));
+        shader->use();
+        shader->setFloat("shininess", 0.5);
+        glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
 
 	}
 	void draw() override
 	{
         shader->use();
+        light->applyLightToShader(*shader);
 		scene->draw(*mainCamera, shader->getProgramID());
 		skyBox->draw(*mainCamera);
 

@@ -44,7 +44,6 @@ public:
     void init() override
     {
         int a = 23346;
-        skyBox->init();
         mainCamera->getSettings().movementSpeed /= 2;
         glGenBuffers(1, &VBO);
         glGenVertexArrays(1, &VAO);

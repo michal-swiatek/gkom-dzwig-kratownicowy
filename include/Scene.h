@@ -65,9 +65,7 @@ public:
 	}
 
 	void draw(cam::Camera &camera, int shaderID) {
-
 		scene->draw(camera, shaderID);
-//        skyBox->draw(camera);
 	}
 
 	void rotateCraneTop(float angle) {

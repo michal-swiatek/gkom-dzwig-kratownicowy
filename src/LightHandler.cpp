@@ -12,18 +12,18 @@ void LightHandler::movePointLight(glm::vec3 displacement, uint8_t target) {
 void LightHandler::applyLightToShader(Shader &shader) {
     shader.use();
     shader.setVector3f("dirLight.direction", dirLight->direction);
-    shader.setVector3f("dirLight.ambient", dirLight->ambient + 0.15f );
+    shader.setVector3f("dirLight.ambient", dirLight->ambient + 0.1f );
     shader.setVector3f("dirLight.diffuse", dirLight->diffuse);
     shader.setVector3f("dirLight.specular", dirLight->specular);
 
-    for(auto pointLight:pointLights) {
-        shader.setVector3f("pointLight.position", pointLight->getPointLightInfo().position);
-        shader.setVector3f("pointLight.ambient", pointLight->getPointLightInfo().ambient);
-        shader.setVector3f("pointLight.diffuse", pointLight->getPointLightInfo().diffuse);
-        shader.setVector3f("pointLight.specular", pointLight->getPointLightInfo().specular);
-        shader.setFloat("pointLight.constant", pointLight->getPointLightInfo().constant);
-        shader.setFloat("pointLight.linear", pointLight->getPointLightInfo().linear);
-        shader.setFloat("pointLight.quadratic", pointLight->getPointLightInfo().quadratic);
+    for(int i=0; i<size(pointLights);i++) {
+        shader.setVector3f("pointLights["+std::to_string(i)+"].position", pointLights[i]->getPointLightInfo().position);
+        shader.setVector3f("pointLights["+std::to_string(i)+"].ambient", pointLights[i]->getPointLightInfo().ambient);
+        shader.setVector3f("pointLights["+std::to_string(i)+"].diffuse", pointLights[i]->getPointLightInfo().diffuse);
+        shader.setVector3f("pointLights["+std::to_string(i)+"].specular", pointLights[i]->getPointLightInfo().specular);
+        shader.setFloat("pointLights["+std::to_string(i)+"].constant", pointLights[i]->getPointLightInfo().constant);
+        shader.setFloat("pointLights["+std::to_string(i)+"].linear", pointLights[i]->getPointLightInfo().linear);
+        shader.setFloat("pointLights["+std::to_string(i)+"].quadratic", pointLights[i]->getPointLightInfo().quadratic);
     }
 
 }
