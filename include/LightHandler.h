@@ -10,6 +10,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Object.h"
+#include "LightSource.h"
 
 struct DirectionalLight {
     glm::vec3 direction = glm::vec3(0.5);
@@ -31,15 +32,17 @@ struct PointLightInfo {
 class PointLight {
 private:
     PointLightInfo pointLightInfo;
-    std::shared_ptr<Object> lightSource;
+    std::shared_ptr<LightSource> lightSource;
 
 public:
-    PointLight(const PointLightInfo &pointLightInfo, const std::shared_ptr<Object> &lightSource);
+    PointLight(const PointLightInfo &pointLightInfo, const std::shared_ptr<LightSource> &lightSource);
 
     void move(const glm::vec3& displacement);
     void drawLightSource(cam::Camera &camera, int shaderID);
 
     [[nodiscard]] const PointLightInfo &getPointLightInfo() const;
+
+    [[nodiscard]] const std::shared_ptr<LightSource> &getLightSource() const;
 
     void setPointLightInfo(const PointLightInfo &pointLightInfo);
 };

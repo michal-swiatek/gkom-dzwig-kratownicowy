@@ -17,6 +17,7 @@ set(PROJECT_INCLUDE_FILES "${CMAKE_SOURCE_DIR}/include/Window.h"
                           "${CMAKE_SOURCE_DIR}/include/Scene.h"
                           "${CMAKE_SOURCE_DIR}/include/Collection.h"
                           "${CMAKE_SOURCE_DIR}/include/TexturesHandler.h"
+                          "${CMAKE_SOURCE_DIR}/include/LightSource.h"
 )
 
 set(PROJECT_SRC_FILES "${CMAKE_SOURCE_DIR}/src/Window.cpp"
@@ -33,4 +34,5 @@ set(PROJECT_SRC_FILES "${CMAKE_SOURCE_DIR}/src/Window.cpp"
                       "${CMAKE_SOURCE_DIR}/src/Scene.cpp"
                       "${CMAKE_SOURCE_DIR}/src/Collection.cpp"
                       "${CMAKE_SOURCE_DIR}/src/TexturesHandler.cpp"
+                      "${CMAKE_SOURCE_DIR}/src/LightSource.cpp"
 )

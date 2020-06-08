@@ -46,6 +46,8 @@ void LightHandler::setPointLightInfo(PointLightInfo info, uint8_t target) {
 }
 
 void LightHandler::drawPointLights(cam::Camera &camera) {
+    lightSourceShader->use();
+    lightSourceShader->setFloat("lightIntensity",1.0);
     for(auto pointLight:pointLights) {
         pointLight->drawLightSource(camera, lightSourceShader->getProgramID());
     }
@@ -53,7 +55,7 @@ void LightHandler::drawPointLights(cam::Camera &camera) {
 
 LightHandler::LightHandler() {
     dirLight = std::make_unique<DirectionalLight>(DirectionalLight());
-    lightSourceShader = std::make_unique<Shader>("shaders/light_source.vs.glsl", "shaders/light_source.fs.glsl");
+    lightSourceShader = std::make_unique<Shader>("../shaders/light_source.vs.glsl", "../shaders/light_source.fs.glsl");
 }
 
 
@@ -64,7 +66,7 @@ void PointLight::move(const glm::vec3 &displacement) {
 
 
 
-PointLight::PointLight(const PointLightInfo &pointLightInfo, const std::shared_ptr<Object> &lightSource)
+PointLight::PointLight(const PointLightInfo &pointLightInfo, const std::shared_ptr<LightSource> &lightSource)
         : pointLightInfo(pointLightInfo), lightSource(lightSource) {}
 
 const PointLightInfo &PointLight::getPointLightInfo() const {
@@ -77,4 +79,8 @@ void PointLight::setPointLightInfo(const PointLightInfo &pointLightInfo) {
 
 void PointLight::drawLightSource(cam::Camera &camera, int shaderID) {
     lightSource->draw(camera,shaderID);
+}
+
+const std::shared_ptr<LightSource> &PointLight::getLightSource() const {
+    return lightSource;
 }

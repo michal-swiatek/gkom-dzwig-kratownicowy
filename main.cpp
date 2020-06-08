@@ -13,7 +13,6 @@
 #include "Shader.h"
 #include "LightHandler.h"
 #include "SkyBox.h"
-#include "PhongMaterial.h"
 #include "include/Scene.h"
 
 class DisplayScene : public Core
@@ -26,25 +25,31 @@ private:
     std::unique_ptr<SkyBox> skyBox;
     std::unique_ptr<LightHandler> light;
     std::shared_ptr<PointLight> pointLight;
+    std::shared_ptr<Cylinder> cylinder;
+    std::shared_ptr<Model> cuboid;
+    std::shared_ptr<LightSource> source;
 
 	uint VBO, VAO, EBO;
 
 public:
 	DisplayScene() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
 	{
+	    int  a = 0;
 		shader = std::make_unique<Shader>("../shaders/phong_model.vs.glsl", "../shaders/phong_model.fs.glsl");
 		scene = std::make_unique<Scene>();
         PointLightInfo pointLightInfo;
-        pointLightInfo.position = glm::vec3(0);
+        pointLightInfo.position = glm::vec3(10.0f, 0.5f, 0.0f);
         pointLightInfo.ambient = glm::vec3(1.0f);
         pointLightInfo.diffuse = glm::vec3(1.0f);
         pointLightInfo.specular = glm::vec3(1.0f);
         pointLightInfo.constant = 1.0;
-        pointLightInfo.linear = 1;
-        pointLightInfo.quadratic = 1;
-        std::shared_ptr<Cylinder> cylinder = std::make_shared<Cylinder>(1.0f, 1.0f, 1.0f, 8, 1);
-        std::shared_ptr<Object> source = std::make_shared<Object>(cylinder,0);
-        source->translateWorld(glm::vec3(0.0f, 2.5f, 0.0f));
+        pointLightInfo.linear = 0.14;
+        pointLightInfo.quadratic = 0.07;
+        cylinder = std::make_shared<Cylinder>(1.0f, 1.0f, 1.0f, 8, 1);
+        cuboid = std::make_shared<Cuboid>();
+        source = std::make_shared<LightSource>(cuboid);
+        source->translateWorld(glm::vec3(10.0f, 0.5f, 0.0f));
+        source->scaleLocal(glm::vec3(1,1,1));
         pointLight = std::make_unique<PointLight>(pointLightInfo,source);
 	}
 
@@ -52,7 +57,7 @@ public:
 	{
 
 		mainCamera->getSettings().movementSpeed /= 2;
-        DirectionalLight dirLight = {glm::vec3(-0.2f, -1.0f, -0.3f), glm::vec3(0), glm::vec3(1.0f), glm::vec3(1.0f)};
+        DirectionalLight dirLight = {glm::vec3(1.0f, -0.62f, 0.175f), glm::vec3(0.35f, 0.35f, 0.35f), glm::vec3(0.5f), glm::vec3(0.3f)};
         light = std::make_unique<LightHandler>();
         light->setDirLight(dirLight);
         light->addPointLight(pointLight);
@@ -68,6 +73,7 @@ public:
         shader->use();
         light->applyLightToShader(*shader);
 		scene->draw(*mainCamera, shader->getProgramID());
+		light->drawPointLights(*mainCamera);
 		skyBox->draw(*mainCamera);
 
 	}
