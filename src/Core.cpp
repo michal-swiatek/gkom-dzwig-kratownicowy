@@ -26,7 +26,7 @@ void initOpenGL()
 
     Core::mainWindow = std::make_unique<Window>(WindowSettings());
     if (glewInit() != GLEW_OK)
-        throw std::runtime_error("Failed to initialize GLEW!");
+        throw std::runtime_error("Failed to initialize GLEW!\n");
 
 }
 

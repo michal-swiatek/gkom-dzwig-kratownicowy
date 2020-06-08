@@ -44,10 +44,10 @@ struct SpotLight {
     vec3 diffuse;
     vec3 specular;
 };
-
-//  Lighting is specified in view space
-#define NR_POINT_LIGHTS 10
+// źle ustawione == czarny objekt
+#define NR_POINT_LIGHTS 1
 uniform PointLight pointLights[NR_POINT_LIGHTS];
+//  Lighting is specified in view space
 uniform DirLight dirLight;
 uniform Material material;
 
@@ -73,7 +73,7 @@ void main() {
     for(int i = 0; i < NR_POINT_LIGHTS; i++)
         color += CalcPointLight(pointLights[i],normal,fragPos,viewDir);
 
-    color += CalcSpotLight(light, normal, fragPos, viewDir);
+//    color += CalcSpotLight(light, normal, fragPos, viewDir);
 
     fColor = vec4(color, 1.0f);
 }

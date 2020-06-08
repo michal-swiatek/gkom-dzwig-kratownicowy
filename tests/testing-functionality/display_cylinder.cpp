@@ -10,7 +10,7 @@
 #include "Core.h"
 #include <memory>
 #include <iostream>
-#include <glfw3.h>
+#include "LightHandler.h"
 
 #include "Shader.h"
 
@@ -24,24 +24,26 @@ class DisplayCylinder : public Core
 
 private:
     std::unique_ptr<Shader> shader;
-    std::unique_ptr<Cylinder> cylinder;
+    std::shared_ptr<Cylinder> cylinder;
     std::unique_ptr<SkyBox> skyBox;
     std::unique_ptr<PhongMaterial> material;
+    std::unique_ptr<LightHandler> light;
 
     uint VBO, VAO, EBO;
 
 public:
     DisplayCylinder() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
     {
-        cylinder = std::make_unique<Cylinder>(1.0f, 0.5f, 2.0, 25, 2);
+        cylinder = std::make_shared<Cylinder>(1.0f, 0.5f, 2.0, 25, 2);
         shader = std::make_unique<Shader>("shaders/phong_model.vs.glsl", "shaders/phong_model.fs.glsl");
         skyBox = std::make_unique<SkyBox>(glm::vec4(0.5,0.5,0.5,1.0));
         material = std::make_unique<PhongMaterial>(glm::vec4(1.0f, 0.5f, 0.3f, 1.0f), glm::vec4(0.5f, 0.5, 0.5, 1.0f));
+        light = std::make_unique<LightHandler>();
     }
 
     void init() override
     {
-        int a = 23343453455724;
+        int a = 23346;
         skyBox->init();
         mainCamera->getSettings().movementSpeed /= 2;
         glGenBuffers(1, &VBO);
@@ -65,28 +67,36 @@ public:
         glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
         glEnableVertexAttribArray(2);
 
+        DirectionalLight dirLight = {glm::vec3(5.0f), glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(0.5f)};
+        PointLightInfo pointLightInfo;
+        pointLightInfo.position = glm::vec3(7.0f, 5.0f, 5.0f);
+        pointLightInfo.ambient = glm::vec3(0.1f);
+        pointLightInfo.diffuse = glm::vec3(1.0f);
+        pointLightInfo.specular = glm::vec3(0.5f);
+        pointLightInfo.constant = 1.0;
+        pointLightInfo.linear = 0.14;
+        pointLightInfo.quadratic = 0.07;
+
+        Object object(cylinder, static_cast<unsigned int>(0));
+
+        light->setDirLight(dirLight);
 
         shader->use();
 
-        shader->setVector3f("dirLight.direction", glm::vec3(5.0f, 5.0f, 5.0f));
-        shader->setVector3f("dirLight.ambient", glm::vec3(0.1f));
-        shader->setVector3f("dirLight.diffuse", glm::vec3(1.0f));
-        shader->setVector3f("dirLight.specular", glm::vec3(0.5f));
-
-        shader->setVector3f("pointLights[0].direction", glm::vec3(7.0f, 5.0f, 5.0f));
-        shader->setVector3f("pointLights[0].ambient", glm::vec3(0.1f));
-        shader->setVector3f("pointLights[0].diffuse", glm::vec3(1.0f));
-        shader->setVector3f("pointLights[0].specular", glm::vec3(0.5f));
-        shader->setFloat("pointLights[0].constant", 1.0);
-        shader->setFloat("pointLights[0].linear", 0.14);
-        shader->setFloat("pointLights[0].quadratic", 0.07);
+//        shader->setVector3f("pointLights[0].direction", glm::vec3(7.0f, 5.0f, 5.0f));
+//        shader->setVector3f("pointLights[0].ambient", glm::vec3(0.1f));
+//        shader->setVector3f("pointLights[0].diffuse", glm::vec3(1.0f));
+//        shader->setVector3f("pointLights[0].specular", glm::vec3(0.5f));
+//        shader->setFloat("pointLights[0].constant", 1.0);
+//        shader->setFloat("pointLights[0].linear", 0.14);
+//        shader->setFloat("pointLights[0].quadratic", 0.07);
 
         shader->setMatrix4f("model", glm::mat4(1.0f));
         shader->setMatrix3f("modelInvTrans", glm::mat3(glm::transpose(glm::inverse(glm::mat4(1.0f)))));
 
 
         material->applyMaterial(*shader);
-
+        light->applyLightToShader(*shader);
 
 //        float color[4] = {1.0f, 0.0f, 0.0f, 1.0f};
 //        glUniform4fv(glGetUniformLocation(shader->getProgramID(), "color"), 1, color);

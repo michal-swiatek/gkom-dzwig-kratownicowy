@@ -9,7 +9,7 @@
 #include <memory>
 #include "Shader.h"
 #include "Camera.h"
-#include "Cylinder.h"
+#include "Object.h"
 
 struct DirectionalLight {
     glm::vec3 direction = glm::vec3(0.5);
@@ -37,7 +37,7 @@ public:
     PointLight(const PointLightInfo &pointLightInfo, const std::shared_ptr<Object> &lightSource);
 
     void move(const glm::vec3& displacement);
-    void drawLightSource();
+    void drawLightSource(cam::Camera &camera, int shaderID);
 
     [[nodiscard]] const PointLightInfo &getPointLightInfo() const;
 
@@ -51,13 +51,12 @@ private:
     std::unique_ptr<DirectionalLight> dirLight;
     std::vector<std::shared_ptr<PointLight>> pointLights;
 
-    cam::Camera camera;
-
 public:
-    explicit LightHandler(const cam::Camera& camera);
+    explicit LightHandler();
     void movePointLight(glm::vec3 displacement, uint8_t target);
     void setPointLightInfo(PointLightInfo info, uint8_t target);
-    void applyLightToShader(std::shared_ptr<Shader> shader);
+    void applyLightToShader(Shader &shader);
+    void drawPointLights(cam::Camera &camera);
     void setDirLight(DirectionalLight directionalLight);
     void addPointLight(std::shared_ptr<PointLight> pointLight);
 };
