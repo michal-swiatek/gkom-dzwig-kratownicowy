@@ -6,9 +6,9 @@
 #ifndef TEXTURESHANDLER_H
 #define TEXTURESHANDLER_H
 
-#include "../external-libraries/include/STB/stb_image.h"
+#include <GL/glew.h>
 
-#include <glad/glad.h>
+#include "../external-libraries/include/STB/stb_image.h"
 #include <GLFW/glfw3.h>
 
 #include "Shader.h"

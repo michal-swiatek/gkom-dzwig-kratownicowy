@@ -2,14 +2,15 @@
  *  Created by Boguslaw Malewski, Rafal Uzarowicz
  */
 
+#include <GL/glew.h>
 #include "Object.h"
 
-void  Object::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const
+void  Object::draw(cam::Camera &camera, int shaderID) const
 {
 	model->use();
-	glm::mat4 projection = camera->getProjectionMatrix();
+	glm::mat4 projection = camera.getProjectionMatrix();
 
-	glm::mat4 view = camera->getViewMatrix();
+	glm::mat4 view = camera.getViewMatrix();
 
 	glm::mat4 mv = view * modelMatrix;
 	glm::mat4 matrix = projection * mv;

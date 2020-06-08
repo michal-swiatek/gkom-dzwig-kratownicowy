@@ -9,16 +9,9 @@
 
 #include <memory>
 #include <iostream>
-#include <fstream>
 
 #include "Shader.h"
-#include "Camera.h"
 
-#include "Cylinder.h"
-#include "Cuboid.h"
-#include "include/TexturesHandler.h"
-#include "Object.h"
-#include "include/Collection.h"
 
 #include "include/Scene.h"
 
@@ -52,7 +45,7 @@ public:
 	void draw() override
 	{
 
-		scene->draw(mainCamera, shader->getProgramID());
+		scene->draw(*mainCamera, shader->getProgramID());
 
 	}
 	void updateLogic() override

@@ -12,12 +12,12 @@
 
 #include "Camera.h"
 #include "Shader.h"
-#include "window.h"
+#include "Window.h"
 
 class IObject
 {
 public:
-	virtual void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const = 0;
+	virtual void draw(cam::Camera &camera, int shaderID) const = 0;
 
 
 	virtual void rotateLocal(float angle, const std::optional<glm::vec3>& axis) = 0;

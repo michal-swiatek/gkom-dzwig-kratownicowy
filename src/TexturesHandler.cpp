@@ -6,7 +6,7 @@
 #include "TexturesHandler.h"
 
 TexturesHandler::TexturesHandler(bool flipTextures) {
-	stbi_set_flip_vertically_on_load(flipTextures);
+//	stbi_set_flip_vertically_on_load(flipTextures);
 }
 TexturesHandler::~TexturesHandler() {
 	for (int i = 0; i < textures.size(); ++i) {

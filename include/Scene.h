@@ -35,7 +35,8 @@
 
 
 
-#include "TexturesHandler.h"
+#include <GL/glew.h>
+#include <TexturesHandler.h>
 #include "Shader.h"
 #include "Object.h"
 #include "Model.h"
@@ -63,7 +64,7 @@ public:
 
 	}
 
-	void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) {
+	void draw(cam::Camera &camera, int shaderID) {
 
 		scene->draw(camera, shaderID);
 

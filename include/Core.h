@@ -5,7 +5,7 @@
 
 #ifndef OPENGLAPP_H
 #define OPENGLAPP_H
-
+#include <GL/glew.h>
 #include <cstdint>
 #include <memory>
 #include <string>

@@ -5,7 +5,7 @@
 
 #include "Collection.h"
 
-void Collection::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const {
+void Collection::draw(cam::Camera &camera, int shaderID) const {
 	for (auto& object : objects) {
 		object->draw(camera, shaderID);
 	}
