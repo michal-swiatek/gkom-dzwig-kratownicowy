@@ -12,7 +12,7 @@ void LightHandler::movePointLight(glm::vec3 displacement, uint8_t target) {
 void LightHandler::applyLightToShader(Shader &shader) {
     shader.use();
     shader.setVector3f("dirLight.direction", dirLight->direction);
-    shader.setVector3f("dirLight.ambient", dirLight->ambient + 0.1f );
+    shader.setVector3f("dirLight.ambient", dirLight->ambient);
     shader.setVector3f("dirLight.diffuse", dirLight->diffuse);
     shader.setVector3f("dirLight.specular", dirLight->specular);
 

@@ -58,13 +58,13 @@ public:
 	{
 
 		mainCamera->getSettings().movementSpeed /= 2;
-        DirectionalLight dirLight = {glm::vec3(1.0f, -0.62f, 0.175f), glm::vec3(0.35f, 0.35f, 0.35f), glm::vec3(0.5f), glm::vec3(0.3f)};
+        DirectionalLight dirLight = {glm::vec3(-0.2f, -1.0f, -0.3f), glm::vec3(0.5f), glm::vec3(1.0f), glm::vec3(1.0f)};
         light = std::make_unique<LightHandler>();
         light->setDirLight(dirLight);
         light->addPointLight(pointLight);
         light->addPointLight(pointLight2);
 
-        skyBox = std::make_unique<SkyBox>(glm::vec4(1.0,0.5,0.2,1.0));
+        skyBox = std::make_unique<SkyBox>();
         shader->use();
         shader->setFloat("shininess", 0.5);
         glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);

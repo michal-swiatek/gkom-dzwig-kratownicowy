@@ -27,8 +27,8 @@ private:
 public:
     void init();
     void draw(cam::Camera &camera);
-    explicit SkyBox(glm::vec3 color = glm::vec3(0.0,0.0,0.0));
-    SkyBox();
+    explicit SkyBox(glm::vec3 color);
+    explicit SkyBox();
 
     ~SkyBox() = default;
 };

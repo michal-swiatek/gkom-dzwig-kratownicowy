@@ -156,12 +156,12 @@ uint32_t SkyBox::generateColorTexture(const glm::vec3 &color) const
 
 SkyBox::SkyBox() {
         faces = {
-            "textures/skyboxposx.jpg",
-            "textures/skyboxnegx.jpg",
-            "textures/skyboxposy.jpg",
-            "textures/skyboxnegy.jpg",
-            "textures/skyboxposz.jpg",
-            "textures/skyboxnegz.jpg"
+            "../textures/posx.jpg",
+            "../textures/negx.jpg",
+            "../textures/posy.jpg",
+            "../textures/negy.jpg",
+            "../textures/posz.jpg",
+            "../textures/negz.jpg"
     };
     vertices = {
             // positions
