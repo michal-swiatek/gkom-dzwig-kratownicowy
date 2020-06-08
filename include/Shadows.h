@@ -18,7 +18,7 @@ const unsigned int SHADOW_WIDTH = 2048, SHADOW_HEIGHT = 2048;
 unsigned int depthMapFBO;
 unsigned int depthMap;
 
-std::shared_ptr<Shader> PrepareShadows()
+std::shared_ptr<Shader> prepareShadows()
 {
     glGenFramebuffers(1, &depthMapFBO);
     // create depth texture
@@ -40,21 +40,13 @@ std::shared_ptr<Shader> PrepareShadows()
 
 glm::mat4 calcLightSpaceMatrix()
 {
-
     glm::mat4 lightProjection, lightView;
     glm::mat4 lightSpaceMatrix;
-    float near_plane = 1.0f, far_plane = 100.0f;
-    lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-    lightView = glm::lookAt(glm::vec3(0, -1.0f, 0), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+    float near_plane = 1.0f, far_plane = 400;
+    lightProjection = glm::ortho(-150.0f, 150.0f, -150.0f, 150.0f, near_plane, far_plane);
+    lightView = glm::lookAt({ -251.0f, 0.62f, -0.175f }, glm::vec3(-250.0f, 0.0f, 0.0f), glm::vec3(0.0, 1.0, 0.0));
     lightSpaceMatrix = lightProjection * lightView;
     return lightSpaceMatrix;
-//    glm::mat4 lightProjection, lightView;
-//    glm::mat4 lightSpaceMatrix;
-//    float near_plane = 1.0f, far_plane = 100;
-//    lightProjection = glm::ortho(-150.0f, 150.0f, -150.0f, 150.0f, near_plane, far_plane);
-//    lightView = glm::lookAt({ -251.0f, 0.62f, -0.175f }, glm::vec3(-250.0f, 0.0f, 0.0f), glm::vec3(0.0, 1.0, 0.0));
-//    lightSpaceMatrix = lightProjection * lightView;
-//    return lightSpaceMatrix;
 }
 
 void applyLightViewToShaders(std::vector<Shader*> shaders, const glm::mat4& lightSpaceMatrix)

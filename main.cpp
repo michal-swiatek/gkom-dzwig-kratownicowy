@@ -61,13 +61,12 @@ public:
 
 	void init() override
 	{
-
 		mainCamera->getSettings().movementSpeed /= 2;
         DirectionalLight dirLight;
-        dirLight.direction = glm::vec3(0.1f, 1.0f, 0.1f);
-        dirLight.ambient = glm::vec3(0.1f);
-        dirLight.specular = glm::vec3(0.6f);
-        dirLight.diffuse = glm::vec3(0.9f);
+        dirLight.direction = glm::vec3(1.0f, 1.0f, 0.0f);
+        dirLight.ambient = glm::vec3(0.0f);
+        dirLight.specular = glm::vec3(0.4f);
+        dirLight.diffuse = glm::vec3(0.6f);
 
         light->setDirLight(dirLight);
         light->addPointLight(pointLight);
@@ -75,8 +74,9 @@ public:
 
         skyBox = std::make_unique<SkyBox>();
         shader->use();
+        prepareShadows();
+        lightSpaceMatrix = calcLightSpaceMatrix();
         glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
-
 	}
 
     void draw() override
@@ -92,9 +92,10 @@ public:
         glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        shader->use();
         glActiveTexture(GL_TEXTURE15);
         glBindTexture(GL_TEXTURE_2D, depthMap);
-        shader->use();
+        shader->setInt("shadowMap", 15);
         light->applyLightToShader(*shader);
         scene->draw(*mainCamera, shader->getProgramID());
         light->drawPointLights(*mainCamera);
