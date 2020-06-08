@@ -19,6 +19,8 @@ struct PointLight {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
+    vec3 color;
 };
 
 // źle ustawione == czarne objekty
@@ -36,6 +38,7 @@ uniform sampler2D ourTexture;
 uniform sampler2D shadowMap;
 
 uniform vec3 eyePos;
+
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 float ShadowCalculation(vec4 fragPosLightSpace);
@@ -73,7 +76,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     ambient  *= attenuation;
     diffuse  *= attenuation;
     specular *= attenuation;
-    return (ambient + diffuse + specular);
+    return (ambient + diffuse + specular)*light.color;
 }
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)

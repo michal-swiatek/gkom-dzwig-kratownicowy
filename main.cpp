@@ -49,6 +49,7 @@ public:
         pointLightInfo.constant = 1.0;
         pointLightInfo.linear = 0.03;
         pointLightInfo.quadratic = 0.01;
+        pointLightInfo.color = glm::vec3(1.0,0.0,0.0);
         cuboid = std::make_shared<Cuboid>();
         source = std::make_shared<LightSource>(cuboid);
         source->translateWorld(glm::vec3(10.0f, 0.5f, 0.0f));
@@ -63,7 +64,7 @@ public:
 	{
 		mainCamera->getSettings().movementSpeed /= 2;
         DirectionalLight dirLight;
-        dirLight.direction = glm::vec3(1.0f, 1.0f, 0.0f);
+        dirLight.direction = glm::vec3(0.0f, 0.9f, 0.0f);
         dirLight.ambient = glm::vec3(0.0f);
         dirLight.specular = glm::vec3(0.4f);
         dirLight.diffuse = glm::vec3(0.6f);
@@ -75,7 +76,7 @@ public:
         skyBox = std::make_unique<SkyBox>();
         shader->use();
         prepareShadows();
-        lightSpaceMatrix = calcLightSpaceMatrix();
+        lightSpaceMatrix = calcLightSpaceMatrix(light->getDirection());
         glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
 	}
 

@@ -26,6 +26,7 @@ struct PointLightInfo {
     GLfloat constant;
     GLfloat linear;
     GLfloat quadratic;
+    glm::vec3 color;
 };
 
 class PointLight {
@@ -36,7 +37,9 @@ private:
 public:
     PointLight(const PointLightInfo &pointLightInfo, const std::shared_ptr<LightSource> &lightSource);
 
-    void move(const glm::vec3& displacement);
+    void translateLocal(const glm::vec3& displacement);
+    void translateWorld(const glm::vec3& displacement);
+
     void drawLightSource(cam::Camera &camera, int shaderID);
 
     [[nodiscard]] const PointLightInfo &getPointLightInfo() const;
@@ -49,7 +52,6 @@ public:
 
 class LightHandler {
 private:
-    const static int MAX_POINT_LIGHTS = 10;
     std::unique_ptr<Shader> lightSourceShader;
     std::unique_ptr<DirectionalLight> dirLight;
     std::vector<std::shared_ptr<PointLight>> pointLights;
@@ -63,6 +65,9 @@ public:
     void setDirLight(DirectionalLight directionalLight);
     void addPointLight(std::shared_ptr<PointLight> pointLight);
     void addPointLights(std::vector<std::shared_ptr<PointLight>> pointLights);
+    void setDirection(glm::vec3 direction);
+    glm::vec3 getDirection();
+    const std::unique_ptr<DirectionalLight> &getDirLight() const;
 };
 
 #endif //DZWIG_KRATOWNICOWY_LIGHTHANDLER_H

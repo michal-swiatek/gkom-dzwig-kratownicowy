@@ -35,15 +35,15 @@ std::shared_ptr<Shader> prepareShadows()
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    return nullptr;//ShaderProvider::instance().getShader("shShadowMap.vert", "shShadowMap.frag");
+    return nullptr;
 }
 
-glm::mat4 calcLightSpaceMatrix()
+glm::mat4 calcLightSpaceMatrix(glm::vec3 direction)
 {
     glm::mat4 lightProjection, lightView;
     glm::mat4 lightSpaceMatrix;
-    float near_plane = 1.0f, far_plane = 400;
-    lightProjection = glm::ortho(-150.0f, 150.0f, -150.0f, 150.0f, near_plane, far_plane);
+    float near_plane = 1.0f, far_plane = 500;
+    lightProjection = glm::ortho(-200.0f, 200.0f, -200.0f, 200.0f, near_plane, far_plane);
     lightView = glm::lookAt({ -251.0f, 0.62f, -0.175f }, glm::vec3(-250.0f, 0.0f, 0.0f), glm::vec3(0.0, 1.0, 0.0));
     lightSpaceMatrix = lightProjection * lightView;
     return lightSpaceMatrix;

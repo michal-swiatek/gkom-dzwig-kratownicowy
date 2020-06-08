@@ -6,7 +6,7 @@
 #include <stdexcept>
 
 void LightHandler::movePointLight(glm::vec3 displacement, uint8_t target) {
-    pointLights[target]->move(displacement);
+    pointLights[target]->translateWorld(displacement);
 }
 
 void LightHandler::applyLightToShader(Shader &shader) {
@@ -24,13 +24,12 @@ void LightHandler::applyLightToShader(Shader &shader) {
         shader.setFloat("pointLights["+std::to_string(i)+"].constant", pointLights[i]->getPointLightInfo().constant);
         shader.setFloat("pointLights["+std::to_string(i)+"].linear", pointLights[i]->getPointLightInfo().linear);
         shader.setFloat("pointLights["+std::to_string(i)+"].quadratic", pointLights[i]->getPointLightInfo().quadratic);
+        shader.setVector3f("pointLights["+std::to_string(i)+"].color", pointLights[i]->getPointLightInfo().color);
     }
 
 }
 
 void LightHandler::addPointLight(std::shared_ptr<PointLight> pointLight) {
-    if(pointLights.size() >= MAX_POINT_LIGHTS)
-        throw std::runtime_error("Próba przekroczenia maksymalnej liczby świateł punktowych");
     pointLights.push_back(pointLight);
 }
 
@@ -49,6 +48,7 @@ void LightHandler::drawPointLights(cam::Camera &camera) {
     lightSourceShader->use();
     for(auto pointLight:pointLights) {
         lightSourceShader->setFloat("lightIntensity",pointLight->getLightIntensity());
+        lightSourceShader->setVector3f("color",pointLight->getPointLightInfo().color);
         pointLight->drawLightSource(camera, lightSourceShader->getProgramID());
     }
 }
@@ -62,8 +62,20 @@ void LightHandler::addPointLights(std::vector<std::shared_ptr<PointLight>> point
     this->pointLights = pointLights;
 }
 
+const std::unique_ptr<DirectionalLight> &LightHandler::getDirLight() const {
+    return dirLight;
+}
 
-void PointLight::move(const glm::vec3 &displacement) {
+void LightHandler::setDirection(glm::vec3 direction) {
+    dirLight->direction = direction;
+}
+
+glm::vec3 LightHandler::getDirection() {
+    return dirLight->direction;
+}
+
+
+void PointLight::translateWorld(const glm::vec3 &displacement) {
     lightSource->translateWorld(displacement);
 }
 
@@ -81,6 +93,7 @@ void PointLight::setPointLightInfo(const PointLightInfo &pointLightInfo) {
 }
 
 void PointLight::drawLightSource(cam::Camera &camera, int shaderID) {
+
     lightSource->draw(camera,shaderID);
 }
 
