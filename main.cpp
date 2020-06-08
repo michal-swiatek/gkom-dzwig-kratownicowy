@@ -78,15 +78,31 @@ public:
         glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
 
 	}
-	void draw() override
-	{
+
+    void draw() override
+    {
+        applyLightViewToShaders({ shadowShader.get(), shader.get() }, lightSpaceMatrix);
+        glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        shadowShader->use();
+        scene->draw(*mainCamera, shadowShader->getProgramID());
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
+        glClearColor(0, 0, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glActiveTexture(GL_TEXTURE15);
+        glBindTexture(GL_TEXTURE_2D, depthMap);
         shader->use();
         light->applyLightToShader(*shader);
-		scene->draw(*mainCamera, shader->getProgramID());
-		light->drawPointLights(*mainCamera);
-		skyBox->draw(*mainCamera);
+        scene->draw(*mainCamera, shader->getProgramID());
+        light->drawPointLights(*mainCamera);
 
-	}
+        skyBox->draw(*mainCamera);
+
+    }
+
 	void updateLogic() override
 	{
 
