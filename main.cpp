@@ -26,22 +26,10 @@ private:
 	std::unique_ptr<Scene> scene;
     std::unique_ptr<SkyBox> skyBox;
     std::unique_ptr<LightHandler> light;
-    std::shared_ptr<PointLight> pointLight;
-    std::shared_ptr<PointLight> pointLight2;
     std::shared_ptr<Model> cuboid;
-    std::shared_ptr<LightSource> source;
-    std::shared_ptr<LightSource> source2;
     glm::mat4 lightSpaceMatrix;
 
-	uint VBO, VAO, EBO;
-
-public:
-	DisplayScene() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
-	{
-		shader = std::make_unique<Shader>("../shaders/phong_model.vs.glsl", "../shaders/phong_model.fs.glsl");
-        shadowShader = std::make_unique<Shader>("../shaders/shadow_map.vs.glsl", "../shaders/shadow_map.fs.glsl");
-		scene = std::make_unique<Scene>();
-        light = std::make_unique<LightHandler>();
+    void createTopCraneLight(std::shared_ptr<Model> cuboid) {
         PointLightInfo pointLightInfo;
         pointLightInfo.ambient = glm::vec3(1.0f);
         pointLightInfo.diffuse = glm::vec3(1.0f);
@@ -50,30 +38,82 @@ public:
         pointLightInfo.linear = 0.03;
         pointLightInfo.quadratic = 0.01;
         pointLightInfo.color = glm::vec3(1.0,0.0,0.0);
-        cuboid = std::make_shared<Cuboid>();
-        source = std::make_shared<LightSource>(cuboid);
-        source->scaleWorld(glm::vec3(0.35));
+
+        auto source = std::make_shared<LightSource>(cuboid);
+        source->scaleLocal(glm::vec3(0.3));
         source->translateWorld(glm::vec3(0.0f, 50.1f, 0.0f));
-        source2 = std::make_shared<LightSource>(cuboid);
-        source2->translateWorld(glm::vec3(-10.0f, 0.5f, 0.0f));
-        pointLight = std::make_unique<PointLight>(pointLightInfo,source);
-        pointLight2 = std::make_unique<PointLight>(pointLightInfo,source2);
+
+        auto pointLight = std::make_shared<PointLight>(pointLightInfo,source);
+
+
+        light->addPointLight(pointLight);
+
+    }
+
+    void createBottomCraneLights(std::shared_ptr<Model> cuboid) {
+        PointLightInfo pointLightInfo;
+        pointLightInfo.ambient = glm::vec3(1.0f);
+        pointLightInfo.diffuse = glm::vec3(1.0f);
+        pointLightInfo.specular = glm::vec3(1.0f);
+        pointLightInfo.constant = 1.0;
+        pointLightInfo.linear = 0.03;
+        pointLightInfo.quadratic = 0.01;
+        pointLightInfo.color = glm::vec3(1.0,1.0,1.0);
+        auto source = std::make_shared<LightSource>(cuboid);
+        source->scaleLocal(glm::vec3(0.3));
+        source->translateWorld(glm::vec3(2.0f, 2.6f, 1.9f));
+        auto pointLight = std::make_shared<PointLight>(pointLightInfo,source);
+        auto source2 = std::make_shared<LightSource>(cuboid);
+        source2->scaleLocal(glm::vec3(0.3));
+        source2->translateWorld(glm::vec3(-2.0f, 2.6f, -1.9f));
+        auto pointLight2 = std::make_shared<PointLight>(pointLightInfo,source2);
+        auto source3 = std::make_shared<LightSource>(cuboid);
+        source3->scaleLocal(glm::vec3(0.3));
+        source3->translateWorld(glm::vec3(2.0f, 2.6f, -1.9f));
+        auto pointLight3 = std::make_shared<PointLight>(pointLightInfo,source3);
+        auto source4 = std::make_shared<LightSource>(cuboid);
+        source4->scaleLocal(glm::vec3(0.3));
+        source4->translateWorld(glm::vec3(-2.0f, 2.6f, 1.9f));
+        auto pointLight4 = std::make_shared<PointLight>(pointLightInfo,source4);
+        light->addPointLight(pointLight);
+        light->addPointLight(pointLight2);
+        light->addPointLight(pointLight3);
+        light->addPointLight(pointLight4);
+    }
+
+    void createPointLights() {
+        cuboid = std::make_shared<Cuboid>();
+        createTopCraneLight(cuboid);
+        createBottomCraneLights(cuboid);
+    }
+    void createDirLight() {
+        DirectionalLight dirLight;
+        dirLight.direction = glm::vec3(0.4f, 1.0f, 0.2f);
+        dirLight.ambient = glm::vec3(0.1f);
+        dirLight.specular = glm::vec3(0.4f);
+        dirLight.diffuse = glm::vec3(0.6f);
+        light->setDirLight(dirLight);
+    }
+    void initializeLight() {
+        light = std::make_unique<LightHandler>();
+        createPointLights();
+        createDirLight();
+    }
+	uint VBO, VAO, EBO;
+
+public:
+	DisplayScene() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
+	{
+		shader = std::make_unique<Shader>("../shaders/phong_model.vs.glsl", "../shaders/phong_model.fs.glsl");
+        shadowShader = std::make_unique<Shader>("../shaders/shadow_map.vs.glsl", "../shaders/shadow_map.fs.glsl");
+		scene = std::make_unique<Scene>();
+		initializeLight();
 	}
 
 
 	void init() override
 	{
 		mainCamera->getSettings().movementSpeed /= 2;
-        DirectionalLight dirLight;
-        dirLight.direction = glm::vec3(0.4f, 1.0f, 0.2f);
-        dirLight.ambient = glm::vec3(0.4f);
-        dirLight.specular = glm::vec3(0.4f);
-        dirLight.diffuse = glm::vec3(0.6f);
-
-        light->setDirLight(dirLight);
-        light->addPointLight(pointLight);
-        light->addPointLight(pointLight2);
-
         skyBox = std::make_unique<SkyBox>();
         shader->use();
         prepareShadows();

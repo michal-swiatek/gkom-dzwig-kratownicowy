@@ -14,7 +14,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include "Shader.h"
 
-const unsigned int SHADOW_WIDTH = 2048, SHADOW_HEIGHT = 2048;
+const unsigned int SHADOW_WIDTH = 8392, SHADOW_HEIGHT = 8392;
 unsigned int depthMapFBO;
 unsigned int depthMap;
 
