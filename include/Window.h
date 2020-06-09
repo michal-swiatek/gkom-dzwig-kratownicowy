@@ -10,7 +10,6 @@
 #include <string>
 #include <memory>
 
-#include <glad/glad.h>  //  Included here in case user doesn't include it before Window.h
 #include <GLFW/glfw3.h>
 
 struct GLFWWindowDelete

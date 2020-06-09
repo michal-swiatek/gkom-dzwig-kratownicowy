@@ -2,19 +2,23 @@
  *  Created by Boguslaw Malewski, Rafal Uzarowicz
  */
 
+#include <GL/glew.h>
 #include "Object.h"
 
-void  Object::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const
+void  Object::draw(cam::Camera &camera, int shaderID) const
 {
 	model->use();
-	glm::mat4 projection = camera->getProjectionMatrix();
+	glm::mat4 projection = camera.getProjectionMatrix();
 
-	glm::mat4 view = camera->getViewMatrix();
+	glm::mat4 view = camera.getViewMatrix();
 
 	glm::mat4 mv = view * modelMatrix;
 	glm::mat4 matrix = projection * mv;
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderID, "mvp"), 1, GL_FALSE, glm::value_ptr(matrix));
+    glUniformMatrix4fv(glGetUniformLocation(shaderID, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    glUniformMatrix3fv(glGetUniformLocation(shaderID, "modelInvTrans"), 1, GL_FALSE, glm::value_ptr(glm::mat3(glm::transpose(glm::inverse(modelMatrix)))));
+    glUniformMatrix4fv(glGetUniformLocation(shaderID, "eyePos"), 1, GL_FALSE, glm::value_ptr(camera.getTransform().position));
 
 	glUniform1i(glGetUniformLocation(shaderID, "ourTexture"), this->textureID);
 

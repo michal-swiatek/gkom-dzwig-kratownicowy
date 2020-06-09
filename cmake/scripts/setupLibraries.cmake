@@ -12,17 +12,17 @@ message(STATUS "GLFW3 include found at ${GLFW3_INCLUDE_DIR}")
 find_package(GLM REQUIRED)
 message(STATUS "GLM include found at ${GLM_INCLUDE_DIRS}")
 
-#
-# Build libraries from source files
-#
+# SOIL
+set(SOIL_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/include")
+set(SOIL_LIBRARY "${CMAKE_SOURCE_DIR}/external-libraries/lib")
 
-# GLAD
-set(GLAD_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/include")
-set(GLAD_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/src")
-add_library(GLAD "${GLAD_SOURCE_DIR}/glad.c")
+# GLEW
+set(GLEW_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/include")
+set(GLEW_LIBRARY "${CMAKE_SOURCE_DIR}/external-libraries/lib")
+
 
 # Include libraries
-include_directories("${GLFW3_INCLUDE_DIR}" "${GLAD_INCLUDE_DIR}" "${GLM_INCLUDE_DIRS}")
+include_directories("${SOIL_INCLUDE_DIR}" "${GLFW3_INCLUDE_DIR}" "${GLM_INCLUDE_DIRS}" "${GLEW_INCLUDE_DIR}")
 
 # Linking
-set(OPENGL_LIBS "${GLFW3_LIBRARY}" opengl32 GLAD)
+set(OPENGL_LIBS GLEW "${GLFW3_LIBRARY}" SOIL opengl32)

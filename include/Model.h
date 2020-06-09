@@ -13,7 +13,7 @@
 
 #include "Camera.h"
 #include "Shader.h"
-#include "window.h"
+#include "Window.h"
 
 class Model
 {

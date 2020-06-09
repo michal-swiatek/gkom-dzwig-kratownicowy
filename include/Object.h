@@ -13,7 +13,7 @@
 
 #include "Camera.h"
 #include "Shader.h"
-#include "window.h"
+#include "Window.h"
 #include "IObject.h"
 #include "Model.h"
 
@@ -48,6 +48,6 @@ public:
 		return this->modelMatrix;
 	}
 
-	void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const override;
+	void draw(cam::Camera &camera, int shaderID) const override;
 };
 #endif // !OBJECT_H

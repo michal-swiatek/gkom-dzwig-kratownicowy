@@ -5,12 +5,11 @@
 
 #ifndef OPENGLAPP_H
 #define OPENGLAPP_H
-
+#include <GL/glew.h>
 #include <cstdint>
 #include <memory>
 #include <string>
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "Window.h"

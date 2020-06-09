@@ -6,7 +6,7 @@
 #include "TexturesHandler.h"
 
 TexturesHandler::TexturesHandler(bool flipTextures) {
-	stbi_set_flip_vertically_on_load(flipTextures);
+//	stbi_set_flip_vertically_on_load(flipTextures);
 }
 TexturesHandler::~TexturesHandler() {
 	for (int i = 0; i < textures.size(); ++i) {
@@ -24,7 +24,7 @@ void TexturesHandler::addTexture(std::string filePath) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		unsigned char *data = stbi_load(filePath.c_str(), &textureInfo->width, &textureInfo->height, &textureInfo->nrChannels, 0);
+		unsigned char *data = SOIL_load_image(filePath.c_str(), &textureInfo->width, &textureInfo->height, &textureInfo->nrChannels, 0);
 		if (data)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureInfo->width, textureInfo->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -36,7 +36,7 @@ void TexturesHandler::addTexture(std::string filePath) {
 			std::cout << "Failed to load texture" << std::endl;
 		}
 		//std::cout << "TEXTURE:"<< textureInfo->filePath<< " "<< textureInfo->width<<" "<<textureInfo->height << std::endl;
-		stbi_image_free(data);
+        SOIL_free_image_data(data);
 	}
 	else {
 		std::cout << "Failed to load texture" << std::endl;

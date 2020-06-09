@@ -25,7 +25,7 @@ public:
 		objects.push_back(object);
 	}
 
-	void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const override;
+	void draw(cam::Camera &camera, int shaderID) const override;
 
 	void rotateLocal(float angle, const std::optional<glm::vec3>& axis) override;
 	void translateLocal(const glm::vec3& offset) override;

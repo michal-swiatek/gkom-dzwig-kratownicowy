@@ -1,7 +1,7 @@
 /*
  *  Created by Boguslaw Malewski, Rafal Uzarowicz
  */
-
+#include <GL/glew.h>
 #include "Model.h"
 
 void Model::init()

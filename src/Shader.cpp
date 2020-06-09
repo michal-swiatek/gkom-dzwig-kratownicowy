@@ -3,7 +3,7 @@
     Gitlab: http://gitlab.ii.pw.edu.pl/gkom.20l/dzwig-kratownicowy
     LearnOpenGL tutorial: https://learnopengl.com/Introduction
 */
-
+#include <GL/glew.h>
 #include "Shader.h"
 
 #include <fstream>
