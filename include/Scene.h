@@ -128,7 +128,8 @@
 #define CUBE 0
 #define CYLINDER 1
 
-#include "TexturesHandler.h"
+#include <GL/glew.h>
+#include <TexturesHandler.h>
 #include "Shader.h"
 #include "Object.h"
 #include "Model.h"
@@ -161,10 +162,8 @@ public:
 
 	}
 
-	void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) {
-
+	void draw(cam::Camera& camera, int shaderID) {
 		scene->draw(camera, shaderID);
-
 	}
 
 	void rotateCraneTop(float angle) {
@@ -216,7 +215,7 @@ public:
 			}
 		}
 
-		if (this->lineParts >= -49 and this->lineParts < 25) {
+		if (this->lineParts >= -49 && this->lineParts < 25) {
 			// 5 : Hook
 			objectsToMove[5]->translateWorld(glm::vec3(0.0f, distance, 0.0f));
 			// 4 : Line
@@ -243,22 +242,22 @@ public:
 private:
 	void addTextures() {
 
-		textures.push_back("./textures/brushedMetal.png");
-		textures.push_back("./textures/oldYellowMetal4.png");
-		textures.push_back("./textures/concrete.png");
-		textures.push_back("./textures/dirt.png");
-		textures.push_back("./textures/oldYellowMetal.png");
-		textures.push_back("./textures/concrete2.png");
-		textures.push_back("./textures/dirtyBlueMetal2.png");
-		textures.push_back("./textures/dirtyGreenMetal.png");
-		textures.push_back("./textures/concrete3.png");
-		textures.push_back("./textures/concrete4.png");
-		textures.push_back("./textures/concrete5.png");
-		textures.push_back("./textures/glass.png");
-		textures.push_back("./textures/steelRope.png");
-		textures.push_back("./textures/blackMetal.png");
-		textures.push_back("./textures/oldYellowMetal2.png");
-		textures.push_back("./textures/rust.png");
+		textures.push_back("../textures/brushedMetal.png");
+		textures.push_back("../textures/oldYellowMetal4.png");
+		textures.push_back("../textures/concrete.png");
+		textures.push_back("../textures/dirt.png");
+		textures.push_back("../textures/oldYellowMetal.png");
+		textures.push_back("../textures/concrete2.png");
+		textures.push_back("../textures/dirtyBlueMetal2.png");
+		textures.push_back("../textures/dirtyGreenMetal.png");
+		textures.push_back("../textures/concrete3.png");
+		textures.push_back("../textures/concrete4.png");
+		textures.push_back("../textures/concrete5.png");
+		textures.push_back("../textures/glass.png");
+		textures.push_back("../textures/steelRope.png");
+		textures.push_back("../textures/blackMetal.png");
+		textures.push_back("../textures/oldYellowMetal2.png");
+		textures.push_back("../textures/rust.png");
 
 
 

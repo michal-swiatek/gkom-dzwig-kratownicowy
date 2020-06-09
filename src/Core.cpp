@@ -3,6 +3,7 @@
  *  Github: https://github.com/michal-swiatek/learning-opengl
  */
 
+#define GLEW_STATIC 
 #include <GL/glew.h>
 
 #include "Core.h"
