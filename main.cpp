@@ -51,13 +51,13 @@ private:
 
     void createBottomCraneLights(std::shared_ptr<Model> cuboid) {
         PointLightInfo pointLightInfo;
-        pointLightInfo.ambient = glm::vec3(0.4f);
-        pointLightInfo.diffuse = glm::vec3(0.4f);
-        pointLightInfo.specular = glm::vec3(0.4f);
+        pointLightInfo.ambient = glm::vec3(0.8f);
+        pointLightInfo.diffuse = glm::vec3(0.8f);
+        pointLightInfo.specular = glm::vec3(0.8f);
         pointLightInfo.constant = 1.0;
-        pointLightInfo.linear = 0.03;
-        pointLightInfo.quadratic = 0.01;
-        pointLightInfo.color = glm::vec3(1.0,1.0,1.0);
+        pointLightInfo.linear = 0.22;
+        pointLightInfo.quadratic = 0.20;
+        pointLightInfo.color = glm::vec3(1.0);
         auto source = std::make_shared<LightSource>(cuboid);
         source->scaleLocal(glm::vec3(0.05));
         source->translateWorld(glm::vec3(3.52f, 2.5f, 0));
