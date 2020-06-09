@@ -19,7 +19,7 @@
 class TexturesHandler
 {
 	const static int MAX_TEXTURES_NUM = 16;
-	class TextureInfo {
+	struct TextureInfo {
 	public:
 		std::string filePath;
 		int width;
@@ -38,9 +38,9 @@ public:
 
 	void addTexture(std::string filePath);
 
-	unsigned int getTextureID(std::string filePath);
+	unsigned int getTextureID(const std::string& filePath);
 
-	unsigned int useTexture(std::string filePath);
+	unsigned int useTexture(const std::string& filePath);
 
 	unsigned int useTexture(int index);
 };

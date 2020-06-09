@@ -14,12 +14,6 @@
 #include "Shader.h"
 #include "Camera.h"
 
-#include "Cylinder.h"
-#include "Cuboid.h"
-#include "include/TexturesHandler.h"
-#include "Object.h"
-#include "include/Collection.h"
-
 #include "include/Scene.h"
 
 class DisplayScene : public Core
@@ -33,9 +27,9 @@ private:
 	uint VBO, VAO, EBO;
 
 public:
-	DisplayScene() : Core("Display cylinder"), VBO(0), VAO(0), EBO(0)
+	DisplayScene() : Core("Dzwig kratownicowy"), VBO(0), VAO(0), EBO(0)
 	{
-		shader = std::make_unique<Shader>("../shaders/texture.vs.glsl", "../shaders/texture.fs.glsl");
+		shader = std::make_unique<Shader>("./shaders/texture.vs.glsl", "./shaders/texture.fs.glsl");
 		scene = std::make_unique<Scene>();
 	}
 

@@ -43,7 +43,7 @@ void TexturesHandler::addTexture(std::string filePath) {
 	}
 }
 
-unsigned int TexturesHandler::getTextureID(std::string filePath) {
+unsigned int TexturesHandler::getTextureID(const std::string& filePath) {
 	for (auto texture : this->textures) {
 		if (texture->filePath == filePath) {
 			return texture->textureID;
@@ -52,7 +52,7 @@ unsigned int TexturesHandler::getTextureID(std::string filePath) {
 	return 0;
 }
 
-unsigned int TexturesHandler::useTexture(std::string filePath) {
+unsigned int TexturesHandler::useTexture(const std::string& filePath) {
 	for (int i = 0; i < this->textures.size(); ++i) {
 		if (this->textures[i]->filePath == filePath) {
 			glActiveTexture(GL_TEXTURE0 + i);

@@ -29,12 +29,10 @@ protected:
 
 	glm::mat4 modelMatrix;
 
-
 public:
 
 	Object(std::shared_ptr<Model> mod, unsigned int textureID);
-
-
+	
 	void rotateLocal(float angle, const std::optional<glm::vec3>& axis);
 	void translateLocal(const glm::vec3& offset);
 	void scaleLocal(const glm::vec3& offset);
