@@ -40,13 +40,14 @@ std::shared_ptr<Shader> prepareShadows()
 
 glm::mat4 calcLightSpaceMatrix(glm::vec3 direction)
 {
+    direction = glm::normalize(direction);
     direction -= 0.5;
     direction *= 2;
     glm::mat4 lightProjection, lightView;
     glm::mat4 lightSpaceMatrix;
-    float near_plane = 1.0f, far_plane = 500;
-    lightProjection = glm::ortho(-250.0f, 250.0f, -250.0f, 250.0f, near_plane, far_plane);
-    lightView = glm::lookAt({ 1.01*far_plane*direction[0]/2 + 2.0 , 1.02*far_plane*direction[1]/2 - 0.1, 1.03*far_plane*direction[2]/2 + 0.5 }, glm::vec3(far_plane*direction[0]/2 , far_plane*direction[1]/2, far_plane*direction[2]/2), glm::vec3(0.0, 1.0, 0.0));
+    float near_plane = 1.0f, far_plane = 300;
+    lightProjection = glm::ortho(-150.0f, 150.0f, -150.0f, 150.0f, near_plane, far_plane);
+    lightView = glm::lookAt((far_plane/2)*direction, glm::vec3(0), glm::vec3(0.0, 1.0, 0.0));
     lightSpaceMatrix = lightProjection * lightView;
     return lightSpaceMatrix;
 }

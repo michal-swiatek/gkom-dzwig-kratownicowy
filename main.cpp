@@ -52,7 +52,8 @@ public:
         pointLightInfo.color = glm::vec3(1.0,0.0,0.0);
         cuboid = std::make_shared<Cuboid>();
         source = std::make_shared<LightSource>(cuboid);
-        source->translateWorld(glm::vec3(10.0f, 0.5f, 0.0f));
+        source->scaleWorld(glm::vec3(0.35));
+        source->translateWorld(glm::vec3(0.0f, 50.1f, 0.0f));
         source2 = std::make_shared<LightSource>(cuboid);
         source2->translateWorld(glm::vec3(-10.0f, 0.5f, 0.0f));
         pointLight = std::make_unique<PointLight>(pointLightInfo,source);
@@ -64,8 +65,8 @@ public:
 	{
 		mainCamera->getSettings().movementSpeed /= 2;
         DirectionalLight dirLight;
-        dirLight.direction = glm::vec3(0.4f, 0.6f, 0.2f);
-        dirLight.ambient = glm::vec3(0.0f);
+        dirLight.direction = glm::vec3(0.4f, 1.0f, 0.2f);
+        dirLight.ambient = glm::vec3(0.4f);
         dirLight.specular = glm::vec3(0.4f);
         dirLight.diffuse = glm::vec3(0.6f);
 
