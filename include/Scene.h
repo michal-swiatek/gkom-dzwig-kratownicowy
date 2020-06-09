@@ -53,6 +53,8 @@ class Scene
 	std::vector<std::string> textures;
 	std::vector<std::shared_ptr<Collection>> objectsToMove;
 	std::unique_ptr<Collection> scene;
+	float lineDistance = 0.0f;
+	int lineParts = 0;
 public:
 	Scene() {
 
@@ -78,14 +80,14 @@ public:
 	void moveCraneHoist(float distance) {
 		// 0 - 3 : wheels
 		for (int i = 0; i < 4; ++i) {
-//			objectsToMove[i]->rotateLocal(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+			//objectsToMove[i]->rotateLocal(-1.0f, glm::vec3(1.0f, 1.0f, 0.0f));
 			objectsToMove[i]->translateLocal(glm::vec3(distance*4, 0.0f, 0.0f));
 		}
 
 		// 6 : Hoist
 		objectsToMove[6]->objects[0]->translateLocal(glm::vec3(distance/3, 0.0f, 0.0f)); // wozek
 		objectsToMove[6]->objects[5]->translateLocal(glm::vec3(distance*100/9, 0.0f, 0.0f)); //lina
-		objectsToMove[5]->objects[0]-> translateLocal(glm::vec3(distance*10/3, 0.0f, 0.0f));//czesc hak
+		objectsToMove[5]->objects[0]->translateLocal(glm::vec3(distance*10/3, 0.0f, 0.0f));//czesc hak
 		objectsToMove[5]->objects[1]->translateLocal(glm::vec3(distance*10, 0.0f, 0.0f));//czesc hak
 		objectsToMove[5]->objects[2]->translateLocal(glm::vec3(distance*100/9, 0.0f, 0.0f));//czesc hak
 		objectsToMove[5]->objects[3]->translateLocal(glm::vec3(distance*10, 0.0f, 0.0f));//czesc hak
@@ -93,11 +95,29 @@ public:
 	}
 
 	void moveCraneHook(float distance) {
-		// 5 : Hook
-		objectsToMove[5]->translateWorld(glm::vec3(0.01f, 0.0f, 0.0f));
-		// 4 : Line
-		objectsToMove[4]->scaleWorld(glm::vec3(0.0f, 1.0f-distance/2.0f, 0.0f));
-		objectsToMove[4]->translateWorld(glm::vec3(0.0f, distance, 0.0f));
+		this->lineDistance += distance;
+		if (this->lineDistance >= 0.4f) {
+			this->lineDistance = 0.0f;
+			this->lineParts -= 1;
+			if (this->lineParts < -50) {
+				this->lineParts = -50;
+			}
+		}
+		else if (this->lineDistance <= -0.4f) {
+			this->lineDistance = 0.0f;
+			this->lineParts += 1;
+			if (this->lineParts > 25) {
+				this->lineParts = 25;
+			}
+		}
+
+		if (this->lineParts >= -49 and this->lineParts < 25) {
+			// 5 : Hook
+			objectsToMove[5]->translateWorld(glm::vec3(0.0f, distance, 0.0f));
+			// 4 : Line
+			for (int i = 0; i < 50 + this->lineParts; ++i)
+				objectsToMove[4]->objects[i]->translateWorld(glm::vec3(0.0f, distance, 0.0f));
+		}
 	}
 
 	void move() {
@@ -108,7 +128,7 @@ public:
 		// 6 : Hoist
 		// 7 : CraneTop
 
-		this->moveCraneHoist(0.05f);
+		this->moveCraneHook(-0.1f);
 
 		//this->moveCraneHook(0.01f);
 
@@ -117,22 +137,22 @@ public:
 private:
 	void addTextures() {
 
-		textures.push_back("../textures/brushedMetal.png");
-		textures.push_back("../textures/oldYellowMetal4.png");
-		textures.push_back("../textures/concrete.png");
-		textures.push_back("../textures/dirt.png");
-		textures.push_back("../textures/oldYellowMetal.png");
-		textures.push_back("../textures/concrete2.png");
-		textures.push_back("../textures/dirtyBlueMetal2.png");
-		textures.push_back("../textures/dirtyGreenMetal.png");
-		textures.push_back("../textures/concrete3.png");
-		textures.push_back("../textures/concrete4.png");
-		textures.push_back("../textures/concrete5.png");
-		textures.push_back("../textures/glass.png");
-		textures.push_back("../textures/steelRope.png");
-		textures.push_back("../textures/blackMetal.png");
-		textures.push_back("../textures/oldYellowMetal2.png");
-		textures.push_back("../textures/rust.png");
+		textures.push_back("./textures/brushedMetal.png");
+		textures.push_back("./textures/oldYellowMetal4.png");
+		textures.push_back("./textures/concrete.png");
+		textures.push_back("./textures/dirt.png");
+		textures.push_back("./textures/oldYellowMetal.png");
+		textures.push_back("./textures/concrete2.png");
+		textures.push_back("./textures/dirtyBlueMetal2.png");
+		textures.push_back("./textures/dirtyGreenMetal.png");
+		textures.push_back("./textures/concrete3.png");
+		textures.push_back("./textures/concrete4.png");
+		textures.push_back("./textures/concrete5.png");
+		textures.push_back("./textures/glass.png");
+		textures.push_back("./textures/steelRope.png");
+		textures.push_back("./textures/blackMetal.png");
+		textures.push_back("./textures/oldYellowMetal2.png");
+		textures.push_back("./textures/rust.png");
 
 
 
@@ -1331,11 +1351,11 @@ private:
 
 
 		part = createCraneTopHoistLine();
-		part->translateWorld(glm::vec3(0.0f, 0.0f, 0.0f));
+		part->translateWorld(glm::vec3(0.0f, 0.4f, 0.0f));
 		hoist->addObject(part);
 
 		part = createCraneTopHoistHook();
-		part->translateWorld(glm::vec3(0.0f, -20.0f, 0.0f));
+		part->translateWorld(glm::vec3(0.0f, -18.4f, 0.0f));
 		hoist->addObject(part);
 
 		objectsToMove.push_back(hoist);
@@ -1350,7 +1370,7 @@ private:
 		std::string partTexture = textures[DIRTY_GREEN_METAL];
 
 		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
-		part->scaleLocal(glm::vec3(3.0f, 0.5, 2.0f));
+		part->scaleLocal(glm::vec3(3.0f, 0.5f, 2.0f));
 		part->translateWorld(glm::vec3(0.0f, 0.5f, 0.0f));
 		hoistHolder->addObject(part);
 
@@ -1380,10 +1400,18 @@ private:
 
 		std::string partTexture = textures[STEEL_ROPE];
 
-		part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
-		part->scaleLocal(glm::vec3(0.09f, 20.0f, 0.09f));
-		part->translateWorld(glm::vec3(0.0f, -10.0f, 0.0f));
-		line->addObject(part);
+		for (int i = 0; i < 50; ++i) {
+			part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+			part->scaleLocal(glm::vec3(0.09f, 0.4f, 0.09f));
+			part->translateWorld(glm::vec3(0.0f, -18.8f+i*0.4f, 0.0f));
+			line->addObject(part);
+		}
+		for (int i = 0; i < 25; ++i) {
+			part = std::shared_ptr<Object>(new Object(models[0], texturesHandler.useTexture(partTexture)));
+			part->scaleLocal(glm::vec3(0.09f, 0.4f, 0.09f));
+			part->translateWorld(glm::vec3(0.0f, -0.4f, 0.0f));
+			line->addObject(part);
+		}
 
 		objectsToMove.push_back(line);
 

@@ -11,8 +11,6 @@ void Collection::draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const 
 	}
 }
 
-
-
 void Collection::rotateLocal(float angle, const std::optional<glm::vec3>& axis)
 {
 	for (auto& object : objects) {

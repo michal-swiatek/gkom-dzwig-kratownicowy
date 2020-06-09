@@ -43,6 +43,12 @@ public:
 	void translateWorld(const glm::vec3& offset);
 	void scaleWorld(const glm::vec3& offset);
 
+	void setModelMatrix(glm::mat4 m) {
+		this->modelMatrix = m;
+	} 
+	glm::mat4 getModelMatrix() {
+		return this->modelMatrix;
+	}
 
 	void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const override;
 };

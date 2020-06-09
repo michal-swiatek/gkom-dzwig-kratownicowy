@@ -19,7 +19,6 @@ class IObject
 public:
 	virtual void draw(std::unique_ptr<cam::Camera>& camera, int shaderID) const = 0;
 
-
 	virtual void rotateLocal(float angle, const std::optional<glm::vec3>& axis) = 0;
 	virtual void translateLocal(const glm::vec3& offset) = 0;
 	virtual void scaleLocal(const glm::vec3& offset) = 0;
