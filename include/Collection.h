@@ -27,7 +27,6 @@ public:
 
 	void draw(cam::Camera &camera, int shaderID) const override;
 
-
 	void rotateLocal(float angle, const std::optional<glm::vec3>& axis) override;
 	void translateLocal(const glm::vec3& offset) override;
 	void scaleLocal(const glm::vec3& offset)override;

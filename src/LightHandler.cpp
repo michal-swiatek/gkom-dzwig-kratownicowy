@@ -62,8 +62,8 @@ void LightHandler::addPointLights(std::vector<std::shared_ptr<PointLight>> point
     this->pointLights = pointLights;
 }
 
-const std::unique_ptr<DirectionalLight> &LightHandler::getDirLight() const {
-    return dirLight;
+DirectionalLight& LightHandler::getDirLight(){
+    return *dirLight;
 }
 
 void LightHandler::setDirection(glm::vec3 direction) {

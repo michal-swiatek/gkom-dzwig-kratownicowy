@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string>
 
-#include <glfw3.h>
+#include <../external-libraries/include/GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 class Shader

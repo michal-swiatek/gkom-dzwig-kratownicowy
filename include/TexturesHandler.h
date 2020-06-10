@@ -37,9 +37,9 @@ public:
 
 	void addTexture(std::string filePath);
 
-	unsigned int getTextureID(std::string filePath);
+	unsigned int getTextureID(const std::string& filePath);
 
-	unsigned int useTexture(std::string filePath);
+	unsigned int useTexture(const std::string& filePath);
 
 	unsigned int useTexture(int index);
 };

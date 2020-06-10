@@ -29,12 +29,10 @@ protected:
 
 	glm::mat4 modelMatrix;
 
-
 public:
 
 	Object(std::shared_ptr<Model> mod, unsigned int textureID);
-
-
+	
 	void rotateLocal(float angle, const std::optional<glm::vec3>& axis);
 	void translateLocal(const glm::vec3& offset);
 	void scaleLocal(const glm::vec3& offset);
@@ -43,6 +41,12 @@ public:
 	void translateWorld(const glm::vec3& offset);
 	void scaleWorld(const glm::vec3& offset);
 
+	void setModelMatrix(glm::mat4 m) {
+		this->modelMatrix = m;
+	} 
+	glm::mat4 getModelMatrix() {
+		return this->modelMatrix;
+	}
 
 	void draw(cam::Camera &camera, int shaderID) const override;
 };

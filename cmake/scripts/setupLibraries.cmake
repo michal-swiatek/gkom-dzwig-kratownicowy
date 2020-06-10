@@ -14,15 +14,14 @@ message(STATUS "GLM include found at ${GLM_INCLUDE_DIRS}")
 
 # SOIL
 set(SOIL_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/include")
-set(SOIL_LIBRARY "${CMAKE_SOURCE_DIR}/external-libraries/lib")
+set(SOIL_LIBRARY "${CMAKE_SOURCE_DIR}/external-libraries/lib/SOIL.lib")
 
 # GLEW
 set(GLEW_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-libraries/include")
-set(GLEW_LIBRARY "${CMAKE_SOURCE_DIR}/external-libraries/lib")
-
+set(GLEW_LIBRARY  "${CMAKE_SOURCE_DIR}/external-libraries/lib/glew32.lib" "${CMAKE_SOURCE_DIR}/external-libraries/lib/glew32s.lib")
 
 # Include libraries
 include_directories("${SOIL_INCLUDE_DIR}" "${GLFW3_INCLUDE_DIR}" "${GLM_INCLUDE_DIRS}" "${GLEW_INCLUDE_DIR}")
 
 # Linking
-set(OPENGL_LIBS GLEW "${GLFW3_LIBRARY}" SOIL opengl32)
+set(OPENGL_LIBS "${GLEW_LIBRARY}" "${GLFW3_LIBRARY}" "${SOIL_LIBRARY}" opengl32)

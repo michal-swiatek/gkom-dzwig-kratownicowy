@@ -15,6 +15,9 @@ void  Object::draw(cam::Camera &camera, int shaderID) const
 	glm::mat4 mv = view * modelMatrix;
 	glm::mat4 matrix = projection * mv;
 
+	glActiveTexture(GL_TEXTURE0 );
+	glBindTexture(GL_TEXTURE_2D, this->textureID);
+
 	glUniformMatrix4fv(glGetUniformLocation(shaderID, "mvp"), 1, GL_FALSE, glm::value_ptr(matrix));
     glUniformMatrix4fv(glGetUniformLocation(shaderID, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
     glUniformMatrix3fv(glGetUniformLocation(shaderID, "modelInvTrans"), 1, GL_FALSE, glm::value_ptr(glm::mat3(glm::transpose(glm::inverse(modelMatrix)))));

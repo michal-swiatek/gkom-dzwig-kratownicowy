@@ -129,7 +129,7 @@ SkyBox::SkyBox(glm::vec3 color): color(color) {
 }
 
 void SkyBox::initShader() {
-    shader = std::make_unique<Shader>("shaders/skybox.vs.glsl", "shaders/skybox.fs.glsl");
+    shader = std::make_unique<Shader>("../shaders/skybox.vs.glsl", "../shaders/skybox.fs.glsl");
 }
 
 uint32_t SkyBox::generateColorTexture(const glm::vec3 &color) const
