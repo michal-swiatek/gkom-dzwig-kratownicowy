@@ -11,6 +11,7 @@ Zaimplementowana funkcjonalność:
 *  Teksturowanie obiektów (generowanie współrzędnych uv)
 *  Cieniowanie Phonga
 *  Cienie kierunkowe
+*  Regulacja intensywności światła kierunkowego
 *  Skybox
 *  Interaktywna kamera (pozwla na poruszanie się po świecie, zoom)
 *  Możliwość nakłądania materiału za pomocą tekstur (ambient, diffuse, specular)
