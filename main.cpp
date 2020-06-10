@@ -26,7 +26,6 @@ private:
 	std::unique_ptr<Scene> scene;
     std::unique_ptr<SkyBox> skyBox;
     std::unique_ptr<LightHandler> light;
-    std::shared_ptr<Model> cuboid;
     glm::mat4 lightSpaceMatrix;
 
 	const float LIGHT_STEP = 0.01f;
@@ -37,9 +36,9 @@ private:
 
     void createTopCraneLight(std::shared_ptr<Model> cuboid) {
         PointLightInfo pointLightInfo;
-        pointLightInfo.ambient = glm::vec3(1.0f);
-        pointLightInfo.diffuse = glm::vec3(1.0f);
-        pointLightInfo.specular = glm::vec3(1.0f);
+        pointLightInfo.ambient = glm::vec3(0.4f);
+        pointLightInfo.diffuse = glm::vec3(0.4f);
+        pointLightInfo.specular = glm::vec3(0.4f);
         pointLightInfo.constant = 1.0;
         pointLightInfo.linear = 0.22;
         pointLightInfo.quadratic = 0.2;
@@ -58,30 +57,32 @@ private:
 
     void createBottomCraneLights(std::shared_ptr<Model> cuboid) {
         PointLightInfo pointLightInfo;
-		pointLightInfo.ambient = glm::vec3(0.8f);
-		pointLightInfo.diffuse = glm::vec3(0.8f);
-		pointLightInfo.specular = glm::vec3(0.8f);
-
+        pointLightInfo.ambient = glm::vec3(0.8f);
+        pointLightInfo.diffuse = glm::vec3(0.8f);
+        pointLightInfo.specular = glm::vec3(0.8f);
         pointLightInfo.constant = 1.0;
-		pointLightInfo.linear = 0.22;
-		pointLightInfo.quadratic = 0.20;
-		pointLightInfo.color = glm::vec3(1.0);
-
+        pointLightInfo.linear = 0.22;
+        pointLightInfo.quadratic = 0.20;
+        pointLightInfo.color = glm::vec3(1.0);
         auto source = std::make_shared<LightSource>(cuboid);
-        source->scaleLocal(glm::vec3(0.3));
-        source->translateWorld(glm::vec3(2.0f, 2.6f, 1.9f));
+        source->scaleLocal(glm::vec3(0.05));
+        source->translateWorld(glm::vec3(3.52f, 2.5f, 0));
+        source->rotateWorld(75,glm::vec3(0.0f, 1.0f, 0.0f));
         auto pointLight = std::make_shared<PointLight>(pointLightInfo,source);
         auto source2 = std::make_shared<LightSource>(cuboid);
-        source2->scaleLocal(glm::vec3(0.3));
-        source2->translateWorld(glm::vec3(-2.0f, 2.6f, -1.9f));
+        source2->scaleLocal(glm::vec3(0.05));
+        source2->translateWorld(glm::vec3(-3.52f, 2.5f, 0));
+        source2->rotateWorld(75,glm::vec3(0.0f, 1.0f, 0.0f));
         auto pointLight2 = std::make_shared<PointLight>(pointLightInfo,source2);
         auto source3 = std::make_shared<LightSource>(cuboid);
-        source3->scaleLocal(glm::vec3(0.3));
-        source3->translateWorld(glm::vec3(2.0f, 2.6f, -1.9f));
+        source3->scaleLocal(glm::vec3(0.05));
+        source3->translateWorld(glm::vec3(0, 2.5f, -3.52f));
+        source3->rotateWorld(75,glm::vec3(0.0f, 1.0f, 0.0f));
         auto pointLight3 = std::make_shared<PointLight>(pointLightInfo,source3);
         auto source4 = std::make_shared<LightSource>(cuboid);
-        source4->scaleLocal(glm::vec3(0.3));
-        source4->translateWorld(glm::vec3(-2.0f, 2.6f, 1.9f));
+        source4->scaleLocal(glm::vec3(0.05));
+        source4->translateWorld(glm::vec3(0, 2.5f, 3.52f));
+        source4->rotateWorld(75,glm::vec3(0.0f, 1.0f, 0.0f));
         auto pointLight4 = std::make_shared<PointLight>(pointLightInfo,source4);
         light->addPointLight(pointLight);
         light->addPointLight(pointLight2);
@@ -90,14 +91,14 @@ private:
     }
 
     void createPointLights() {
-        cuboid = std::make_shared<Cuboid>();
+        auto cuboid = std::make_shared<Cuboid>();
         createTopCraneLight(cuboid);
         createBottomCraneLights(cuboid);
     }
     void createDirLight() {
         DirectionalLight dirLight;
         dirLight.direction = glm::vec3(0.4f, 1.0f, 0.2f);
-        dirLight.ambient = glm::vec3(0.1f);
+        dirLight.ambient = glm::vec3(0.2f);
         dirLight.specular = glm::vec3(0.4f);
         dirLight.diffuse = glm::vec3(0.6f);
         light->setDirLight(dirLight);
