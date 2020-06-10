@@ -28,9 +28,9 @@ private:
     std::unique_ptr<LightHandler> light;
     glm::mat4 lightSpaceMatrix;
 
-    const float LIGHT_STEP = 0.01f;
-    const float MAX_LIGHT = 1.0f;
-    const float MIN_LIGHT = 0.7f;
+    const float LIGHT_STEP = 0.001f;
+    const float MAX_LIGHT = 1.35f;
+    const float MIN_LIGHT = 0.95f;
 
     float lightY = MAX_LIGHT;
 
