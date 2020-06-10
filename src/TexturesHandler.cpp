@@ -35,7 +35,6 @@ void TexturesHandler::addTexture(std::string filePath) {
 		{
 			std::cout << "Failed to load texture" << std::endl;
 		}
-		//std::cout << "TEXTURE:"<< textureInfo->filePath<< " "<< textureInfo->width<<" "<<textureInfo->height << std::endl;
         SOIL_free_image_data(data);
 	}
 	else {

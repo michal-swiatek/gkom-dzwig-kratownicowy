@@ -67,7 +67,7 @@ public:
     void addPointLights(std::vector<std::shared_ptr<PointLight>> pointLights);
     void setDirection(glm::vec3 direction);
     glm::vec3 getDirection();
-    const std::unique_ptr<DirectionalLight> &getDirLight() const;
+    DirectionalLight& getDirLight();
 };
 
 #endif //DZWIG_KRATOWNICOWY_LIGHTHANDLER_H

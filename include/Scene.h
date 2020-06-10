@@ -56,7 +56,7 @@
 #define CRANE_POS_X 15.0f
 #define CRANE_POS_Z 15.0f
 #define CRANE_TOP_HEIGHT_PLACEMENT 37.5f
-#define CRANE_INITIAL_ANGLE 120.0f
+#define CRANE_INITIAL_ANGLE 90.0f
 // Stand
 #define STAND_HEIGHT 1.0f
 #define STAND_WIDTH 2.0f
@@ -120,7 +120,7 @@
 #define STEEL_ROPE 12	
 #define BLACK_METAL 13
 #define OLD_YELLOW_METAL_2 14
-#define RUST 15
+#define RUST 13
 
 /*
 *	Models IDs
@@ -160,11 +160,20 @@ public:
 
 		scene->translateWorld(glm::vec3(-CRANE_POS_X, 0.0f, -CRANE_POS_Z));
 
+		this->rotateCraneTop(30.0f);
+
 	}
 
 	void draw(cam::Camera& camera, int shaderID) {
 		scene->draw(camera, shaderID);
 	}
+
+	// objectsToMove:
+		// 0 - 3 : wheels
+		// 4 : Line
+		// 5 : Hook
+		// 6 : Hoist
+		// 7 : CraneTop
 
 	void rotateCraneTop(float angle) {
 		// 7 : CraneTop
@@ -200,44 +209,33 @@ public:
 
 	void moveCraneHook(float distance) {
 		this->lineDistance += distance;
-		if (this->lineDistance >= 0.4f) {
+		if (this->lineDistance > 0.4f) {
 			this->lineDistance = 0.0f;
 			this->lineParts -= 1;
+			distance = 0.0f;
 			if (this->lineParts < -50) {
 				this->lineParts = -50;
 			}
 		}
-		else if (this->lineDistance <= -0.4f) {
-			this->lineDistance = 0.0f;
+		else if (this->lineDistance < -0.0f) {
+			this->lineDistance = 0.4f;
 			this->lineParts += 1;
+			distance = 0.0f;
 			if (this->lineParts > 25) {
 				this->lineParts = 25;
 			}
 		}
 
-		if (this->lineParts >= -49 && this->lineParts < 25) {
+		if (this->lineParts >= -50 && this->lineParts < 25) {
 			// 5 : Hook
-			objectsToMove[5]->translateWorld(glm::vec3(0.0f, distance, 0.0f));
+			if (this->lineParts >= -49) {
+				objectsToMove[5]->translateWorld(glm::vec3(0.0f, distance, 0.0f));
+			}
 			// 4 : Line
 			for (int i = 0; i < 50 + this->lineParts; ++i) {
 				objectsToMove[4]->objects[i]->translateWorld(glm::vec3(0.0f, distance, 0.0f));
 			}
 		}
-	}
-
-	void move() {
-		// objectsToMove:
-		// 0 - 3 : wheels
-		// 4 : Line
-		// 5 : Hook
-		// 6 : Hoist
-		// 7 : CraneTop
-
-		//this->moveCraneHook(0.001f);
-
-		//this->moveCraneHoist(0.01f);
-
-		//this->rotateCraneTop(0.1f);
 	}
 private:
 	void addTextures() {
@@ -257,7 +255,7 @@ private:
 		textures.push_back("../textures/steelRope.png");
 		textures.push_back("../textures/blackMetal.png");
 		textures.push_back("../textures/oldYellowMetal2.png");
-		textures.push_back("../textures/rust.png");
+		//textures.push_back("../textures/rust.png");
 
 
 
@@ -1315,11 +1313,11 @@ private:
 
 
 		part = createCraneTopHoistLine();
-		part->translateWorld(glm::vec3(0.0f, 0.6f, 0.0f));
+		part->translateWorld(glm::vec3(0.0f, 0.5f, 0.0f));
 		hoist->addObject(part);
 
 		part = createCraneTopHoistHook();
-		part->translateWorld(glm::vec3(0.0f, -19.4f, 0.0f));
+		part->translateWorld(glm::vec3(0.0f, -19.5f, 0.0f));
 		hoist->addObject(part);
 
 		objectsToMove.push_back(hoist);

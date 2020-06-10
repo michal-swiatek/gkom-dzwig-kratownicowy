@@ -29,15 +29,21 @@ private:
     std::shared_ptr<Model> cuboid;
     glm::mat4 lightSpaceMatrix;
 
+	const float LIGHT_STEP = 0.01f;
+	const float MAX_LIGHT = 1.3f;
+	const float MIN_LIGHT = 0.9f;
+
+	float lightY = MAX_LIGHT;
+
     void createTopCraneLight(std::shared_ptr<Model> cuboid) {
         PointLightInfo pointLightInfo;
         pointLightInfo.ambient = glm::vec3(1.0f);
         pointLightInfo.diffuse = glm::vec3(1.0f);
         pointLightInfo.specular = glm::vec3(1.0f);
         pointLightInfo.constant = 1.0;
-        pointLightInfo.linear = 0.03;
-        pointLightInfo.quadratic = 0.01;
-        pointLightInfo.color = glm::vec3(1.0,0.0,0.0);
+        pointLightInfo.linear = 0.22;
+        pointLightInfo.quadratic = 0.2;
+        pointLightInfo.color = glm::vec3(0.5,0.0,0.0);
 
         auto source = std::make_shared<LightSource>(cuboid);
         source->scaleLocal(glm::vec3(0.3));
@@ -52,13 +58,15 @@ private:
 
     void createBottomCraneLights(std::shared_ptr<Model> cuboid) {
         PointLightInfo pointLightInfo;
-        pointLightInfo.ambient = glm::vec3(1.0f);
-        pointLightInfo.diffuse = glm::vec3(1.0f);
-        pointLightInfo.specular = glm::vec3(1.0f);
+		pointLightInfo.ambient = glm::vec3(0.8f);
+		pointLightInfo.diffuse = glm::vec3(0.8f);
+		pointLightInfo.specular = glm::vec3(0.8f);
+
         pointLightInfo.constant = 1.0;
-        pointLightInfo.linear = 0.03;
-        pointLightInfo.quadratic = 0.01;
-        pointLightInfo.color = glm::vec3(1.0,1.0,1.0);
+		pointLightInfo.linear = 0.22;
+		pointLightInfo.quadratic = 0.20;
+		pointLightInfo.color = glm::vec3(1.0);
+
         auto source = std::make_shared<LightSource>(cuboid);
         source->scaleLocal(glm::vec3(0.3));
         source->translateWorld(glm::vec3(2.0f, 2.6f, 1.9f));
@@ -119,6 +127,7 @@ public:
         prepareShadows();
         lightSpaceMatrix = calcLightSpaceMatrix(light->getDirection());
         glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
+
 	}
 
     void draw() override
@@ -128,7 +137,10 @@ public:
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
         shadowShader->use();
+		
+		glCullFace(GL_FRONT);
         scene->draw(*mainCamera, shadowShader->getProgramID());
+		glCullFace(GL_BACK);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         glViewport(0, 0, mainWindow->getWindowSettings().width, mainWindow->getWindowSettings().height);
@@ -148,12 +160,41 @@ public:
 
 	void updateLogic() override
 	{
-        auto dir = light->getDirection();
-        dir[0] += 0.001;
-        if(dir[0]>=1.0)
-            dir[0] = 0;
-        light->setDirection(dir);
-		scene->move();
+		// Light
+		if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_EQUAL) == GLFW_PRESS) {
+			this->lightY += LIGHT_STEP;
+			if (this->lightY >= MAX_LIGHT) {
+				this->lightY = MAX_LIGHT;
+			}
+		}
+		if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_MINUS) == GLFW_PRESS) {
+			this->lightY -= LIGHT_STEP;
+			if (this->lightY <= MIN_LIGHT) {
+				this->lightY = MIN_LIGHT;
+			}
+		}
+
+		light->setDirection(glm::vec3(1.0f, this->lightY, 1.0f));
+		
+		// Light intensity
+		float intensity = glm::sin(glm::radians(90.0f*(1.0f-glm::abs(1.5f-lightY))));
+		light->getDirLight().diffuse = glm::vec3(intensity);
+
+
+		// Crane movement
+		if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_R) == GLFW_PRESS)
+			scene->rotateCraneTop(0.5f);
+		if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_F) == GLFW_PRESS)
+			scene->rotateCraneTop(-0.5f);
+		if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_T) == GLFW_PRESS)
+			scene->moveCraneHoist(0.1f);
+		if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_G) == GLFW_PRESS)
+			scene->moveCraneHoist(-0.1f);
+		if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_Y) == GLFW_PRESS)
+			scene->moveCraneHook(0.1f);
+		if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_H) == GLFW_PRESS)
+			scene->moveCraneHook(-0.1f);
+
         lightSpaceMatrix = calcLightSpaceMatrix(light->getDirection());
 	}
 };

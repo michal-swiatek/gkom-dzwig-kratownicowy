@@ -24,7 +24,7 @@ struct PointLight {
 };
 
 // źle ustawione == czarne objekty
-#define NR_POINT_LIGHTS 2
+#define NR_POINT_LIGHTS 5
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 //  Lighting is specified in view space
 uniform DirLight dirLight;
